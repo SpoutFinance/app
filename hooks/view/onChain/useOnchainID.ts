@@ -1,0 +1,237 @@
+"use client";
+
+import { useReadContract } from "wagmi";
+import idFactoryABI from "@/abi/idfactory.json";
+import onchainidABI from "@/abi/onchainid.json";
+import { AbiCoder, keccak256 } from "ethers";
+import { contractaddresses } from "@/lib/addresses";
+import { useChainId } from "wagmi";
+import { base } from "@/lib/chainconfigs/base";
+import identityRegistryABI from "@/abi/identityregistry.json";
+import tokenABI from "@/abi/token.json";
+import { useState, useEffect } from "react";
+
+export function useOnchainID({
+  userAddress,
+  idFactoryAddress,
+  issuer,
+  topic = 1,
+}: {
+  userAddress: string | undefined | null;
+  idFactoryAddress: string;
+  issuer: string;
+  topic?: number;
+}) {
+  const chainId = useChainId();
+  const isBase = chainId === base.id;
+
+  // Initialize cache from localStorage immediately to prevent initial fetch
+  const [cachedIdentityAddress, setCachedIdentityAddress] = useState<
+    string | null
+  >(() => {
+    if (typeof window !== "undefined" && userAddress) {
+      return localStorage.getItem(`identityAddress_${userAddress}_${chainId}`);
+    }
+    return null;
+  });
+
+  // First check if onchain ID actually exists using ID factory
+  // Only fetch if we don't have a cached result or if user address changed
+  const canReadIdentity =
+    !!userAddress && !!idFactoryAddress && isBase && !cachedIdentityAddress;
+
+  const {
+    data: actualOnchainID,
+    isLoading: isLoadingActualID,
+    error: actualIDError,
+    refetch: refetchActualID,
+  } = useReadContract({
+    address: canReadIdentity ? (idFactoryAddress as `0x${string}`) : undefined,
+    abi: idFactoryABI,
+    functionName: "getIdentity",
+    args: canReadIdentity ? [userAddress as `0x${string}`] : undefined,
+    query: { enabled: canReadIdentity },
+  });
+
+  // Get identity registry address from RWA token for verification check
+  const rwaTokenAddress = contractaddresses.SpoutLQDtoken[
+    chainId as 84532 | 688688
+  ] as `0x${string}`;
+
+  const {
+    data: identityRegistryAddress,
+    isLoading: isLoadingRegistry,
+    error: registryError,
+  } = useReadContract({
+    address: rwaTokenAddress as `0x${string}`,
+    abi: tokenABI.abi,
+    functionName: "identityRegistry",
+  });
+
+  // Check verification status using identity registry
+  const canReadVerification =
+    !!userAddress && !!identityRegistryAddress && isBase;
+  const {
+    data: isVerified,
+    isLoading: isVerificationLoading,
+    error: verificationError,
+    refetch: refetchVerification,
+  } = useReadContract({
+    address: identityRegistryAddress as `0x${string}`,
+    abi: identityRegistryABI.abi,
+    functionName: "isVerified",
+    args: canReadVerification ? [userAddress as `0x${string}`] : undefined,
+    query: { enabled: canReadVerification },
+  });
+
+  // Use cached address if available, otherwise use the fetched result
+  const onchainID = cachedIdentityAddress || actualOnchainID;
+
+  // Only show loading if we don't have a cached result and are actually fetching
+  // If we have a cached identity address, we don't need to show loading for registry/verification
+  const isLoading =
+    !cachedIdentityAddress &&
+    (isLoadingActualID || isLoadingRegistry || isVerificationLoading);
+
+  const error = actualIDError || registryError || verificationError;
+
+  // Combined refetch function
+  const refetchIdentity = async () => {
+    setCachedIdentityAddress(null); // Clear cache to force refetch
+    // Also clear localStorage cache
+    if (typeof window !== "undefined" && userAddress) {
+      localStorage.removeItem(`identityAddress_${userAddress}_${chainId}`);
+    }
+    await refetchActualID();
+    await refetchVerification();
+  };
+
+  const hasOnchainID = Boolean(
+    onchainID &&
+    typeof onchainID === "string" &&
+    onchainID !== "0x0000000000000000000000000000000000000000",
+  );
+
+  // Persistent state to track if user has ever had an onchain ID
+  const [hasEverHadOnchainID, setHasEverHadOnchainID] = useState(false);
+
+  // Effect to load cached data from localStorage once userAddress is available
+  useEffect(() => {
+    if (typeof window !== "undefined" && userAddress) {
+      const storedHasEverHad = localStorage.getItem(
+        `hasEverHadOnchainID_${userAddress}_${chainId}`,
+      );
+      const initialHasEverHad = storedHasEverHad === "true";
+
+      setHasEverHadOnchainID(initialHasEverHad);
+      // Only set cached address if it's not already set from initial state
+      if (!cachedIdentityAddress) {
+        const storedIdentityAddress = localStorage.getItem(
+          `identityAddress_${userAddress}_${chainId}`,
+        );
+        setCachedIdentityAddress(storedIdentityAddress);
+      }
+    }
+  }, [userAddress, cachedIdentityAddress, chainId]);
+
+  // Cache the identity address when we get a result
+  useEffect(() => {
+    if (actualOnchainID && typeof actualOnchainID === "string") {
+      setCachedIdentityAddress(actualOnchainID);
+      // Also save to localStorage for persistence
+      if (typeof window !== "undefined" && userAddress) {
+        localStorage.setItem(
+          `identityAddress_${userAddress}_${chainId}`,
+          actualOnchainID,
+        );
+      }
+    }
+  }, [actualOnchainID, userAddress, chainId]);
+
+  // Clear cache when user address changes
+  useEffect(() => {
+    setCachedIdentityAddress(null);
+  }, [userAddress]); // Dependency on userAddress
+
+  // Track when user has an onchain ID and persist that state
+  useEffect(() => {
+    if (hasOnchainID === true && !isLoading && userAddress) {
+      setHasEverHadOnchainID(true);
+      // Store in localStorage for persistence across remounts
+      localStorage.setItem(
+        `hasEverHadOnchainID_${userAddress}_${chainId}`,
+        "true",
+      );
+    }
+  }, [hasOnchainID, isLoading, userAddress, chainId]);
+
+  // Return null instead of zero address to prevent UI from showing it
+  const onchainIDAddress =
+    onchainID &&
+    typeof onchainID === "string" &&
+    onchainID !== "0x0000000000000000000000000000000000000000"
+      ? onchainID
+      : null;
+
+  // Calculate claimId for KYC using ethers.js (v6) only if issuer and topic are defined
+  let claimId: `0x${string}` | undefined = undefined;
+  if (issuer && topic !== undefined) {
+    const abiCoder = AbiCoder.defaultAbiCoder();
+    claimId = keccak256(
+      abiCoder.encode(["address", "uint256"], [issuer as `0x${string}`, topic]),
+    ) as `0x${string}`;
+  }
+
+  // Only read claim if onchainID and claimId are present
+  const canReadClaim = !!onchainID && !!claimId;
+  const {
+    data: kycClaim,
+    isLoading: kycLoading,
+    error: kycError,
+    refetch: refetchClaim,
+  } = useReadContract({
+    address: canReadClaim ? (onchainID as `0x${string}`) : undefined,
+    abi: onchainidABI,
+    functionName: "getClaim",
+    args: canReadClaim ? [claimId] : [],
+    query: { enabled: canReadClaim },
+  });
+
+  // Check if claim is valid (issuer should not be zero address and topic should match)
+  let hasKYCClaim = false;
+
+  if (kycClaim && issuer && topic !== undefined && Array.isArray(kycClaim)) {
+    const claimIssuer = kycClaim[2];
+    const claimTopic = kycClaim[0];
+    const isIssuerMatch =
+      claimIssuer && claimIssuer.toLowerCase() === issuer.toLowerCase();
+    const isTopicMatch =
+      claimTopic !== undefined && Number(claimTopic) === topic;
+    const isNotZeroAddress =
+      claimIssuer !== "0x0000000000000000000000000000000000000000";
+
+    hasKYCClaim = isIssuerMatch && isTopicMatch && isNotZeroAddress;
+  }
+
+  // Combined refetch function that refetches both identity and claim data
+  const refetch = async () => {
+    await refetchIdentity();
+    if (canReadClaim) {
+      await refetchClaim();
+    }
+  };
+
+  return {
+    hasOnchainID,
+    hasEverHadOnchainID, // Export the persistent state
+    onchainIDAddress: onchainIDAddress,
+    loading: isLoading,
+    error,
+    hasKYCClaim,
+    kycClaim,
+    kycLoading,
+    kycError,
+    refetch, // Export the refetch function
+    isVerified: isVerified || false, // Export verification status from identity registry
+  };
+}
