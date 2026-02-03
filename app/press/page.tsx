@@ -1,15 +1,5 @@
-import React from 'react';
+import PressPage from "@/components/features/press/press-page";
 
-interface PressProps {
-  // Define your props here
+export default function Press() {
+  return <PressPage />;
 }
-
-const Press: React.FC<PressProps> = (props) => {
-  return (
-    <div className=''>
-      
-    </div>
-  );
-};
-
-export default Press;
