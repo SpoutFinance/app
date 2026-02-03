@@ -1,291 +1,287 @@
-import BgGrain from "@/components/bg-grain-svg";
-import { DiagonalPattern } from "@/components/slant-dashes-svg";
 import Image from "next/image";
 
+const cards = [
+  {
+    icon: "/svg-assets/icon-lock-privacy.svg",
+    iconAlt: "Lock",
+    title: "Privacy Protection",
+    description: "Confidential transactions with encrypted data",
+    badges: ["Encrypted data", "Private transfers"],
+    gradientFrom: "#48ca83",
+    gradientTo: "#c1f672",
+  },
+  {
+    icon: "/svg-assets/icon-security-safe.svg",
+    iconAlt: "Shield",
+    title: "Regulated Assets",
+    description: "Backed by real U.S. public equities",
+    badges: ["SEC Compliant", "FDIC Protected"],
+    gradientFrom: "#0168ff",
+    gradientTo: "#02bfff",
+  },
+  {
+    icon: "/svg-assets/icon-flash-liquidity.svg",
+    iconAlt: "Flash",
+    title: "Instant Liquidity",
+    description: "Trade tokens 24/7 on decentralized exchanges",
+    badges: ["No Lock-up Period", "24/7 Trading"],
+    gradientFrom: "#febb46",
+    gradientTo: "#fee6a9",
+  },
+  {
+    icon: "/svg-assets/icon-key-confidential.svg",
+    iconAlt: "Key",
+    title: "Confidential Assets",
+    description: "Protected identity and private records",
+    badges: ["Secure Handling", "Private Layers"],
+    gradientFrom: "#fab6e4",
+    gradientTo: "#f8cce9",
+  },
+];
+
 export function InvestmentDifferent() {
-  const features = [
-    {
-      icon: "/svg-assets/landingpage/lock.svg",
-      title: "Privacy Protection",
-      description: "Confidential transactions with encrypted data",
-      badges: ["Encrypted data", "Private transfers"],
-    },
-    {
-      icon: "/svg-assets/landingpage/security-safe.svg",
-      title: "Regulated Assets",
-      description: " Backed by real U.S. public equities",
-      badges: ["SEC Compliant", "FDIC protected"],
-    },
-    {
-      icon: "/svg-assets/landingpage/flash.svg",
-      title: "Instant Liquidity",
-      description: "Trade tokens 24/7 on decentralized exchanges",
-      badges: ["No Lock-up Period", "24/7 Trading"],
-    },
-    {
-      icon: "/svg-assets/landingpage/key.svg",
-      title: "Confidential Assets",
-      description: "Protected identity and private records",
-      badges: ["Secure handling", "Private layers"],
-    },
-  ];
-
   return (
-    <section className="w-full py-4 sm:py-6 lg:py-8 relative">
-      {/* Background grain for this section */}
-      <BgGrain className="absolute inset-0 w-full h-full z-0 optimized" />
-      {/* Section content */}
-      <div className="w-full max-w-[1800px] mx-auto px-4 sm:px-8 lg:px-16 pb-8">
-        {/* Header */}
-        <div className="text-center mb-8 sm:mb-12 lg:mb-16">
-          <h2 className="text-3xl capitalize sm:text-4xl lg:text-5xl font-lora font-medium text-[#004040] mb-4 sm:mb-6">
-            Smarter On-chain Investing
-          </h2>
-          <p className="text-base sm:text-lg font-noto-sans font-normal text-[#525252] max-w-4xl mx-auto leading-relaxed">
-            Consistent returns from regulated investment-grade securities, with
-            instant trading
-            <br />
-            and full transparency
-          </p>
-        </div>
+    <section className="w-full pt-8 sm:pt-12 lg:pt-16">
+      {/* Header */}
+      <div className="text-center mb-8 sm:mb-12 lg:mb-16">
+        <h2 className="text-2xl sm:text-4xl xl:text-5xl leading-tight capitalize font-lora font-normal text-[#004040] mb-4 sm:mb-6 tracking-[0.192px]">
+          Smarter On-chain Investing
+        </h2>
+        <p className="text-sm sm:text-base font-noto-sans font-normal text-[#757679] leading-7 tracking-[-0.064px]">
+          Consistent returns from regulated investment-grade securities, with
+          instant trading
+          <br />
+          and full transparency
+        </p>
+      </div>
 
-        {/* Features Grid */}
-        <div className="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-0 mb-8 sm:mb-12">
-          {/* Top-left diamond */}
-          <div className="hidden sm:block absolute -left-2 sm:-left-3 -top-2 sm:-top-3 z-20">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              className="text-blue-300 sm:w-6 sm:h-6"
-            >
-              <path
-                d="M12 2L22 12L12 22L2 12L12 2Z"
-                stroke="currentColor"
-                strokeWidth="3"
-                fill="white"
-              />
-            </svg>
-          </div>
-
-          {/* Top-middle diamond 1 (25%) */}
-          <div className="hidden sm:block absolute left-[25%] -translate-x-1/2 -top-2 sm:-top-3 z-20 optimized">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              className="text-blue-300 sm:w-6 sm:h-6"
-            >
-              <path
-                d="M12 2L22 12L12 22L2 12L12 2Z"
-                stroke="currentColor"
-                strokeWidth="3"
-                fill="white"
-              />
-            </svg>
-          </div>
-
-          {/* Top-middle diamond 2 (50%) */}
-          <div className="hidden sm:block absolute left-1/2 -translate-x-1/2 -top-2 sm:-top-3 z-20 optimized">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              className="text-blue-300 sm:w-6 sm:h-6"
-            >
-              <path
-                d="M12 2L22 12L12 22L2 12L12 2Z"
-                stroke="currentColor"
-                strokeWidth="3"
-                fill="white"
-              />
-            </svg>
-          </div>
-
-          {/* Top-middle diamond 3 (75%) */}
-          <div className="hidden sm:block absolute left-[75%] -translate-x-1/2 -top-2 sm:-top-3 z-20 optimized">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              className="text-blue-300 sm:w-6 sm:h-6"
-            >
-              <path
-                d="M12 2L22 12L12 22L2 12L12 2Z"
-                stroke="currentColor"
-                strokeWidth="3"
-                fill="white"
-              />
-            </svg>
-          </div>
-
-          {/* Top-right diamond */}
-          <div className="hidden sm:block absolute -right-2 sm:-right-3 -top-2 sm:-top-3 z-20 optimized">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              className="text-blue-300 sm:w-6 sm:h-6"
-            >
-              <path
-                d="M12 2L22 12L12 22L2 12L12 2Z"
-                stroke="currentColor"
-                strokeWidth="3"
-                fill="white"
-              />
-            </svg>
-          </div>
-
-          {/* Bottom-left diamond */}
-          <div className="hidden sm:block absolute -left-2 sm:-left-3 -bottom-2 sm:-bottom-3 z-20 optimized">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              className="text-blue-300 sm:w-6 sm:h-6"
-            >
-              <path
-                d="M12 2L22 12L12 22L2 12L12 2Z"
-                stroke="currentColor"
-                strokeWidth="3"
-                fill="white"
-              />
-            </svg>
-          </div>
-
-          {/* Bottom-middle diamond 1 (25%) */}
-          <div className="hidden sm:block absolute left-[25%] -translate-x-1/2 -bottom-2 sm:-bottom-3 z-20 optimized">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              className="text-blue-300 sm:w-6 sm:h-6"
-            >
-              <path
-                d="M12 2L22 12L12 22L2 12L12 2Z"
-                stroke="currentColor"
-                strokeWidth="3"
-                fill="white"
-              />
-            </svg>
-          </div>
-
-          {/* Bottom-middle diamond 2 (50%) */}
-          <div className="hidden sm:block absolute left-1/2 -translate-x-1/2 -bottom-2 sm:-bottom-3 z-20 optimized">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              className="text-blue-300 sm:w-6 sm:h-6"
-            >
-              <path
-                d="M12 2L22 12L12 22L2 12L12 2Z"
-                stroke="currentColor"
-                strokeWidth="3"
-                fill="white"
-              />
-            </svg>
-          </div>
-
-          {/* Bottom-middle diamond 3 (75%) */}
-          <div className="hidden sm:block absolute left-[75%] -translate-x-1/2 -bottom-2 sm:-bottom-3 z-20 optimized">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              className="text-blue-300 sm:w-6 sm:h-6"
-            >
-              <path
-                d="M12 2L22 12L12 22L2 12L12 2Z"
-                stroke="currentColor"
-                strokeWidth="3"
-                fill="white"
-              />
-            </svg>
-          </div>
-
-          {/* Bottom-right diamond */}
-          <div className="hidden sm:block absolute -right-2 sm:-right-3 -bottom-2 sm:-bottom-3 z-20 optimized">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              className="text-blue-300 sm:w-6 sm:h-6"
-            >
-              <path
-                d="M12 2L22 12L12 22L2 12L12 2Z"
-                stroke="currentColor"
-                strokeWidth="3"
-                fill="white"
-              />
-            </svg>
-          </div>
-
-          {features.map((feature, index) => (
+      {/* Desktop: 2x2 grid */}
+      <div className="hidden lg:block relative">
+        <div className="hidden lg:block absolute top-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
+        {/* Row 1 */}
+        <div className="flex">
+          {/* Card 1: Privacy Protection */}
+          <div className="flex">
             <div
-              key={index}
-              className={`border bg-white border-gray-300 p-4 sm:p-6 rounded-none flex flex-col ${
-                index === 0
-                  ? "sm:rounded-l-lg"
-                  : index === features.length - 1
-                    ? "sm:rounded-r-lg"
-                    : ""
-              } ${index !== features.length - 1 ? "sm:border-r-0" : ""}`}
-            >
-              {/* Icon and Title */}
-              <div className="flex items-start gap-2 sm:gap-3 mb-3 sm:mb-4">
-                <Image
-                  src={feature.icon}
-                  alt={feature.title}
-                  width={24}
-                  height={24}
-                  className="w-5 h-5 sm:w-6 sm:h-6"
-                />
-                <h3 className="text-base sm:text-lg font-noto-sans font-semibold text-[#004040]">
-                  {feature.title}
-                </h3>
-              </div>
-
-              {/* Description */}
-              <p className="text-xs sm:text-sm font-noto-sans font-normal text-[#525252] mb-3 sm:mb-4 leading-relaxed grow">
-                {feature.description}
-              </p>
-
-              {/* Badges */}
-              <div className="flex flex-wrap gap-1 sm:gap-2 mt-auto">
-                {feature.badges.map((badge, badgeIndex) => (
-                  <span
-                    key={badgeIndex}
-                    className="px-2 sm:px-3 py-1 text-xs font-medium text-[#004040] bg-blue-50 border border-blue-200 rounded"
-                  >
-                    {badge}
-                  </span>
-                ))}
+              className="w-[18px] self-stretch shrink-0"
+              style={{
+                background: `linear-gradient(to bottom, ${cards[0].gradientFrom}, ${cards[0].gradientTo})`,
+              }}
+            />
+            <div className="w-[570px] bg-white border-b-2 border-[#f3f4f6] overflow-clip py-8 px-9">
+              <div className="flex flex-col gap-5">
+                <div className="flex flex-col gap-2.5">
+                  <div className="flex items-center gap-2.5">
+                    <Image
+                      src={cards[0].icon}
+                      alt={cards[0].iconAlt}
+                      width={24}
+                      height={24}
+                      className="w-6 h-6"
+                    />
+                    <span className="font-noto-sans font-medium text-black text-xl tracking-[-0.08px] leading-7">
+                      {cards[0].title}
+                    </span>
+                  </div>
+                  <p className="font-noto-sans font-normal text-[#7d8690] text-base leading-7 tracking-[-0.064px]">
+                    {cards[0].description}
+                  </p>
+                </div>
+                <div className="flex items-center gap-2.5">
+                  {cards[0].badges.map((badge) => (
+                    <div
+                      key={badge}
+                      className="bg-[rgba(167,198,237,0.35)] border border-[#a7c6ed] rounded-[4px] h-[33px] flex items-center justify-center px-2.5"
+                    >
+                      <span className="font-noto-sans font-medium text-[#3d5678] text-base text-center tracking-[-0.064px] leading-7">
+                        {badge}
+                      </span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
-          ))}
+          </div>
+
+          {/* Card 2: Regulated Assets */}
+          <div className="flex">
+            <div
+              className="w-[18px] self-stretch shrink-0"
+              style={{
+                background: `linear-gradient(to bottom, ${cards[1].gradientFrom}, ${cards[1].gradientTo})`,
+              }}
+            />
+            <div className="w-[570px] bg-white border-b-2 border-[#f3f4f6] overflow-clip py-8 px-9">
+              <div className="flex flex-col gap-5">
+                <div className="flex flex-col gap-2.5">
+                  <div className="flex items-center gap-2.5">
+                    <Image
+                      src={cards[1].icon}
+                      alt={cards[1].iconAlt}
+                      width={24}
+                      height={24}
+                      className="w-6 h-6"
+                    />
+                    <span className="font-noto-sans font-medium text-black text-xl tracking-[-0.08px] leading-7">
+                      {cards[1].title}
+                    </span>
+                  </div>
+                  <p className="font-noto-sans font-normal text-[#7d8690] text-base leading-7 tracking-[-0.064px]">
+                    {cards[1].description}
+                  </p>
+                </div>
+                <div className="flex items-center gap-2.5">
+                  {cards[1].badges.map((badge) => (
+                    <div
+                      key={badge}
+                      className="bg-[rgba(167,198,237,0.35)] border border-[#a7c6ed] rounded-[4px] h-[33px] flex items-center justify-center px-2.5"
+                    >
+                      <span className="font-noto-sans font-medium text-[#3d5678] text-base text-center tracking-[-0.064px] leading-7">
+                        {badge}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Row 2 */}
+        <div className="flex">
+          {/* Card 3: Instant Liquidity */}
+          <div className="flex">
+            <div
+              className="w-[18px] self-stretch shrink-0"
+              style={{
+                background: `linear-gradient(to bottom, ${cards[2].gradientFrom}, ${cards[2].gradientTo})`,
+              }}
+            />
+            <div className="w-[570px] bg-white overflow-clip py-8 px-9">
+              <div className="flex flex-col gap-5">
+                <div className="flex flex-col gap-2.5">
+                  <div className="flex items-center gap-2.5">
+                    <Image
+                      src={cards[2].icon}
+                      alt={cards[2].iconAlt}
+                      width={24}
+                      height={24}
+                      className="w-6 h-6"
+                    />
+                    <span className="font-noto-sans font-medium text-black text-xl tracking-[-0.08px] leading-7">
+                      {cards[2].title}
+                    </span>
+                  </div>
+                  <p className="font-noto-sans font-normal text-[#7d8690] text-base leading-7 tracking-[-0.064px]">
+                    {cards[2].description}
+                  </p>
+                </div>
+                <div className="flex items-center gap-2.5">
+                  {cards[2].badges.map((badge) => (
+                    <div
+                      key={badge}
+                      className="bg-[rgba(167,198,237,0.35)] border border-[#a7c6ed] rounded-[4px] h-[33px] flex items-center justify-center px-2.5"
+                    >
+                      <span className="font-noto-sans font-medium text-[#3d5678] text-base text-center tracking-[-0.064px] leading-7">
+                        {badge}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Card 4: Confidential Assets */}
+          <div className="flex">
+            <div
+              className="w-[18px] self-stretch shrink-0"
+              style={{
+                background: `linear-gradient(to bottom, ${cards[3].gradientFrom}, ${cards[3].gradientTo})`,
+              }}
+            />
+            <div className="w-[570px] bg-white overflow-clip py-8 px-9">
+              <div className="flex flex-col gap-5">
+                <div className="flex flex-col gap-2.5">
+                  <div className="flex items-center gap-2.5">
+                    <Image
+                      src={cards[3].icon}
+                      alt={cards[3].iconAlt}
+                      width={24}
+                      height={24}
+                      className="w-6 h-6"
+                    />
+                    <span className="font-noto-sans font-medium text-black text-xl tracking-[-0.08px] leading-7">
+                      {cards[3].title}
+                    </span>
+                  </div>
+                  <p className="font-noto-sans font-normal text-[#7d8690] text-base leading-7 tracking-[-0.064px]">
+                    {cards[3].description}
+                  </p>
+                </div>
+                <div className="flex items-center gap-2.5">
+                  {cards[3].badges.map((badge) => (
+                    <div
+                      key={badge}
+                      className="bg-[rgba(167,198,237,0.35)] border border-[#a7c6ed] rounded-[4px] h-[33px] flex items-center justify-center px-2.5"
+                    >
+                      <span className="font-noto-sans font-medium text-[#3d5678] text-base text-center tracking-[-0.064px] leading-7">
+                        {badge}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Diagonal blue lines at bottom */}
-      <div className="relative z-10 w-full mt-10 px-4 py-2">
-        <DiagonalPattern
-          width="100%"
-          height={34}
-          color="#A7C6ED"
-          strokeWidth={1.5}
-          spacing={14}
-        />
+      {/* Tablet/Mobile: Stacked cards */}
+      <div className="lg:hidden space-y-4">
+        {cards.map((card) => (
+          <div key={card.title} className="flex">
+            <div
+              className="w-3 sm:w-[18px] self-stretch shrink-0"
+              style={{
+                background: `linear-gradient(to bottom, ${card.gradientFrom}, ${card.gradientTo})`,
+              }}
+            />
+            <div className="flex-1 bg-white border border-gray-200 border-l-0 p-5 sm:p-7">
+              <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center gap-2.5">
+                    <Image
+                      src={card.icon}
+                      alt={card.iconAlt}
+                      width={24}
+                      height={24}
+                      className="w-5 h-5 sm:w-6 sm:h-6"
+                    />
+                    <span className="font-noto-sans font-medium text-black text-lg sm:text-xl tracking-[-0.08px] leading-7">
+                      {card.title}
+                    </span>
+                  </div>
+                  <p className="font-noto-sans font-normal text-[#7d8690] text-sm sm:text-base leading-7 tracking-[-0.064px]">
+                    {card.description}
+                  </p>
+                </div>
+                <div className="flex flex-wrap items-center gap-2.5">
+                  {card.badges.map((badge) => (
+                    <div
+                      key={badge}
+                      className="bg-[rgba(167,198,237,0.35)] border border-[#a7c6ed] rounded-[4px] h-[33px] flex items-center justify-center px-2.5"
+                    >
+                      <span className="font-noto-sans font-medium text-[#3d5678] text-sm sm:text-base text-center tracking-[-0.064px] leading-7">
+                        {badge}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   );

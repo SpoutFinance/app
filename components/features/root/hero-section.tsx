@@ -1,108 +1,99 @@
 "use client";
 
-import BgGrain from "@/components/bg-grain-svg";
-import { DiagonalPattern } from "@/components/slant-dashes-svg";
 import { Button } from "@/components/ui/button";
-import { useScreenSize } from "@/hooks/use-screen-size";
-import { ArrowRight, ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { JoinMailingList } from "./join-mailing-list";
 import { PartnerTicker } from "./partner-ticker";
 
 export function HeroSection() {
-  const screenSize = useScreenSize();
-
   return (
-    <section className="w-full flex flex-col relative overflow-hidden">
-      {/* Background grain */}
-      <BgGrain className="absolute inset-0 w-full h-full z-0 optimized" />
+    <section className="w-full flex flex-col relative overflow-hidden bg-white">
+      {/* Top horizontal line — edge to edge */}
+      <div className="w-full border-t-2 border-gray-100" />
 
       {/* Hero content wrapper */}
-      <div className="relative w-full">
-        {/* Grid background */}
-        <div className="absolute inset-0 z-0 bg-[linear-gradient(rgba(0,0,0,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.05)_1px,transparent_1px)] bg-size-[35px_35px] optimized"></div>
+      <div className="relative w-full min-h-[500px] sm:min-h-[600px] lg:min-h-[670px]">
+        {/* Grid background SVG — fades from transparent top-left to visible bottom-right */}
+        <div className="absolute inset-0 z-0 overflow-hidden">
+          <Image
+            src="/svg-assets/landingpage/hero-grid-bg.svg"
+            alt=""
+            fill
+            className="object-cover"
+            priority
+          />
+        </div>
 
         {/* Main content */}
-        <div className="relative z-10 w-full max-w-[1800px] mx-auto px-4 sm:px-8 lg:px-16 pt-6 sm:pt-12 lg:pt-20 pb-0 flex flex-col lg:flex-row items-start justify-between gap-0">
+        <div className="relative z-10 w-full max-w-[1176px] mx-auto px-4 sm:px-6 lg:px-0 pt-8 sm:pt-14 lg:pt-20 pb-0 flex flex-col lg:flex-row items-start justify-between">
           {/* Left column */}
-          <div className="w-full lg:w-[55%] mb-6 sm:mb-12 lg:mb-0">
-            <div className="max-w-5xl space-y-4 sm:space-y-6">
-              <h1 className="text-2xl capitalize sm:text-3xl lg:text-5xl font-lora font-medium text-[#004040] leading-tight!">
-                The Go-To Platform for Margin Trading at 0% Rates
-              </h1>
+          <div className="w-full lg:w-[60%] mb-8 sm:mb-12 lg:mb-0">
+            <div className="max-w-[833px] flex flex-col gap-9 sm:gap-11">
+              {/* Title + subtitle */}
+              <div className="flex flex-col gap-4">
+                <h1 className="text-3xl sm:text-4xl lg:text-[52px] font-lora font-normal text-[#004040] leading-tight lg:leading-[72px] tracking-[0.208px] whitespace-nowrap">
+                  The Go-To Platform for Margin
+                  <br className="hidden sm:block" /> Trading at{" "}
+                  <span className="text-[#84b0ff]">0%</span> Rates
+                </h1>
 
-              <p className="text-sm sm:text-base lg:text-lg tracking-[-0.072px] font-noto-sans text-[#525252] ">
-                Spout enables you to borrow against your equities at 0% APR or
-                lend your stablecoins for 10%+ APY
-              </p>
+                <p className="text-sm sm:text-base lg:text-lg font-noto-sans font-normal text-[#757679] tracking-[0.072px] leading-6 max-w-[755px]">
+                  Spout enables you to borrow against your equities at 0% APR or
+                  lend your stablecoins for 10%+ APY
+                </p>
+              </div>
 
-              <div className="pt-2 sm:pt-0 flex flex-col sm:flex-row gap-3 sm:gap-4">
-                <Link href="https://demo.spout.finance ">
+              {/* CTA buttons */}
+              <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
+                <Link href="https://demo.spout.finance">
                   <Button
                     size="lg"
-                    className="bg-[#004040] hover:bg-[#003030] data-hovered:bg-[#003030] text-white px-6 sm:px-8 lg:px-10 py-3 sm:py-4 lg:py-5 text-base sm:text-lg lg:text-xl font-semibold rounded-none shadow-lg hover:shadow-xl transition-all duration-300 w-full sm:w-auto"
+                    className="bg-[#004040] hover:bg-[#003030] data-hovered:bg-[#003030] text-white px-4 h-9 text-base font-medium rounded-[4px] transition-all duration-300 w-full sm:w-auto"
                   >
                     Launch Platform
-                    <ArrowRight className="ml-2 sm:ml-3 h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6" />
                   </Button>
                 </Link>
                 <Link href="https://app.spout.finance">
                   <Button
                     size="lg"
-                    className="border-2 border-[#004040] bg-white hover:bg-gray-50 data-hovered:bg-gray-50 text-[#004040] px-6 sm:px-7 lg:px-8 py-3 sm:py-4 lg:py-5 text-base sm:text-lg lg:text-xl font-semibold rounded-none shadow-lg hover:shadow-xl transition-all duration-300 w-full sm:w-auto"
+                    className="border border-[#d4d4d4] bg-white hover:bg-gray-50 data-hovered:bg-gray-50 text-black px-4 h-9 text-base font-medium rounded-[4px] transition-all duration-300 w-full sm:w-auto"
                   >
                     Try Demo
-                    <ArrowUpRight className="ml-2 sm:ml-3 h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6" />
                   </Button>
                 </Link>
               </div>
 
-              <p className="text-xs sm:text-sm lg:text-base font-noto-sans text-[#004040] uppercase tracking-wide">
-                [JOIN THE PLATFORM THAT&apos;S MAKING TRADITIONAL CAPITAL MORE
-                EFFICIENT]
-              </p>
-
-              <div className="max-w-md pt-2 sm:pt-0">
+              {/* Mailing list section */}
+              <div className="flex flex-col gap-5 max-w-[596px]">
+                <p className="text-sm sm:text-base font-noto-sans font-medium text-[#004040] uppercase">
+                  [ Join our mailing list for early access and updates ]
+                </p>
                 <JoinMailingList />
               </div>
             </div>
           </div>
 
-          {/* Right column - image */}
-          <div className="w-full lg:w-[45%] flex items-center justify-center lg:justify-end -mt-2 sm:-mt-6 lg:-mt-8">
-            <div className="w-full max-w-[280px] sm:max-w-sm lg:max-w-xl optimized">
+          {/* Right column - coins image */}
+          <div className="w-full lg:w-[40%] flex items-start justify-center lg:justify-end">
+            <div className="w-full max-w-[280px] sm:max-w-[320px] lg:max-w-[369px]">
               <Image
-                src="/svg-assets/landingpage/spout-water-tokens.svg"
-                alt="Spout Water Tokens"
-                width={452}
-                height={496}
+                src="/svg-assets/landingpage/hero-coins.png"
+                alt="Company token coins"
+                width={369}
+                height={670}
+                className="w-full h-auto"
                 priority
+                unoptimized
               />
             </div>
           </div>
         </div>
 
-        {/* Partner Ticker */}
-        <div className="relative z-10 w-full max-w-[1800px] mx-auto px-4 sm:px-8 lg:px-16 mb-3 sm:mb-6">
-          <div className="px-16 hidden md:block optimized">
-            <PartnerTicker />
-          </div>
-          <div className="block md:hidden optimized">
-            <PartnerTicker />
-          </div>
+        {/* Partner Ticker — edge to edge */}
+        <div className="relative z-10 w-full">
+          <PartnerTicker />
         </div>
-      </div>
-
-      {/* Slant Dashes */}
-      <div className="relative z-10 w-full mt-10 px-4 py-2 optimized">
-        <DiagonalPattern
-          width="100%"
-          height={34}
-          color="#A7C6ED"
-          strokeWidth={1.5}
-          spacing={14}
-        />
       </div>
     </section>
   );

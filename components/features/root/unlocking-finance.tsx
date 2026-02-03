@@ -1,289 +1,217 @@
-"use client";
-
-import BgGrain from "@/components/bg-grain-svg";
-import { DiagonalPattern } from "@/components/slant-dashes-svg";
 import Image from "next/image";
-import Link from "next/link";
+
+const cards = [
+  {
+    icon: "/svg-assets/icon-shield-security.svg",
+    iconAlt: "Shield",
+    title: "DeFi Integration Benefits",
+    description:
+      "DeFi expands access to traditional assets by enabling security-backed lending and diversified exposure, unlocking opportunities while bridging traditional and decentralized markets.",
+    bullets: [
+      "Security-backed lending",
+      "Multi-asset exposure",
+      "Access to real yield",
+    ],
+    illustration: "/svg-assets/defi-integration-benefits.svg",
+    illustrationAlt: "DeFi Integration",
+  },
+  {
+    icon: "/svg-assets/defi-security-transparency.svg",
+    iconAlt: "Check",
+    title: "DeFi Security & Transparency",
+    description:
+      "DeFi combines strong safeguards with full transparency, ensuring all assets are protected and fully verifiable while building lasting trust and unlocking new opportunities in finance.",
+    bullets: [
+      "Institutional-grade asset protection",
+      "Transparent on-chain verification",
+      "Continuous independent audits",
+    ],
+    illustration: "/svg-assets/security-lock.svg",
+    illustrationAlt: "Security Lock",
+  },
+];
 
 export function UnlockingFinance() {
   return (
-    <section className="w-full py-4 sm:py-6 lg:py-8 relative">
-      {/* Background grain for this section */}
-      <BgGrain className="absolute inset-0 w-full h-full z-0 optimized" />
+    <section className="w-full pt-8 sm:pt-12 lg:pt-16">
+      {/* Header */}
+      <div className="text-center mb-8 sm:mb-12 lg:mb-16">
+        <h2 className="text-2xl sm:text-4xl xl:text-5xl leading-tight capitalize font-lora font-normal text-[#004040] mb-4 sm:mb-6 tracking-[0.192px]">
+          Unlocking Finance with DeFi
+          <br />
+          through our stablecoin
+        </h2>
+        <p className="text-sm sm:text-base font-noto-sans font-normal text-[#757679] leading-6 tracking-[0.064px]">
+          Expand access to traditional assets with security, transparency, and
+          real yield on-chain
+        </p>
+        <p className="text-sm sm:text-base font-noto-sans font-normal text-[#757679] leading-6 tracking-[0.064px]">
+          Global access, real yield, full transparency, built for DeFi
+        </p>
+      </div>
 
-      {/* Section content */}
-      <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
-        {/* Header */}
-        <div className="text-center mb-8 sm:mb-12 lg:mb-16">
-          <h2 className="text-2xl sm:text-4xl xl:text-5xl leading-tight! capitalize font-lora font-medium text-[#004040] mb-4 sm:mb-6">
-            Unlocking Finance with DeFi
-            <br />
-            through our stablecoin
-          </h2>
-          <p className="text-base sm:text-lg font-noto-sans font-normal text-[#525252] leading-relaxed">
-            Expand access to traditional assets with security, transparency, and
-            real yield on-chain
-          </p>
-          <p className="text-base sm:text-lg font-noto-sans font-normal text-[#525252] leading-relaxed">
-            Global access, real yield, full transparency, built for DeFi
-          </p>
-        </div>
-
-        {/* Cards Section */}
-        <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-0 mb-6 sm:mb-8 lg:mb-12">
-          {/* Top-left diamond */}
-          <div className="hidden sm:block absolute -left-2 sm:-left-3 -top-2 sm:-top-3 z-20 optimized">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              className="text-blue-300 sm:w-6 sm:h-6"
-            >
-              <path
-                d="M12 2L22 12L12 22L2 12L12 2Z"
-                stroke="currentColor"
-                strokeWidth="3"
-                fill="white"
-              />
-            </svg>
-          </div>
-
-          {/* Top-middle diamond */}
-          <div className="hidden sm:block absolute left-1/2 -translate-x-1/2 -top-2 sm:-top-3 z-20 optimized">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              className="text-blue-300 sm:w-6 sm:h-6"
-            >
-              <path
-                d="M12 2L22 12L12 22L2 12L12 2Z"
-                stroke="currentColor"
-                strokeWidth="3"
-                fill="white"
-              />
-            </svg>
-          </div>
-
-          {/* Top-right diamond */}
-          <div className="hidden sm:block absolute -right-2 sm:-right-3 -top-2 sm:-top-3 z-20 optimized">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              className="text-blue-300 sm:w-6 sm:h-6"
-            >
-              <path
-                d="M12 2L22 12L12 22L2 12L12 2Z"
-                stroke="currentColor"
-                strokeWidth="3"
-                fill="white"
-              />
-            </svg>
-          </div>
-
-          {/* Bottom-left diamond */}
-          <div className="hidden sm:block absolute -left-2 sm:-left-3 -bottom-2 sm:-bottom-3 z-20 optimized">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              className="text-blue-300 sm:w-6 sm:h-6"
-            >
-              <path
-                d="M12 2L22 12L12 22L2 12L12 2Z"
-                stroke="currentColor"
-                strokeWidth="3"
-                fill="white"
-              />
-            </svg>
-          </div>
-
-          {/* Bottom-middle diamond */}
-          <div className="hidden sm:block absolute left-1/2 -translate-x-1/2 -bottom-2 sm:-bottom-3 z-20 optimized">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              className="text-blue-300 sm:w-6 sm:h-6"
-            >
-              <path
-                d="M12 2L22 12L12 22L2 12L12 2Z"
-                stroke="currentColor"
-                strokeWidth="3"
-                fill="white"
-              />
-            </svg>
-          </div>
-
-          {/* Bottom-right diamond */}
-          <div className="hidden sm:block absolute -right-2 sm:-right-3 -bottom-2 sm:-bottom-3 z-20 optimized">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              className="text-blue-400 sm:w-6 sm:h-6"
-            >
-              <path
-                d="M12 2L22 12L12 22L2 12L12 2Z"
-                stroke="currentColor"
-                strokeWidth="3"
-                fill="white"
-              />
-            </svg>
-          </div>
-
-          {/* DeFi Integration Benefits Card */}
-          <div className="border bg-white border-gray-300 rounded-l-none sm:rounded-l-none rounded-r-none sm:rounded-r-none p-4 sm:p-6 lg:p-8 relative">
-            <div className="flex bg-[#A7C6ED]/35 border border-[#A7C6ED] items-center gap-2 sm:gap-3 mb-3 sm:mb-4 w-fit px-2 py-1 rounded-none">
-              {/* <svg
-                className="w-5 h-5 sm:w-6 sm:h-6 text-[#004040]"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+      {/* Desktop: Two cards with gradient dividers */}
+      <div className="hidden lg:flex relative">
+        <div className="hidden lg:block absolute top-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
+        {/* Card 1 */}
+        <div className="flex-1 bg-white p-9 min-h-[340px]">
+          <div className="flex flex-col gap-5 max-w-[452px]">
+            {/* Badge */}
+            <div className="flex flex-col gap-[18px]">
+              <div className="flex items-center gap-2.5 bg-[rgba(167,198,237,0.35)] border border-[#a7c6ed] rounded-[4px] px-2.5 h-[38px] w-fit">
+                <Image
+                  src={cards[0].icon}
+                  alt={cards[0].iconAlt}
+                  width={24}
+                  height={24}
+                  className="w-6 h-6"
                 />
-              </svg> */}
-              <Image
-                src="/svg-assets/icon-shield-security.svg"
-                alt="Shield"
-                width={24}
-                height={24}
-                className="w-5 h-5 sm:w-6 sm:h-6"
-              />
-              <h3 className="text-lg sm:text-xl font-noto-sans font-semibold text-[#3D5678]">
-                DeFi Integration Benefits
-              </h3>
+                <span className="font-noto-sans font-medium text-[#3d5678] text-lg tracking-[-0.072px] leading-7">
+                  {cards[0].title}
+                </span>
+              </div>
+              {/* Description */}
+              <p className="font-noto-sans font-normal text-[#757679] text-base leading-6 tracking-[0.064px]">
+                {cards[0].description}
+              </p>
             </div>
-
-            <p className="text-sm sm:text-base font-noto-sans font-normal text-[#525252] mb-4 sm:mb-6 leading-relaxed">
-              DeFi expands access to traditional assets by enabling
-              security-backed lending and diversified exposure, unlocking
-              opportunities while bridging traditional and decentralized
-              markets.
-            </p>
-
-            <ul className="space-y-2 sm:space-y-3 mb-4 sm:mb-6 lg:mb-0">
-              <li className="flex items-center gap-2 text-xs sm:text-sm font-noto-sans text-[#525252]">
-                <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-blue-400"></div>
-                Security-backed lending
-              </li>
-              <li className="flex items-center gap-2 text-xs sm:text-sm font-noto-sans text-[#525252]">
-                <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-blue-400"></div>
-                Multi-asset exposure
-              </li>
-              <li className="flex items-center gap-2 text-xs sm:text-sm font-noto-sans text-[#525252]">
-                <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-blue-400"></div>
-                Access to real yield
-              </li>
+            {/* Bullet points */}
+            <ul className="flex flex-col gap-1.5">
+              {cards[0].bullets.map((bullet) => (
+                <li
+                  key={bullet}
+                  className="flex items-center gap-4 font-noto-sans font-normal text-[#525252] text-base leading-7 tracking-[-0.064px]"
+                >
+                  <div className="w-2.5 h-2.5 rounded-full bg-[#a7c6ed] shrink-0" />
+                  {bullet}
+                </li>
+              ))}
             </ul>
-
-            {/* Benefits icon */}
-            <div className="flex justify-center lg:absolute lg:bottom-6 lg:right-6 optimized">
-              <Image
-                src="/svg-assets/defi-integration-benefits.svg"
-                alt="Benefits"
-                width={180}
-                height={180}
-                className="w-32 h-32 sm:w-36 sm:h-36 lg:w-40 lg:h-40"
-              />
-            </div>
           </div>
-
-          {/* DeFi Security & Transparency Card */}
-          <div className="border-t sm:border-t border-r border-b border-l-0 sm:border-l-0 bg-white border-gray-300 rounded-r-none sm:rounded-r-none rounded-l-none sm:rounded-l-none p-4 sm:p-6 lg:p-8 relative">
-            <div className="flex bg-[#A7C6ED]/35 border border-[#A7C6ED] items-center gap-2 sm:gap-3 mb-3 sm:mb-4 w-fit px-2 py-1 rounded-none">
-              <Image
-                src="/svg-assets/defi-security-transparency.svg"
-                alt="Lock"
-                width={24}
-                height={24}
-                className="w-5 h-5 sm:w-6 sm:h-6"
-              />
-              <h3 className="text-lg sm:text-xl font-noto-sans font-semibold text-[#3D5678]">
-                DeFi Security & Transparency
-              </h3>
-            </div>
-
-            <p className="text-sm sm:text-base font-noto-sans font-normal text-[#525252] mb-4 sm:mb-6 leading-relaxed">
-              DeFi combines strong safeguards with full transparency, ensuring
-              all assets are protected and fully verifiable while building
-              lasting trust and unlocking new opportunities in finance.
-            </p>
-
-            <ul className="space-y-2 sm:space-y-3 mb-4 sm:mb-6 lg:mb-0">
-              <li className="flex items-center gap-2 text-xs sm:text-sm font-noto-sans text-[#525252]">
-                <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-blue-400"></div>
-                Institutional-grade asset protection
-              </li>
-              <li className="flex items-center gap-2 text-xs sm:text-sm font-noto-sans text-[#525252]">
-                <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-blue-400"></div>
-                Transparent on-chain verification
-              </li>
-              <li className="flex items-center gap-2 text-xs sm:text-sm font-noto-sans text-[#525252]">
-                <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-blue-400"></div>
-                Continuous independent audits
-              </li>
-            </ul>
-
-            {/* Lock icon */}
-            <div className="flex justify-center lg:absolute lg:bottom-3 lg:right-6 optimized">
-              <Image
-                src="/svg-assets/security-lock.svg"
-                alt="Lock"
-                width={160}
-                height={160}
-                className="w-28 h-28 sm:w-32 sm:h-32 lg:w-36 lg:h-36"
-              />
-            </div>
+          {/* Illustration */}
+          <div className="absolute bottom-4 right-4">
+            <Image
+              src={cards[0].illustration}
+              alt={cards[0].illustrationAlt}
+              width={180}
+              height={180}
+              className="w-40 h-40 object-contain"
+            />
           </div>
         </div>
 
-        {/* View Reserve Details Button */}
-        <div className="flex justify-start">
-          <Link
-            href="/app/proof-of-reserve"
-            className="inline-flex bg-white p-2 sm:p-3 border rounded-md border-gray-300 items-center gap-1 sm:gap-2 text-[#004040] font-semibold text-sm sm:text-base hover:text-[#003030] transition-colors"
-          >
-            View Reserve Details
-            {/* make it use react icons */}
-            <svg
-              className="w-4 h-4 sm:w-5 sm:h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M17 8l4 4m0 0l-4 4m4-4H3"
-              />
-            </svg>
-          </Link>
+        {/* Gradient dividers */}
+        <div className="flex shrink-0">
+          <div
+            className="w-16 self-stretch"
+            style={{
+              background: "linear-gradient(to top, #fec8bb, #ffe4c8)",
+            }}
+          />
+          <div
+            className="w-16 self-stretch"
+            style={{
+              background: "linear-gradient(to bottom, #ade1ff, #e8fbf9)",
+            }}
+          />
+        </div>
+
+        {/* Card 2 */}
+        <div className="flex-1 bg-white p-9 min-h-[340px]">
+          <div className="flex flex-col gap-5 max-w-[452px]">
+            {/* Badge */}
+            <div className="flex flex-col gap-[18px]">
+              <div className="flex items-center gap-2.5 bg-[rgba(167,198,237,0.35)] border border-[#a7c6ed] rounded-[4px] px-2.5 h-[38px] w-fit">
+                <Image
+                  src={cards[1].icon}
+                  alt={cards[1].iconAlt}
+                  width={24}
+                  height={24}
+                  className="w-6 h-6"
+                />
+                <span className="font-noto-sans font-medium text-[#3d5678] text-lg tracking-[-0.072px] leading-7">
+                  {cards[1].title}
+                </span>
+              </div>
+              {/* Description */}
+              <p className="font-noto-sans font-normal text-[#757679] text-base leading-6 tracking-[0.064px]">
+                {cards[1].description}
+              </p>
+            </div>
+            {/* Bullet points */}
+            <ul className="flex flex-col gap-1.5">
+              {cards[1].bullets.map((bullet) => (
+                <li
+                  key={bullet}
+                  className="flex items-center gap-4 font-noto-sans font-normal text-[#525252] text-base leading-7 tracking-[-0.064px]"
+                >
+                  <div className="w-2.5 h-2.5 rounded-full bg-[#a7c6ed] shrink-0" />
+                  {bullet}
+                </li>
+              ))}
+            </ul>
+          </div>
+          {/* Illustration */}
+          <div className="absolute bottom-2 right-4">
+            <Image
+              src={cards[1].illustration}
+              alt={cards[1].illustrationAlt}
+              width={130}
+              height={155}
+              className="w-28 h-auto object-contain"
+            />
+          </div>
         </div>
       </div>
 
-      {/* Diagonal blue lines at bottom */}
-      <div className="relative z-10 w-full mt-10 px-4 py-2">
-        <DiagonalPattern
-          width="100%"
-          height={34}
-          color="#A7C6ED"
-          strokeWidth={1.5}
-          spacing={14}
-        />
+      {/* Tablet/Mobile: Stacked cards */}
+      <div className="lg:hidden space-y-4">
+        {cards.map((card) => (
+          <div
+            key={card.title}
+            className="bg-white border border-gray-200 p-5 sm:p-7 relative"
+          >
+            {/* Badge */}
+            <div className="flex items-center gap-2.5 bg-[rgba(167,198,237,0.35)] border border-[#a7c6ed] rounded-[4px] px-2.5 h-[38px] w-fit mb-4">
+              <Image
+                src={card.icon}
+                alt={card.iconAlt}
+                width={24}
+                height={24}
+                className="w-5 h-5 sm:w-6 sm:h-6"
+              />
+              <span className="font-noto-sans font-medium text-[#3d5678] text-base sm:text-lg tracking-[-0.072px] leading-7">
+                {card.title}
+              </span>
+            </div>
+            {/* Description */}
+            <p className="font-noto-sans font-normal text-[#757679] text-sm sm:text-base leading-6 tracking-[0.064px] mb-4">
+              {card.description}
+            </p>
+            {/* Bullet points */}
+            <ul className="flex flex-col gap-1.5 mb-4">
+              {card.bullets.map((bullet) => (
+                <li
+                  key={bullet}
+                  className="flex items-center gap-3 font-noto-sans font-normal text-[#525252] text-sm sm:text-base leading-7 tracking-[-0.064px]"
+                >
+                  <div className="w-2.5 h-2.5 rounded-full bg-[#a7c6ed] shrink-0" />
+                  {bullet}
+                </li>
+              ))}
+            </ul>
+            {/* Illustration */}
+            <div className="flex justify-center mt-4">
+              <Image
+                src={card.illustration}
+                alt={card.illustrationAlt}
+                width={140}
+                height={140}
+                className="w-28 h-28 sm:w-32 sm:h-32 object-contain"
+              />
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   );

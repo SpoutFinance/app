@@ -1,213 +1,186 @@
 "use client";
 
-import BgGrain from "@/components/bg-grain-svg";
-import { DiagonalPattern } from "@/components/slant-dashes-svg";
 import Image from "next/image";
 
 const steps = [
   {
-    number: "STEP 1",
+    number: "Step 01",
     title: "Complete KYC",
     description:
       "Connect your wallet and complete KYC verification to access investment-grade equities. KYC ensures that we are completely compliant with every jurisdiction",
     image: "/svg-assets/kyc-tokens.svg",
     imageAlt: "KYC Verification",
+    stripeColors: {
+      from: "rgba(61,199,132,0.58)",
+      to: "rgba(186,244,116,0.58)",
+    },
   },
   {
-    number: "STEP 2",
+    number: "Step 02",
     title: "Access Public Equities",
     description:
       "Access over 1,000 U.S. public equities, including Tesla, Microsoft, Coinbase, and more",
     image: "/svg-assets/public-equity.svg",
     imageAlt: "Public Equities",
+    stripeColors: {
+      from: "rgba(253,183,62,0.58)",
+      to: "rgba(255,217,139,0.58)",
+    },
   },
   {
-    number: "STEP 3",
+    number: "Step 03",
     title: "Lever Up",
     description:
       "Trade like the top 1% of equities traders, and borrow against your equities at 0% APR",
     image: "/svg-assets/stable-yields.svg",
     imageAlt: "Stable Yields",
-  },
-  {
-    number: "STEP 4",
-    title: "Lend to Our Pool for a Stable Return",
-    description:
-      "If you are looking for a safer and steadier return, lend to our liquidity pool, which enables margin trading for our borrowers, and earn 10%+ APY",
-    image: "/svg-assets/defi-with-tokens.svg",
-    imageAlt: "DeFi Integration",
-  },
-  {
-    number: "STEP 5",
-    title: "Track Performance",
-    description:
-      "Monitor your portfolio with real-time analytics and transparent reporting. Trade assets with a UI similar to your traditional brokerage",
-    image: "/svg-assets/track-performance.svg",
-    imageAlt: "Performance Tracking",
+    stripeColors: {
+      from: "rgba(4,112,255,0.58)",
+      to: "rgba(3,155,255,0.58)",
+    },
   },
 ];
 
+function VerticalStripes({ from, to }: { from: string; to: string }) {
+  return (
+    <div className="absolute inset-0 flex overflow-hidden">
+      {Array.from({ length: 7 }).map((_, i) => (
+        <div
+          key={i}
+          className="w-[60px] h-full shrink-0"
+          style={{
+            background:
+              i % 2 === 0
+                ? `linear-gradient(to bottom, ${from}, ${to})`
+                : `linear-gradient(to top, ${from}, ${to})`,
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
 export function HowSpoutWorks() {
   return (
-    <section
-      className="w-full py-8 sm:py-12 lg:py-20 relative"
-      style={{ contain: "layout style paint" }}
-    >
-      {/* Background grain for this section */}
-      <BgGrain className="absolute inset-0 w-full h-full z-0 optimized" />
-      <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="text-center mb-8 sm:mb-12 lg:mb-16">
-          <h2 className="text-3xl capitalize sm:text-4xl lg:text-5xl font-lora font-medium text-[#004040] mb-4 sm:mb-6">
-            How Spout Works
-          </h2>
-          <p className="text-base sm:text-base lg:text-lg tracking-[-0.072px] font-noto-sans text-[#525252] max-w-4xl mx-auto">
-            Spout bridges the gap between traditional finance and DeFi by
-            tokenizing investment-grade securities, providing stable yields
-            while maintaining the benefits of blockchain technology
-          </p>
-        </div>
+    <section className="w-full pt-8 sm:pt-12 lg:pt-16">
+      {/* Section Header */}
+      <div className="text-center mb-8 sm:mb-12 lg:mb-16">
+        <h2 className="text-3xl capitalize sm:text-4xl lg:text-5xl font-lora font-medium text-[#004040] mb-4 sm:mb-6">
+          How Spout Works
+        </h2>
+        <p className="text-base sm:text-base lg:text-lg tracking-[-0.072px] font-noto-sans text-[#525252] max-w-4xl mx-auto">
+          Spout bridges the gap between traditional finance and DeFi by
+          tokenizing investment-grade securities, providing stable yields while
+          maintaining the benefits of blockchain technology
+        </p>
+      </div>
 
-        {/* Steps Grid */}
-        <div className="relative space-y-0" style={{ contain: "layout style" }}>
-          {/* Decorative diamonds at corners of entire section */}
-          {/* Top-left diamond */}
-          <div className="hidden sm:block absolute -left-2 sm:-left-3 -top-2 sm:-top-3 z-20 optimized">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              className="text-blue-300 sm:w-6 sm:h-6"
-            >
-              <path
-                d="M12 2L22 12L12 22L2 12L12 2Z"
-                stroke="currentColor"
-                strokeWidth="3"
-                fill="white"
-              />
-            </svg>
-          </div>
-          {/* Top-right diamond */}
-          <div className="hidden sm:block absolute -right-2 sm:-right-3 -top-2 sm:-top-3 z-20 optimized">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              className="text-blue-300 sm:w-6 sm:h-6"
-            >
-              <path
-                d="M12 2L22 12L12 22L2 12L12 2Z"
-                stroke="currentColor"
-                strokeWidth="3"
-                fill="white"
-              />
-            </svg>
-          </div>
-          {/* Bottom-left diamond */}
-          <div className="hidden sm:block absolute -left-2 sm:-left-3 -bottom-2 sm:-bottom-3 z-20 optimized">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              className="text-blue-300 sm:w-6 sm:h-6"
-            >
-              <path
-                d="M12 2L22 12L12 22L2 12L12 2Z"
-                stroke="currentColor"
-                strokeWidth="3"
-                fill="white"
-              />
-            </svg>
-          </div>
-          {/* Bottom-right diamond */}
-          <div className="hidden sm:block absolute -right-2 sm:-right-3 -bottom-2 sm:-bottom-3 z-20 optimized">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              className="text-blue-300 sm:w-6 sm:h-6"
-            >
-              <path
-                d="M12 2L22 12L12 22L2 12L12 2Z"
-                stroke="currentColor"
-                strokeWidth="3"
-                fill="white"
-              />
-            </svg>
-          </div>
+      {/* Desktop layout */}
+      <div className="hidden lg:block">
+        {/* Gradient progress bar */}
+        <div className="w-full h-[10px] rounded-full bg-gradient-to-r from-[#ddff87] to-[#0057ff]" />
 
-          {steps.map((step, index) => (
+        {/* 3 cards side by side */}
+        <div className="flex border-t border-[#f3f4f6]">
+          {steps.map((step, i) => (
             <div
-              key={index}
-              className={`grid grid-cols-1 lg:grid-cols-2 gap-0 items-stretch border-gray-300 rounded-none overflow-hidden relative ${
-                index === 0
-                  ? "border-t border-l border-r border-b"
-                  : "border-l border-r border-b"
+              key={step.number}
+              className={`flex-1 bg-white flex flex-col${
+                i < steps.length - 1 ? " border-r border-[#f3f4f6]" : ""
               }`}
             >
-              {/* Vertical divider line */}
-              <div className="hidden lg:block absolute left-1/2 top-0 bottom-0 w-px bg-gray-300 transform -translate-x-1/2 optimized"></div>
-              {/* Content - alternates left/right */}
-              <div
-                className={`flex items-center bg-white py-4 sm:py-6 px-4 sm:px-6 min-h-[250px] sm:min-h-[300px] ${index % 2 === 0 ? "lg:order-1" : "lg:order-2"}`}
-              >
-                <div>
-                  <div className="inline-block bg-[#A7C6ED]/35 border border-[#A7C6ED] text-[#3D5678] px-2 sm:px-3 py-1 sm:py-1.5 rounded-none text-xs sm:text-sm font-semibold mb-2 sm:mb-3">
-                    {step.number}
-                  </div>
-                  <h3 className="text-xl sm:text-2xl lg:text-[28px] leading-7! tracking-[-0.072px] font-noto-sans font-semibold text-[#004040] mb-2 sm:mb-3">
-                    {step.title}
-                  </h3>
-                  <p className="text-sm sm:text-base lg:text-lg tracking-[-0.072px] font-noto-sans font-normal text-[#525252] leading-relaxed">
-                    {step.description}
-                  </p>
-                </div>
+              {/* Step label */}
+              <div className="bg-[#fafafa] border-b border-[#f3f4f6] px-5 py-2.5">
+                <span className="font-mono text-sm text-[#191b20]">
+                  {step.number}
+                </span>
               </div>
 
-              {/* Image - alternates right/left */}
-              <div
-                className={`flex justify-center bg-white items-center relative px-4 sm:px-6 py-4 sm:py-6 min-h-[200px] sm:min-h-[250px] lg:min-h-[300px] ${index % 2 === 0 ? "lg:order-2" : "lg:order-1"}`}
-                style={{
-                  backgroundImage:
-                    "linear-gradient(rgba(0,0,0,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.05) 1px, transparent 1px)",
-                  backgroundSize: "35px 35px",
-                  contain: "content",
-                  transform: "translateZ(0)",
-                }}
-              >
-                {/* Gradient fade overlay - fades from bottom (visible) to top (hidden) */}
-                <div
-                  className="absolute inset-0 bg-linear-to-t from-transparent from-0% via-transparent via-50% to-gray-50 to-100% pointer-events-none"
-                  style={{ contain: "strict" }}
-                ></div>
-                <div className="w-full max-w-[180px] sm:max-w-[220px] lg:max-w-[250px] h-[180px] sm:h-[220px] lg:h-[250px] relative z-10 flex items-center justify-center">
+              {/* Image area with vertical gradient stripes */}
+              <div className="relative w-full h-[274px] overflow-hidden bg-white">
+                <VerticalStripes
+                  from={step.stripeColors.from}
+                  to={step.stripeColors.to}
+                />
+                <div className="relative z-10 w-full h-full flex items-center justify-center">
                   <Image
                     src={step.image}
                     alt={step.imageAlt}
-                    width={250}
-                    height={250}
-                    className="w-full h-full object-contain"
+                    width={180}
+                    height={180}
+                    className="w-[170px] h-[170px] object-contain"
                   />
                 </div>
+              </div>
+
+              {/* Horizontal divider between image and text */}
+              <div className="border-t border-[#f3f4f6]" />
+
+              {/* Content */}
+              <div className="px-5 py-6">
+                <h3 className="text-xl font-noto-sans font-semibold text-[#004040] mb-2">
+                  {step.title}
+                </h3>
+                <p className="text-sm font-noto-sans text-[#525252] leading-relaxed">
+                  {step.description}
+                </p>
               </div>
             </div>
           ))}
         </div>
+
+        {/* Bottom border */}
+        <div className="border-t border-[#f3f4f6]" />
       </div>
 
-      {/* Diagonal blue lines at bottom */}
-      <div className="relative z-10 w-full mt-40 px-4 py-2">
-        <DiagonalPattern
-          width="100%"
-          height={34}
-          color="#A7C6ED"
-          strokeWidth={1.5}
-          spacing={14}
-        />
+      {/* Tablet/Mobile layout */}
+      <div className="lg:hidden space-y-4">
+        {/* Gradient progress bar */}
+        <div className="w-full h-[6px] sm:h-[8px] rounded-full bg-gradient-to-r from-[#ddff87] to-[#0057ff]" />
+
+        {steps.map((step) => (
+          <div
+            key={step.number}
+            className="bg-white border border-[#f3f4f6]"
+          >
+            {/* Step label */}
+            <div className="bg-[#fafafa] border-b border-[#f3f4f6] px-5 py-2.5">
+              <span className="font-mono text-sm text-[#191b20]">
+                {step.number}
+              </span>
+            </div>
+
+            {/* Image area with vertical gradient stripes */}
+            <div className="relative w-full h-[200px] sm:h-[240px] overflow-hidden bg-white">
+              <VerticalStripes
+                from={step.stripeColors.from}
+                to={step.stripeColors.to}
+              />
+              <div className="relative z-10 w-full h-full flex items-center justify-center">
+                <Image
+                  src={step.image}
+                  alt={step.imageAlt}
+                  width={160}
+                  height={160}
+                  className="w-[140px] h-[140px] sm:w-[160px] sm:h-[160px] object-contain"
+                />
+              </div>
+            </div>
+
+            {/* Horizontal divider */}
+            <div className="border-t border-[#f3f4f6]" />
+
+            {/* Content */}
+            <div className="px-5 py-5">
+              <h3 className="text-lg font-noto-sans font-semibold text-[#004040] mb-2">
+                {step.title}
+              </h3>
+              <p className="text-sm font-noto-sans text-[#525252] leading-relaxed">
+                {step.description}
+              </p>
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   );
