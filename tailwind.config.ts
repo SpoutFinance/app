@@ -93,6 +93,12 @@ const config = {
           "text-gray": "#8C9BAA",
           border: "#E5E5E5",
         },
+        blue: {
+          600: "#0057FF",
+        },
+        lime: {
+          200: "#DDFF87",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
