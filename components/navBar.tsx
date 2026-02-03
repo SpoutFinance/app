@@ -23,6 +23,7 @@ const navItems = [
   { name: "HOME", link: "/" },
   { name: "ABOUT US", link: "/company" },
   { name: "EARN", link: "/app/earn", soon: true },
+  { name: "PRESS", link: "/press" },
 ];
 
 export default function Navbar() {
