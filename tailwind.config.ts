@@ -40,6 +40,8 @@ const config = {
         sans: ["var(--font-sans)", ...defaultTheme.fontFamily.sans],
         lora: ["var(--font-lora)", ...defaultTheme.fontFamily.serif],
         "noto-sans": ["var(--font-noto-sans)", ...defaultTheme.fontFamily.sans],
+        "pt-serif": ["'PT Serif'", ...defaultTheme.fontFamily.serif],
+        "dm-sans": ["'DM Sans'", ...defaultTheme.fontFamily.sans],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -92,6 +94,12 @@ const config = {
           "text-secondary": "#3D5678",
           "text-gray": "#8C9BAA",
           border: "#E5E5E5",
+          "gradient-red": "rgba(255, 0, 0, 0.76)",
+          "gradient-peach": "rgba(255, 201, 135, 0.76)",
+          "gradient-orange": "rgba(255, 100, 50, 0.5)",
+          "gradient-cyan": "rgba(78, 210, 255, 0.68)",
+          "gradient-blue": "rgba(0, 87, 216, 0.68)",
+          "gradient-blue-mid": "rgba(39, 148, 236, 0.68)",
         },
         blue: {
           600: "#0057FF",

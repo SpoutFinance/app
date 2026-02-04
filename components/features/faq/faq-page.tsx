@@ -100,57 +100,61 @@ export default function FaqPage() {
       <div className="relative z-50">
         <main className="relative flex flex-col gap-[100px]">
           {/* ── Hero Section ── */}
-          <section className="relative flex justify-center items-center w-full px-4 sm:px-6 lg:px-0 overflow-hidden bg-white">
+          <section className="relative w-full overflow-hidden bg-white">
             {/* Full-width horizontal lines at top and bottom */}
             <div className="hidden lg:block absolute top-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
             <div className="hidden lg:block absolute bottom-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
 
-            {/* Left gradient chevrons — orange/red — hidden below lg */}
-            <div className="z-10 hidden lg:block">
-              <div className="w-96 h-5 relative bg-gradient-to-r from-[rgba(255,0,0,0.76)] to-[rgba(255,201,135,0.76)]" />
-              <div className="w-88 h-10 relative bg-gradient-to-r from-[rgba(255,0,0,0.76)] to-[rgba(255,201,135,0.76)]" />
-              <div className="w-80 h-10 relative bg-gradient-to-r from-[rgba(255,0,0,0.76)] to-[rgba(255,201,135,0.76)]" />
-              <div className="w-72 h-10 relative bg-gradient-to-r from-[rgba(255,0,0,0.76)] to-[rgba(255,201,135,0.76)]" />
-              <div className="w-60 h-10 relative bg-gradient-to-r from-[rgba(255,0,0,0.76)] to-[rgba(255,201,135,0.76)]" />
-              <div className="w-72 h-10 relative bg-gradient-to-r from-[rgba(255,0,0,0.76)] to-[rgba(255,201,135,0.76)]" />
-              <div className="w-80 h-10 relative bg-gradient-to-r from-[rgba(255,0,0,0.76)] to-[rgba(255,201,135,0.76)]" />
-              <div className="w-88 h-10 relative bg-gradient-to-r from-[rgba(255,0,0,0.76)] to-[rgba(255,201,135,0.76)]" />
-              <div className="w-96 h-5 relative bg-gradient-to-r from-[rgba(255,0,0,0.76)] to-[rgba(255,201,135,0.76)]" />
+            {/* Left gradient chevrons — absolutely positioned, vw-based widths */}
+            <div className="hidden lg:flex flex-col absolute left-0 top-0 bottom-0 pointer-events-none">
+              <div className="flex-1 bg-gradient-to-r from-spout-gradient-red to-spout-gradient-peach" style={{ width: '22vw' }} />
+              <div className="flex-1 bg-gradient-to-r from-spout-gradient-red to-spout-gradient-peach" style={{ width: '20vw' }} />
+              <div className="flex-1 bg-gradient-to-r from-spout-gradient-red to-spout-gradient-peach" style={{ width: '18vw' }} />
+              <div className="flex-1 bg-gradient-to-r from-spout-gradient-red to-spout-gradient-peach" style={{ width: '16vw' }} />
+              <div className="flex-1 bg-gradient-to-r from-spout-gradient-red to-spout-gradient-peach" style={{ width: '14vw' }} />
+              <div className="flex-1 bg-gradient-to-r from-spout-gradient-red to-spout-gradient-peach" style={{ width: '12vw' }} />
+              <div className="flex-1 bg-gradient-to-r from-spout-gradient-red to-spout-gradient-peach" style={{ width: '14vw' }} />
+              <div className="flex-1 bg-gradient-to-r from-spout-gradient-red to-spout-gradient-peach" style={{ width: '16vw' }} />
+              <div className="flex-1 bg-gradient-to-r from-spout-gradient-red to-spout-gradient-peach" style={{ width: '18vw' }} />
+              <div className="flex-1 bg-gradient-to-r from-spout-gradient-red to-spout-gradient-peach" style={{ width: '20vw' }} />
+              <div className="flex-1 bg-gradient-to-r from-spout-gradient-red to-spout-gradient-peach" style={{ width: '22vw' }} />
+            </div>
+
+            {/* Right gradient chevrons — absolutely positioned, vw-based widths */}
+            <div className="hidden lg:flex flex-col items-end absolute right-0 top-0 bottom-0 pointer-events-none">
+              <div className="flex-1 bg-gradient-to-l from-spout-gradient-red to-spout-gradient-peach" style={{ width: '22vw' }} />
+              <div className="flex-1 bg-gradient-to-l from-spout-gradient-red to-spout-gradient-peach" style={{ width: '20vw' }} />
+              <div className="flex-1 bg-gradient-to-l from-spout-gradient-red to-spout-gradient-peach" style={{ width: '18vw' }} />
+              <div className="flex-1 bg-gradient-to-l from-spout-gradient-red to-spout-gradient-peach" style={{ width: '16vw' }} />
+              <div className="flex-1 bg-gradient-to-l from-spout-gradient-red to-spout-gradient-peach" style={{ width: '14vw' }} />
+              <div className="flex-1 bg-gradient-to-l from-spout-gradient-red to-spout-gradient-peach" style={{ width: '12vw' }} />
+              <div className="flex-1 bg-gradient-to-l from-spout-gradient-red to-spout-gradient-peach" style={{ width: '14vw' }} />
+              <div className="flex-1 bg-gradient-to-l from-spout-gradient-red to-spout-gradient-peach" style={{ width: '16vw' }} />
+              <div className="flex-1 bg-gradient-to-l from-spout-gradient-red to-spout-gradient-peach" style={{ width: '18vw' }} />
+              <div className="flex-1 bg-gradient-to-l from-spout-gradient-red to-spout-gradient-peach" style={{ width: '20vw' }} />
+              <div className="flex-1 bg-gradient-to-l from-spout-gradient-red to-spout-gradient-peach" style={{ width: '22vw' }} />
             </div>
 
             {/* Mobile gradient accents */}
-            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[rgba(255,201,135,0.76)] via-[rgba(255,100,50,0.5)] to-[rgba(255,0,0,0.76)] lg:hidden" />
-            <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-[rgba(255,201,135,0.76)] via-[rgba(255,100,50,0.5)] to-[rgba(255,0,0,0.76)] lg:hidden" />
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-spout-gradient-peach via-spout-gradient-orange to-spout-gradient-red lg:hidden" />
+            <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-spout-gradient-peach via-spout-gradient-orange to-spout-gradient-red lg:hidden" />
 
             {/* Center content */}
-            <div className="mx-auto text-center relative z-10 flex flex-col justify-center items-center py-16 sm:py-20 lg:py-0">
+            <div className="relative z-10 mx-auto text-center flex flex-col justify-center items-center py-16 sm:py-20 lg:py-24">
               <div className="w-fit px-2.5 py-1 rounded-[3px] bg-spout-accent/35 mb-4">
                 <span className="text-sm sm:text-base font-medium text-spout-text-secondary">
                   FAQs
                 </span>
               </div>
 
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[52px] font-normal text-spout-primary font-lora leading-tight mb-3">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[52px] font-normal text-spout-primary font-pt-serif leading-tight mb-3">
                 Frequently Asked Questions
               </h1>
 
-              <p className="text-base sm:text-lg text-spout-text-muted max-w-[651px] mx-auto leading-7 px-2 sm:px-0">
+              <p className="text-base sm:text-lg text-spout-text-muted max-w-[600px] mx-auto font-dm-sans leading-7 px-2 sm:px-0">
                 Everything you need to know about Spout and how we&apos;re
                 changing decentralized investing
               </p>
-            </div>
-
-            {/* Right gradient chevrons — orange/red — hidden below lg */}
-            <div className="z-10 hidden lg:flex flex-col items-end">
-              <div className="w-96 h-5 relative bg-gradient-to-l from-[rgba(255,0,0,0.76)] to-[rgba(255,201,135,0.76)]" />
-              <div className="w-88 h-10 relative bg-gradient-to-l from-[rgba(255,0,0,0.76)] to-[rgba(255,201,135,0.76)]" />
-              <div className="w-80 h-10 relative bg-gradient-to-l from-[rgba(255,0,0,0.76)] to-[rgba(255,201,135,0.76)]" />
-              <div className="w-72 h-10 relative bg-gradient-to-l from-[rgba(255,0,0,0.76)] to-[rgba(255,201,135,0.76)]" />
-              <div className="w-60 h-10 relative bg-gradient-to-l from-[rgba(255,0,0,0.76)] to-[rgba(255,201,135,0.76)]" />
-              <div className="w-72 h-10 relative bg-gradient-to-l from-[rgba(255,0,0,0.76)] to-[rgba(255,201,135,0.76)]" />
-              <div className="w-80 h-10 relative bg-gradient-to-l from-[rgba(255,0,0,0.76)] to-[rgba(255,201,135,0.76)]" />
-              <div className="w-88 h-10 relative bg-gradient-to-l from-[rgba(255,0,0,0.76)] to-[rgba(255,201,135,0.76)]" />
-              <div className="w-96 h-5 relative bg-gradient-to-l from-[rgba(255,0,0,0.76)] to-[rgba(255,201,135,0.76)]" />
             </div>
           </section>
 
@@ -191,13 +195,11 @@ export default function FaqPage() {
                       <AccordionItem
                         key={index}
                         value={`item-${index}`}
-                        className={`border border-[#e5e5e5] -mt-px first:mt-0 ${
-                          isOpen ? "bg-white" : "bg-[#FFFDFB]"
-                        }`}
+                        className={`border border-spout-border -mt-px first:mt-0`}
                       >
                         <AccordionTrigger className="px-4 sm:px-6 py-4 text-left hover:no-underline [&>svg]:hidden">
                           <div className="flex items-start justify-between w-full gap-4">
-                            <span className="text-sm sm:text-base font-medium text-black leading-7 tracking-[-0.064px]">
+                            <span className="text-sm sm:text-base font-medium font-dm-sans text-black leading-7 tracking-[-0.064px]">
                               {faq.question}
                             </span>
                             <ChevronDown
@@ -208,7 +210,7 @@ export default function FaqPage() {
                           </div>
                         </AccordionTrigger>
                         {faq.answer && (
-                          <AccordionContent className="px-4 sm:px-6 pb-4 pt-0 text-sm sm:text-base text-spout-text-muted leading-6 sm:leading-7">
+                          <AccordionContent className="px-4 sm:px-6 pb-4 pt-0 text-sm sm:text-base text-spout-text-muted font-dm-sans leading-6 sm:leading-7">
                             {faq.answer}
                           </AccordionContent>
                         )}
