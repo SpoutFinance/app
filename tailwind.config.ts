@@ -1,22 +1,6 @@
 import type { Config } from "tailwindcss";
 import defaultTheme from "tailwindcss/defaultTheme";
 
-// Helper function to flatten the color palette
-function flattenColorPalette(colors: Record<string, any>) {
-  return Object.assign(
-    {},
-    ...Object.entries(colors).flatMap(([color, values]) => {
-      if (typeof values !== "object") {
-        return { [color]: values };
-      }
-
-      return Object.entries(values).map(([key, value]) => {
-        return { [`${color}-${key}`]: value };
-      });
-    }),
-  );
-}
-
 const config = {
   darkMode: "class",
   content: [
@@ -104,6 +88,12 @@ const config = {
           "light-gray": "hsl(var(--spout-light-gray))",
           "deep-teal": "#004040",
           "text-muted-dark": "#525252",
+          "gradient-red": "rgba(255, 0, 0, 0.76)",
+          "gradient-peach": "rgba(255, 201, 135, 0.76)",
+          "gradient-orange": "rgba(255, 100, 50, 0.5)",
+          "gradient-cyan": "rgba(78, 210, 255, 0.68)",
+          "gradient-blue": "rgba(0, 87, 216, 0.68)",
+          "gradient-blue-mid": "rgba(39, 148, 236, 0.68)",
         },
       },
       borderRadius: {
@@ -155,18 +145,7 @@ const config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate"), addVariablesForColors],
+  plugins: [require("tailwindcss-animate")],
 } satisfies Config;
 
 export default config;
-
-function addVariablesForColors({ addBase, theme }: any) {
-  const flattenedColors = flattenColorPalette(theme("colors"));
-  const newVars = Object.fromEntries(
-    Object.entries(flattenedColors).map(([key, val]) => [`--${key}`, val]),
-  );
-
-  addBase({
-    ":root": newVars,
-  });
-}

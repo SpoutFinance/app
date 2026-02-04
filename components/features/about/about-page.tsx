@@ -104,57 +104,112 @@ const rowDividerColors = [
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-white relative overflow-x-clip">
-      <div className="relative z-50">
-        <main className="relative flex flex-col gap-12 sm:gap-16 lg:gap-[100px]">
+      <div className="relative">
+        <main className="relative flex flex-col gap-12 sm:gap-16 lg:gap-[100px] z-10">
           {/* Hero Section */}
-          <section className="flex justify-center items-center w-full relative px-4 sm:px-6 lg:px-0">
+          <section className="relative w-full overflow-hidden bg-white px-4 sm:px-6 lg:px-0">
             <div className="hidden lg:block absolute top-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
             <div className="hidden lg:block absolute bottom-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
-            {/* Left Hero Group - hidden below lg */}
-            <div className="z-10 hidden lg:block">
-              <div className="w-96 h-5 relative bg-gradient-to-r from-blue-600 to-lime-200" />
-              <div className="w-88 h-10 relative bg-gradient-to-r from-blue-600 to-lime-200" />
-              <div className="w-80 h-10 relative bg-gradient-to-r from-blue-600 to-lime-200" />
-              <div className="w-72 h-10 relative bg-gradient-to-r from-blue-600 to-lime-200" />
-              <div className="w-60 h-10 relative bg-gradient-to-r from-blue-600 to-lime-200" />
-              <div className="w-72 h-10 relative bg-gradient-to-r from-blue-600 to-lime-200" />
-              <div className="w-80 h-10 relative bg-gradient-to-r from-blue-600 to-lime-200" />
-              <div className="w-88 h-10 relative bg-gradient-to-r from-blue-600 to-lime-200" />
-              <div className="w-96 h-5 relative bg-gradient-to-r from-blue-600 to-lime-200" />
+
+            {/* Left gradient chevrons — absolutely positioned, vw-based widths */}
+            <div className="hidden lg:flex flex-col absolute left-0 top-0 bottom-0 pointer-events-none">
+              <div
+                className="flex-1 bg-gradient-to-r from-blue-600 to-lime-200"
+                style={{ width: "22vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-r from-blue-600 to-lime-200"
+                style={{ width: "20vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-r from-blue-600 to-lime-200"
+                style={{ width: "18vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-r from-blue-600 to-lime-200"
+                style={{ width: "16vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-r from-blue-600 to-lime-200"
+                style={{ width: "14vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-r from-blue-600 to-lime-200"
+                style={{ width: "16vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-r from-blue-600 to-lime-200"
+                style={{ width: "18vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-r from-blue-600 to-lime-200"
+                style={{ width: "20vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-r from-blue-600 to-lime-200"
+                style={{ width: "22vw" }}
+              />
+            </div>
+
+            {/* Right gradient chevrons — absolutely positioned, vw-based widths */}
+            <div className="hidden lg:flex flex-col items-end absolute right-0 top-0 bottom-0 pointer-events-none">
+              <div
+                className="flex-1 bg-gradient-to-l from-blue-600 to-lime-200"
+                style={{ width: "22vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-l from-blue-600 to-lime-200"
+                style={{ width: "20vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-l from-blue-600 to-lime-200"
+                style={{ width: "18vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-l from-blue-600 to-lime-200"
+                style={{ width: "16vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-l from-blue-600 to-lime-200"
+                style={{ width: "14vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-l from-blue-600 to-lime-200"
+                style={{ width: "16vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-l from-blue-600 to-lime-200"
+                style={{ width: "18vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-l from-blue-600 to-lime-200"
+                style={{ width: "20vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-l from-blue-600 to-lime-200"
+                style={{ width: "22vw" }}
+              />
             </div>
 
             {/* Horizontal gradient accent - visible only on small/medium screens */}
             <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-600 via-lime-200 to-blue-600 lg:hidden" />
             <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-600 via-lime-200 to-blue-600 lg:hidden" />
 
-            <div className="mx-auto text-center relative z-10 flex flex-col justify-center items-center">
+            <div className="relative z-10 mx-auto text-center flex flex-col justify-center items-center py-16 sm:py-20 lg:py-24">
               <div className="w-fit self-center items-center justify-center px-2.5 py-1 rounded-[3px] bg-spout-accent/35 mb-4">
                 <span className="text-sm sm:text-base font-medium text-spout-text-secondary">
                   About Us
                 </span>
               </div>
 
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[52px] font-normal text-spout-primary font-lora leading-tight mb-3">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[52px] font-normal text-spout-primary font-pt-serif leading-tight mb-3">
                 Our Story
               </h1>
 
-              <p className="text-base sm:text-lg text-spout-text-muted max-w-[646px] mx-auto leading-7 px-2 sm:px-0">
+              <p className="text-base sm:text-lg text-spout-text-muted max-w-[600px] mx-auto font-dm-sans leading-7 px-2 sm:px-0">
                 We are building next-generation investment infrastructure that
                 prioritizes security, transparency, and returns.
               </p>
-            </div>
-
-            {/* Right Hero Group - hidden below lg */}
-            <div className="z-10 hidden lg:flex flex-col items-end">
-              <div className="w-96 h-5 relative bg-gradient-to-r from-lime-200 to-blue-600" />
-              <div className="w-88 h-10 relative bg-gradient-to-r from-lime-200 to-blue-600" />
-              <div className="w-80 h-10 relative bg-gradient-to-r from-lime-200 to-blue-600" />
-              <div className="w-72 h-10 relative bg-gradient-to-r from-lime-200 to-blue-600" />
-              <div className="w-60 h-10 relative bg-gradient-to-r from-lime-200 to-blue-600" />
-              <div className="w-72 h-10 relative bg-gradient-to-r from-lime-200 to-blue-600" />
-              <div className="w-80 h-10 relative bg-gradient-to-r from-lime-200 to-blue-600" />
-              <div className="w-88 h-10 relative bg-gradient-to-r from-lime-200 to-blue-600" />
-              <div className="w-96 h-5 relative bg-gradient-to-r from-lime-200 to-blue-600" />
             </div>
           </section>
 
@@ -181,13 +236,19 @@ export default function AboutPage() {
                   <div>
                     <div className="flex items-center gap-3 mb-4">
                       <div className="p-1.5 bg-spout-primary rounded-[3px]">
-                        <Fingerprint className="w-4 h-4 text-white" />
+                        <Image
+                          src={"/svg-assets/landingpage/fingerprint.png"}
+                          className="w-4 h-4 text-white"
+                          width={16}
+                          height={16}
+                          alt="Fingerprint"
+                        />
                       </div>
-                      <h3 className="text-xl sm:text-2xl lg:text-[28px] font-medium text-spout-primary leading-7 font-noto-sans">
+                      <h3 className="text-xl sm:text-2xl lg:text-[28px] font-medium text-spout-primary leading-7 font-dm-sans">
                         Access is a right, not a privilege
                       </h3>
                     </div>
-                    <p className="text-base sm:text-lg text-spout-text-muted leading-7">
+                    <p className="text-base sm:text-lg text-spout-text-muted leading-7 font-dm-sans">
                       The global financial system is rigged: institutions borrow
                       for free, while everyone else pays the price. We refuse to
                       accept that status quo. Spout is building the first truly
@@ -202,13 +263,19 @@ export default function AboutPage() {
                   <div>
                     <div className="flex items-center gap-3 mb-4">
                       <div className="p-1.5 bg-spout-primary rounded-[3px]">
-                        <Users className="w-4 h-4 text-white" />
+                        <Image
+                          src={"/svg-assets/landingpage/users.png"}
+                          className="w-4 h-4 text-white"
+                          width={16}
+                          height={16}
+                          alt="Fingerprint"
+                        />
                       </div>
-                      <h3 className="text-xl sm:text-2xl lg:text-[28px] font-medium text-spout-primary leading-7 font-noto-sans">
+                      <h3 className="text-xl sm:text-2xl lg:text-[28px] font-medium text-spout-primary leading-7 font-dm-sans">
                         Built by defectors
                       </h3>
                     </div>
-                    <p className="text-base sm:text-lg text-spout-text-muted leading-7">
+                    <p className="text-base sm:text-lg text-spout-text-muted leading-7 font-dm-sans">
                       We are ex-bankers and engineers who saw the unfair
                       advantages from the inside — and left to share them with
                       you. We bridge the gap between institutional structure and
@@ -223,7 +290,7 @@ export default function AboutPage() {
                 <div className="relative w-full lg:w-[421px] h-[300px] sm:h-[350px] lg:h-auto overflow-hidden border-t lg:border-t-0 lg:border-l-[6px] border-gray-100 flex-shrink-0">
                   {/* Decorative gradient chevrons */}
 
-                  <div className="relative w-full h-full border border-[#0168ff]">
+                  <div className="relative w-full h-full ">
                     <Image
                       src="/svg-assets/landingpage/globe-bg.png"
                       alt=""
@@ -255,12 +322,12 @@ export default function AboutPage() {
               {/* Full-width horizontal line at top of team section */}
               <div className="hidden lg:block absolute top-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
 
-              <h2 className="text-3xl sm:text-4xl lg:text-[56px] font-lora text-spout-primary text-center mb-8 sm:mb-12 lg:mb-15">
+              <h2 className="text-3xl sm:text-4xl lg:text-[56px] font-pt-serif text-spout-primary text-center mb-8 sm:mb-12 lg:mb-15">
                 Meet the Team
               </h2>
 
               {/* Row 1 — top + bottom full-width lines */}
-              <div className="relative mb-6 sm:mb-8 lg:mb-15">
+              <div className="relative mb-6 sm:mb-8 lg:mb-15 font-dm-sans">
                 <div className="hidden lg:block absolute top-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
                 <div className="hidden lg:block absolute bottom-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
                 <TeamRow
@@ -270,7 +337,7 @@ export default function AboutPage() {
               </div>
 
               {/* Row 2 — top + bottom full-width lines */}
-              <div className="relative">
+              <div className="relative font-dm-sans">
                 <div className="hidden lg:block absolute top-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
                 <div className="hidden lg:block absolute bottom-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
                 <TeamRow
@@ -292,6 +359,8 @@ export default function AboutPage() {
           </div>
         </main>
       </div>
+      {/* Bottom horizontal line above footer */}
+      <div className="w-full border-t-2 border-[#F3F4F6]" />
     </div>
   );
 }
@@ -376,18 +445,18 @@ function TeamCard({
       <div className="p-5 flex-1 flex flex-col">
         {/* Title Badge */}
         <div className="inline-flex items-center px-2.5 py-1 border border-spout-accent bg-spout-accent/35 rounded-[3px] mb-4 w-fit">
-          <span className="text-sm sm:text-base font-medium text-spout-text-secondary font-noto-sans">
+          <span className="text-sm sm:text-base font-medium text-spout-text-secondary font-dm-sans">
             {title}
           </span>
         </div>
 
         {/* Name */}
-        <h3 className="text-xl sm:text-2xl font-semibold text-spout-primary mb-2 font-noto-sans">
+        <h3 className="text-xl sm:text-2xl font-semibold text-spout-primary mb-2 font-dm-sans">
           {name}
         </h3>
 
         {/* Description */}
-        <p className="text-sm sm:text-base text-spout-text-muted leading-7 mb-6 flex-1 font-noto-sans">
+        <p className="text-sm sm:text-base text-spout-text-muted leading-7 mb-6 flex-1 font-dm-sans">
           {description}
         </p>
 
@@ -399,7 +468,13 @@ function TeamCard({
               className="text-spout-text-secondary hover:text-spout-primary transition-colors"
               aria-label={`Email ${name}`}
             >
-              <Mail className="w-6 h-6" />
+              <Image
+                src={"/svg-assets/landingpage/email.png"}
+                width={24}
+                height={24}
+                alt="Mail"
+                className="w-6"
+              />
             </a>
           )}
           {links?.twitter && (
@@ -410,7 +485,13 @@ function TeamCard({
               className="text-spout-text-secondary hover:text-spout-primary transition-colors"
               aria-label={`${name}'s Twitter`}
             >
-              <Twitter className="w-6 h-6" />
+              <Image
+                src={"/svg-assets/landingpage/x.png"}
+                width={24}
+                height={24}
+                alt="Mail"
+                className="w-6"
+              />
             </a>
           )}
           {links?.linkedin && (
@@ -421,7 +502,13 @@ function TeamCard({
               className="text-spout-text-secondary hover:text-spout-primary transition-colors"
               aria-label={`${name}'s LinkedIn`}
             >
-              <Linkedin className="w-6 h-6" />
+              <Image
+                src={"/svg-assets/landingpage/linkedin.png"}
+                width={24}
+                height={24}
+                alt="Mail"
+                className="w-6"
+              />
             </a>
           )}
         </div>
