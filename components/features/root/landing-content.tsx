@@ -11,56 +11,72 @@ import {
   UnlockingFinance,
 } from "@/components/features/root";
 import { SmoothScroll } from "@/components/smooth-scroll";
+import { PartnerTicker } from "./partner-ticker";
 
 export function LandingContent() {
   return (
     <SmoothScroll>
-      <div className="landing-page min-h-screen w-full overflow-x-hidden flex flex-col items-center justify-center relative">
-        {/* Vertical lines on both sides - hidden on mobile */}
-        <div className="hidden md:block fixed inset-0 pointer-events-none z-0">
-          {/* Left vertical line */}
-          <div className="absolute left-4 top-0 bottom-0 w-[1.5px] bg-[#A7C6ED] optimized"></div>
-          {/* Right vertical line */}
-          <div className="absolute right-4 top-0 bottom-0 w-[1.5px] bg-[#A7C6ED] optimized"></div>
-        </div>
+      <div className="min-h-screen w-full overflow-x-hidden flex flex-col items-center justify-center relative bg-white">
         {/* Hero Section */}
-        <div className="relative z-10 w-full">
+        <div className="relative z-10 w-full overflow-hidden">
           <HeroSection />
         </div>
 
-        {/* How Spout Works Section */}
-        <div className="relative z-10 w-full">
-          <HowSpoutWorks />
+        {/* Partner Ticker */}
+        <div className="relative z-10 w-screen border-t-2 border-b-2 border-[#F3F4F6] bg-white">
+          <div className="max-w-[1178px] mx-auto hidden md:block optimized">
+            <PartnerTicker />
+          </div>
+          <div className="block md:hidden optimized">
+            <PartnerTicker />
+          </div>
         </div>
 
-        {/* Proof of Reserve Section */}
-        <div className="relative z-10 w-full">
-          <ProofOfReserveLanding />
-        </div>
+        <div className="relative">
+          <div className="hidden md:block absolute inset-0 pointer-events-none z-0 max-w-[1178px] mx-auto">
+            {/* Left vertical line */}
+            <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-[#F3F4F6] optimized"></div>
+            {/* Right vertical line */}
+            <div className="absolute right-0 top-0 bottom-0 w-[2px] bg-[#F3F4F6] optimized"></div>
+          </div>
 
-        {/* Unlocking Finance Section */}
-        <div className="relative z-10 w-full">
-          <UnlockingFinance />
-        </div>
+          {/* How Spout Works Section */}
+          <div className="relative z-10 w-full">
+            <HowSpoutWorks />
+          </div>
+          <div className="h-[100px] w-screen bg-transparent border-b-2 border-[#F3F4F6] "></div>
 
-        {/* Investment Different Section */}
-        <div className="relative z-10 w-full">
-          <InvestmentDifferent />
-        </div>
+          {/* Proof of Reserve Section */}
+          <div className="relative z-10 w-full">
+            <ProofOfReserveLanding />
+          </div>
 
-        {/* In The News Section */}
-        <div className="relative z-10 w-full">
-          <InTheNews />
-        </div>
+          {/* Unlocking Finance Section */}
+          <div className="relative z-10 w-full">
+            <UnlockingFinance />
+          </div>
+          <div className="h-[100px] w-screen bg-transparent border-t-2 border-b-2 border-[#F3F4F6] "></div>
 
-        {/* FAQ Section */}
-        <div className="relative z-10 w-full">
-          <FAQSection />
-        </div>
+          {/* Investment Different Section */}
+          <div className="relative z-10 w-full">
+            <InvestmentDifferent />
+          </div>
 
-        {/* CTA Section */}
-        <div className="relative z-10 w-full">
-          <CTASection />
+          {/* In The News Section */}
+          <div className="relative z-10 w-full">
+            <InTheNews />
+          </div>
+
+          {/* FAQ Section */}
+          <div className="relative z-10 w-full">
+            <FAQSection />
+          </div>
+
+          {/* CTA Section */}
+          <div className="relative z-10 w-full">
+            <CTASection />
+          </div>
+          <div className="h-[100px] w-screen bg-transparent border-t-2 border-b-2 border-[#F3F4F6] "></div>
         </div>
       </div>
     </SmoothScroll>

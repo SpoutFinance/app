@@ -1,16 +1,24 @@
-import "./globals.css";
-import "@rainbow-me/rainbowkit/styles.css";
-import "react-toastify/dist/ReactToastify.css";
-import type { Metadata } from "next";
-import { Public_Sans, IBM_Plex_Mono, Lora, Noto_Sans } from "next/font/google";
-import { Providers } from "@/components/providers";
 import { RumInit } from "@/aws/rum-init";
-import { cn } from "@/lib/utils";
+import { AnnouncementBarWrapper } from "@/components/announcement-bar-wrapper";
 import {
   ConditionalFooter,
   ConditionalNavbar,
 } from "@/components/conditionalNavbar";
-import { AnnouncementBarWrapper } from "@/components/announcement-bar-wrapper";
+import { Providers } from "@/components/providers";
+import { cn } from "@/lib/utils";
+import "@rainbow-me/rainbowkit/styles.css";
+import type { Metadata } from "next";
+import {
+  DM_Mono,
+  DM_Sans,
+  IBM_Plex_Mono,
+  Lora,
+  Noto_Sans,
+  PT_Serif,
+  Public_Sans,
+} from "next/font/google";
+import "react-toastify/dist/ReactToastify.css";
+import "./globals.css";
 
 const publicSans = Public_Sans({
   subsets: ["latin"],
@@ -32,6 +40,24 @@ const notoSans = Noto_Sans({
   subsets: ["latin"],
   variable: "--font-noto-sans",
   display: "swap",
+});
+
+const ptSerif = PT_Serif({
+  weight: ["400", "700"],
+  subsets: ["latin"],
+  variable: "--font-pt-serif",
+});
+
+const dmSans = DM_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+  variable: "--font-dm-sans",
+});
+
+const dmMono = DM_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500", "300"],
+  variable: "--font-dm-mono",
 });
 export const metadata: Metadata = {
   metadataBase: new URL("https://spout.finance"),
@@ -115,11 +141,14 @@ export default async function RootLayout({
     <html lang="en">
       <body
         className={cn(
-          "min-h-screen flex flex-col bg-gray-50 font-sans antialiased",
+          "min-h-screen flex flex-col bg-white font-sans antialiased",
           publicSans.variable,
           ibmPlexMono.variable,
           lora.variable,
           notoSans.variable,
+          ptSerif.variable,
+          dmSans.variable,
+          dmMono.variable,
         )}
       >
         <RumInit />

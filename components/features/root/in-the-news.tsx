@@ -1,47 +1,52 @@
-"use client";
-
+import block from "@/assets/images/block.svg";
+import kucoin from "@/assets/images/logo_general_green.svg";
+import mexc from "@/assets/images/mexc-global-seeklogo.svg";
 import Image from "next/image";
 import Link from "next/link";
-import { DiagonalPattern } from "@/components/slant-dashes-svg";
-import BgGrain from "@/components/bg-grain-svg";
 
 export function InTheNews() {
   const newsItems = [
     {
-      logo: "/svg-assets/landingpage/spout-ap.webp",
-      publication: "AP News",
-      date: "SEP 9, 2025",
-      alt: "AP News",
+      logo: block,
+      publication: "The Block",
+      date: "JAN 20, 2026",
       url: "https://apnews.com/press-release/globenewswire-mobile/onepiece-labs-solana-accelerator-officially-launches-f2e8e0a2478df30533933fdfe8f07a5e",
+      gradient: "linear-gradient-2",
     },
     {
-      logo: "/svg-assets/landingpage/spout-business-insder.webp",
-      publication: "Business Insider",
-      date: "SEP 9, 2025",
-      alt: "Business Insider",
+      logo: mexc,
+      publication: "MEXC",
+      date: "JAN 21, 2026",
       url: "https://markets.businessinsider.com/news/stocks/onepiece-labs-solana-accelerator-officially-launches-1035128439",
+      gradient: "linear-gradient-3",
     },
     {
-      logo: "/svg-assets/landingpage/marketwatch-spout.webp",
-      publication: "MarketWatch",
-      date: "SEP 9, 2025",
-      alt: "MarketWatch",
+      logo: kucoin,
+      publication: "Kucoin",
+      date: "JAN 21, 2026",
       url: "https://www.marketwatch.com/press-release/onepiece-labs-solana-accelerator-officially-launches-7b06ee13?mod=search_headline",
+      gradient: "linear-gradient-blue-3",
     },
   ];
 
+  // Map gradient identifiers to concrete Tailwind classes so they are discoverable by the
+  // Tailwind compiler (avoid using dynamic `bg-${...}` strings)
+  const gradientMap: Record<string, string> = {
+    "linear-gradient-2": "bg-linear-gradient-2",
+    "linear-gradient-3": "bg-linear-gradient-3",
+    "linear-gradient-blue-3": "bg-linear-gradient-blue-3",
+  };
+
   return (
-    <section className="w-full py-4 sm:py-6 lg:py-8 relative">
-      {/* Background grain for this section */}
-      <BgGrain className="absolute inset-0 w-full h-full z-0" />
+    <section className="w-full">
       {/* Section content */}
-      <div className="w-full max-w-[1800px] mx-auto px-4 sm:px-6 md:px-8 lg:px-16 pb-8">
+      <div className="w-full px-4 sm:px-6 md:px-8 lg:px-0 pb-8">
         {/* Header */}
-        <div className="text-center mb-8 sm:mb-12 lg:mb-16">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-lora font-normal text-[#004040] mb-4 sm:mb-6">
-            In the <span className="font-medium">News</span>
+        <div className="text-center ">
+          <h2 className="text-[#004040] text-center font-['PT_Serif'] text-[48px] not-italic font-normal leading-[56px] tracking-[0.192px]">
+            In the <span className="">Press</span>
           </h2>
-          <p className="text-base sm:text-lg font-noto-sans font-normal text-[#475569] max-w-3xl mx-auto leading-relaxed">
+          <p className="text-[#757679] pt-3 text-center font-['DM_Sans'] text-[16px] not-italic font-normal leading-[28px] tracking-[-0.064px]">
             Financial media outlets are highlighting our approach to secure,
             regulated
             <br />
@@ -49,135 +54,103 @@ export function InTheNews() {
           </p>
         </div>
 
+        <div className="w-screen bg-transparent border-t border-b mt-[70px] border-[#F3F4F6] "></div>
+
         {/* News Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 mb-8 sm:mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-8 sm:mb-12 lg:mb-0 max-w-[1178px] mx-auto pr-[2px]">
           {newsItems.map((item, index) => (
-            <div
-              key={index}
-              className="relative border border-gray-300 rounded-none"
-            >
-              {/* Top-left diamond */}
-              <div className="absolute -left-2 sm:-left-3 -top-2 sm:-top-3 z-20">
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  className="text-blue-300 sm:w-6 sm:h-6"
-                >
-                  <path
-                    d="M12 2L22 12L12 22L2 12L12 2Z"
-                    stroke="currentColor"
-                    strokeWidth="3"
-                    fill="white"
-                  />
-                </svg>
-              </div>
-
-              {/* Top-right diamond */}
-              <div className="absolute -right-2 sm:-right-3 -top-2 sm:-top-3 z-20">
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  className="text-blue-300 sm:w-6 sm:h-6"
-                >
-                  <path
-                    d="M12 2L22 12L12 22L2 12L12 2Z"
-                    stroke="currentColor"
-                    strokeWidth="3"
-                    fill="white"
-                  />
-                </svg>
-              </div>
-
-              {/* Bottom-left diamond */}
-              <div className="absolute -left-2 sm:-left-3 -bottom-2 sm:-bottom-3 z-20">
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  className="text-blue-300 sm:w-6 sm:h-6"
-                >
-                  <path
-                    d="M12 2L22 12L12 22L2 12L12 2Z"
-                    stroke="currentColor"
-                    strokeWidth="3"
-                    fill="white"
-                  />
-                </svg>
-              </div>
-
-              {/* Bottom-right diamond */}
-              <div className="absolute -right-2 sm:-right-3 -bottom-2 sm:-bottom-3 z-20">
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  className="text-blue-300 sm:w-6 sm:h-6"
-                >
-                  <path
-                    d="M12 2L22 12L12 22L2 12L12 2Z"
-                    stroke="currentColor"
-                    strokeWidth="3"
-                    fill="white"
-                  />
-                </svg>
-              </div>
-
-              {/* Card Content with rounded corners */}
-              <div className="overflow-hidden rounded-none">
-                {/* Logo Area */}
-                <div className="h-32 sm:h-40 lg:h-48 flex bg-white items-center justify-center p-4 sm:p-6 lg:p-8">
-                  <Image
-                    src={item.logo}
-                    alt={item.publication}
-                    width={300}
-                    height={120}
-                    className="w-full h-auto max-h-20 sm:max-h-24 lg:max-h-32 object-contain"
-                  />
-                </div>
-
-                {/* Publication Info */}
-                <div className="p-3 sm:p-4 md:p-6 border-t border-gray-300 flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-2 md:gap-4">
-                  <Link
-                    href={item.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1 sm:py-2 md:px-4 bg-blue-50 border border-blue-200 rounded text-[#004040] font-noto-sans text-xs sm:text-sm md:text-base font-medium hover:bg-blue-100 transition-colors shrink-0"
+            <div className="flex w-full" key={index}>
+              <div className=" rounded-none w-full">
+                {/* Card Content with rounded corners */}
+                <div className="overflow-hidden rounded-none">
+                  {/* Logo Area */}
+                  <div
+                    className={`h-32 sm:h-40 lg:h-[225px] flex ${index === 1 ? "bg-black" : ""} items-center justify-center px-8 relative`}
                   >
-                    <Image
-                      src="/svg-assets/landingpage/spout-book.svg"
-                      alt={item.alt}
-                      width={20}
-                      height={20}
-                      className="w-4 h-4 sm:w-5 sm:h-5"
-                    />
-                    {item.publication}
-                  </Link>
-                  <span className="text-xs sm:text-xs md:text-sm font-noto-sans text-[#475569] sm:ml-auto whitespace-nowrap">
-                    {item.date}
-                  </span>
+                    <Image src={item.logo} alt={item.publication} />
+                  </div>
+
+                  {/* Publication Info */}
+                  <div className="px-[16px] py-[22px] border-t border-[#F3F4F6] flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-2 md:gap-4">
+                    <Link
+                      href={item.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="border-[1px]  border-solid h-[32px] border-[#A7C6ED] bg-[rgba(167,198,237,0.35)] flex items-center  gap-1 sm:gap-2 p-[10px] tracking-[-0.064px] leading-[28px]  text-[#004040] font-dm-sans text-[16px] font-[500] flex-shrink-0 "
+                    >
+                      <Image
+                        src="/svg-assets/landingpage/spout-book.svg"
+                        alt="Article"
+                        width={20}
+                        height={20}
+                        className="w-4 h-4 sm:w-5 sm:h-5"
+                      />
+                      {item.publication}
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="6"
+                        height="9"
+                        viewBox="0 0 6 9"
+                        fill="none"
+                      >
+                        <path
+                          d="M0.75 7.81L4.27 4.28L0.75 0.75"
+                          stroke="#3D5678"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </Link>
+                    <span className="text-[16px] font-[500] leading-[28px] tracking-[-0.064px] font-dm-sans text-[#525252] sm:ml-auto">
+                      {item.date}
+                    </span>
+                  </div>
                 </div>
               </div>
+
+              <div
+                className={`${gradientMap[item.gradient] ?? ""} h-full w-[22px]`}
+              ></div>
             </div>
           ))}
         </div>
+        <div className="w-screen bg-transparent border-t border-b border-[#F3F4F6] "></div>
+        <div className="mt-4 sm:mt-7 text-end max-w-[1178px] mx-auto pe-[22px]">
+          <Link
+            href="/faq"
+            className="h-[36px] w-[116px] items-center justify-center group border rounded-sm border-[#E8E8E8] bg-white p-[10px] inline-flex text-sm sm:text-base font-noto-sans font-medium text-[#000] transition-colors gap-2"
+          >
+            View All
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              className="transition-transform duration-300 ease-out group-hover:translate-x-1"
+            >
+              <path
+                d="M14.4301 5.93018L20.5001 12.0002L14.4301 18.0702"
+                stroke="#292D32"
+                strokeWidth="1.5"
+                strokeMiterlimit="10"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M3.5 12H20.33"
+                stroke="#292D32"
+                strokeWidth="1.5"
+                strokeMiterlimit="10"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </Link>
+        </div>
       </div>
-
-      {/* Diagonal blue lines at bottom */}
-      <div className="relative z-10 w-full mt-10 px-4 py-2">
-        <DiagonalPattern
-          width="100%"
-          height={34}
-          color="#A7C6ED"
-          strokeWidth={1.5}
-          spacing={14}
-        />
-      </div>
+      <div className="w-screen bg-transparent border-t border-b border-[#F3F4F6] "></div>
     </section>
   );
 }

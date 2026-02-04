@@ -1,132 +1,144 @@
 "use client";
 
+import background from "@/assets/images/frame.svg";
+import { CheckCircle } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
-import { DiagonalPattern } from "@/components/slant-dashes-svg";
-import BgGrain from "@/components/bg-grain-svg";
+
+import { useState } from "react";
 
 export function CTASection() {
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [joined, setJoined] = useState(false);
+
+  // Email validation function
+  const isValidEmail = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email.trim());
+  };
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newEmail = e.target.value;
+    setEmail(newEmail);
+    // Do not set errors while typing to avoid disruptive UX
+  };
+
+  const handleEmailBlur = () => {
+    if (email && !isValidEmail(email)) {
+      setError("Please enter a valid email address");
+    } else {
+      setError(null);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setMessage(null);
+
+    const trimmedEmail = email.trim();
+
+    if (!trimmedEmail) {
+      setError("Please enter your email.");
+      return;
+    }
+
+    if (!isValidEmail(trimmedEmail)) {
+      setError("Please enter a valid email address");
+      return;
+    }
+
+    setError(null);
+    setLoading(true);
+    try {
+      const res = await fetch("/api/mailing-list", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: trimmedEmail }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setMessage(data.message || "Thank you for joining!");
+        setEmail("");
+        setJoined(true);
+      } else {
+        setError(data.error || data.message || "Something went wrong.");
+      }
+    } catch (err) {
+      setError("Network error. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <section className="w-full py-4 sm:py-8 lg:py-12 relative">
-      {/* Background grain for this section */}
-      <BgGrain className="absolute inset-0 w-full h-full z-0 optimized" />
-      {/* Section content */}
-      <div className="w-full max-w-[1800px] mx-auto px-4 sm:px-8 lg:px-16 pb-8 sm:pb-12 lg:pb-16">
-        <div className="relative border border-gray-300 rounded-none  pl-4 sm:pl-4 lg:pl-5 pr-4 sm:pr-4 lg:pr-5 py-6 sm:py-8 lg:py-12">
-          {/* Top-left diamond */}
-          <div className="hidden sm:block absolute -left-2 sm:-left-3 -top-2 sm:-top-3 z-20">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              className="text-blue-300 sm:w-6 sm:h-6"
-            >
-              <path
-                d="M12 2L22 12L12 22L2 12L12 2Z"
-                stroke="currentColor"
-                strokeWidth="3"
-                fill="white"
-              />
-            </svg>
-          </div>
+    <section className="w-[1176px] mx-auto mt-[-20px]">
+      <div className=" w-screen bg-transparent border-b-2 border-[#F3F4F6] "></div>
+      <div className="flex">
+        {/* Left Content */}
+        <div className="flex-1 w-full flex items-center justify-center">
+          <div className="flex flex-col gap-5 p-9 w-[635px]">
+            <h2 className="text-[#004040] font-['DM_Sans'] text-[24px] not-italic font-medium leading-[28px] tracking-[-0.096px]">
+              Ready to Start Earning Stable Yields?
+            </h2>
+            <p className="text-[#525252] font-['DM_Sans'] text-[16px] not-italic font-normal leading-[28px] tracking-[-0.064px]">
+              Join thousands of users who are already earning consistent returns
+              from investment-grade corporate bonds on the blockchain.
+            </p>
 
-          {/* Top-right diamond */}
-          <div className="hidden sm:block absolute -right-2 sm:-right-3 -top-2 sm:-top-3 z-20 optimized">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              className="text-blue-300 sm:w-6 sm:h-6"
-            >
-              <path
-                d="M12 2L22 12L12 22L2 12L12 2Z"
-                stroke="currentColor"
-                strokeWidth="3"
-                fill="white"
-              />
-            </svg>
-          </div>
+            <div>
+              <form onSubmit={handleSubmit} className="pt-2 sm:pt-0 flex gap-4">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={handleEmailChange}
+                  onBlur={handleEmailBlur}
+                  placeholder="Enter your email to join our mailing list"
+                  className={`flex h-[44px] pt-[14px] pr-[88px] pb-[14px] pl-[20px] items-center w-[395px] border text-[14px] border-gray-300 rounded-sm py-3 px-5 outline-none text-[#6E6E6E] font-dm-sans text-sm not-italic font-normal leading-4 focus-visible:border-primary focus-visible:border-2 ${
+                    error
+                      ? "border-2 border-red-300 focus-visible:ring-red-400"
+                      : ""
+                  }`}
+                  disabled={loading}
+                />
 
-          {/* Bottom-left diamond */}
-          <div className="hidden sm:block absolute -left-2 sm:-left-3 -bottom-2 sm:-bottom-3 z-20 optimized">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              className="text-blue-300 sm:w-6 sm:h-6"
-            >
-              <path
-                d="M12 2L22 12L12 22L2 12L12 2Z"
-                stroke="currentColor"
-                strokeWidth="3"
-                fill="white"
-              />
-            </svg>
-          </div>
-
-          {/* Bottom-right diamond */}
-          <div className="hidden sm:block absolute -right-2 sm:-right-3 -bottom-2 sm:-bottom-3 z-20 optimized">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              className="text-blue-300 sm:w-6 sm:h-6"
-            >
-              <path
-                d="M12 2L22 12L12 22L2 12L12 2Z"
-                stroke="currentColor"
-                strokeWidth="3"
-                fill="white"
-              />
-            </svg>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 items-center">
-            {/* Left Content */}
-            <div className="space-y-4 sm:space-y-6">
-              <h2 className="text-2xl capitalize sm:text-3xl lg:text-5xl font-lora font-medium text-[#004040] leading-tight">
-                Ready to Start Earning Stable Yields?
-              </h2>
-              <p className="text-sm sm:text-base lg:text-lg font-noto-sans text-[#525252] leading-relaxed">
-                Join thousands of users who are already earning consistent
-                returns from investment-grade securities on the blockchain.
-              </p>
-              <div className="pt-2 sm:pt-0">
-                <Link href="https://app.spout.finance">
-                  <button className="px-6 sm:px-8 py-3 sm:py-3 bg-[#004040] text-white font-noto-sans font-medium rounded-lg hover:bg-[#003030] transition-colors text-sm sm:text-base w-full sm:w-auto">
-                    Get Started
+                {!joined ? (
+                  <button className="text-[#FFF] font-['DM_Sans'] text-[20px] not-italic font-medium leading-normal flex w-[92px] h-[44px] pt-[10px] pr-[12px] pb-[10px] pl-[16px] justify-center items-center gap-[10px] rounded-[6px] border-[1px] border-solid border-[#A7C6ED] bg-[#004040]">
+                    Join
                   </button>
-                </Link>
-              </div>
-            </div>
-
-            {/* Right Image */}
-            <div className="relative mt-4 sm:mt-0">
-              <Image
-                src="/svg-assets/landingpage/spout-wallstreet.png"
-                alt="Stock Exchange Building"
-                width={600}
-                height={400}
-                className="w-full h-auto rounded-none max-w-md mx-auto lg:max-w-none"
-              />
+                ) : null}
+              </form>
+              {joined && (
+                <div className="flex items-center justify-center w-full mt-2 flex-nowrap whitespace-nowrap">
+                  <CheckCircle className="h-8 w-8 text-emerald-600 mr-2" />
+                  <span className="text-emerald-700 font-semibold text-lg align-middle">
+                    {message || "Already joined!"}
+                  </span>
+                </div>
+              )}
+              {error && !joined && (
+                <div className="w-full text-start text-red-500 text-xs mt-2 ">
+                  {error}
+                </div>
+              )}
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Diagonal blue lines at bottom */}
-      <div className="absolute bottom-0 w-full z-10 px-4 py-2 optimized">
-        <DiagonalPattern
-          width="100%"
-          height={34}
-          color="#A7C6ED"
-          strokeWidth={1.5}
-          spacing={14}
-        />
+        {/* Right Image */}
+        <div className="flex-1 w-full mt-4 sm:mt-0 flex mr-1">
+          <div className="bg-linear-gradient-blue-2 w-[18px] h-auto "></div>
+
+          <div className="w-[522px] h-[330px]">
+            <Image
+              src={background}
+              alt="Stock Exchange Building"
+              height={313}
+              className="w-full h-full rounded-none object-cover"
+            />
+          </div>
+        </div>
       </div>
     </section>
   );

@@ -1,5 +1,4 @@
-import BgGrain from "@/components/bg-grain-svg";
-import { DiagonalPattern } from "@/components/slant-dashes-svg";
+"use client";
 import Image from "next/image";
 
 export function InvestmentDifferent() {
@@ -9,39 +8,50 @@ export function InvestmentDifferent() {
       title: "Privacy Protection",
       description: "Confidential transactions with encrypted data",
       badges: ["Encrypted data", "Private transfers"],
+      gradient: "linear-gradient-green-2",
     },
     {
       icon: "/svg-assets/landingpage/security-safe.svg",
       title: "Regulated Assets",
-      description: " Backed by real U.S. public equities",
+      description: "Backed by real corporate debt obligations",
       badges: ["SEC Compliant", "FDIC protected"],
+      gradient: "linear-gradient-blue-2",
     },
     {
       icon: "/svg-assets/landingpage/flash.svg",
       title: "Instant Liquidity",
       description: "Trade tokens 24/7 on decentralized exchanges",
       badges: ["No Lock-up Period", "24/7 Trading"],
+      gradient: "linear-gradient-4",
     },
     {
       icon: "/svg-assets/landingpage/key.svg",
       title: "Confidential Assets",
       description: "Protected identity and private records",
       badges: ["Secure handling", "Private layers"],
+      gradient: "linear-gradient-5",
     },
   ];
 
+  // Map gradient identifiers to concrete Tailwind classes so they are discoverable by the
+  // Tailwind compiler (avoid using dynamic `bg-${...}` strings)
+  const gradientMap: Record<string, string> = {
+    "linear-gradient-green-2": "bg-linear-gradient-green-2",
+    "linear-gradient-blue-2": "bg-linear-gradient-blue-2",
+    "linear-gradient-4": "bg-linear-gradient-4",
+    "linear-gradient-5": "bg-linear-gradient-5",
+  };
+
   return (
-    <section className="w-full py-4 sm:py-6 lg:py-8 relative">
-      {/* Background grain for this section */}
-      <BgGrain className="absolute inset-0 w-full h-full z-0 optimized" />
+    <section className="w-full py-20 relative">
       {/* Section content */}
-      <div className="w-full max-w-[1800px] mx-auto px-4 sm:px-8 lg:px-16 pb-8">
+      <div className="w-full  px-4 sm:px-8 lg:px-0 pb-8 lg:pb-0">
         {/* Header */}
         <div className="text-center mb-8 sm:mb-12 lg:mb-16">
-          <h2 className="text-3xl capitalize sm:text-4xl lg:text-5xl font-lora font-medium text-[#004040] mb-4 sm:mb-6">
+          <h2 className="text-[#004040] text-center font-['PT_Serif'] text-[48px] not-italic font-normal leading-[56px] tracking-[0.192px]">
             Smarter On-chain Investing
           </h2>
-          <p className="text-base sm:text-lg font-noto-sans font-normal text-[#525252] max-w-4xl mx-auto leading-relaxed">
+          <p className="pt-5 text-[#757679] text-center font-['DM_Sans'] text-[16px] not-italic font-normal leading-[28px] tracking-[-0.064px]">
             Consistent returns from regulated investment-grade securities, with
             instant trading
             <br />
@@ -49,243 +59,59 @@ export function InvestmentDifferent() {
           </p>
         </div>
 
+        <div className="w-screen bg-transparent border-t border-b border-[#F3F4F6] "></div>
+
         {/* Features Grid */}
-        <div className="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-0 mb-8 sm:mb-12">
-          {/* Top-left diamond */}
-          <div className="hidden sm:block absolute -left-2 sm:-left-3 -top-2 sm:-top-3 z-20">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              className="text-blue-300 sm:w-6 sm:h-6"
-            >
-              <path
-                d="M12 2L22 12L12 22L2 12L12 2Z"
-                stroke="currentColor"
-                strokeWidth="3"
-                fill="white"
-              />
-            </svg>
-          </div>
-
-          {/* Top-middle diamond 1 (25%) */}
-          <div className="hidden sm:block absolute left-[25%] -translate-x-1/2 -top-2 sm:-top-3 z-20 optimized">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              className="text-blue-300 sm:w-6 sm:h-6"
-            >
-              <path
-                d="M12 2L22 12L12 22L2 12L12 2Z"
-                stroke="currentColor"
-                strokeWidth="3"
-                fill="white"
-              />
-            </svg>
-          </div>
-
-          {/* Top-middle diamond 2 (50%) */}
-          <div className="hidden sm:block absolute left-1/2 -translate-x-1/2 -top-2 sm:-top-3 z-20 optimized">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              className="text-blue-300 sm:w-6 sm:h-6"
-            >
-              <path
-                d="M12 2L22 12L12 22L2 12L12 2Z"
-                stroke="currentColor"
-                strokeWidth="3"
-                fill="white"
-              />
-            </svg>
-          </div>
-
-          {/* Top-middle diamond 3 (75%) */}
-          <div className="hidden sm:block absolute left-[75%] -translate-x-1/2 -top-2 sm:-top-3 z-20 optimized">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              className="text-blue-300 sm:w-6 sm:h-6"
-            >
-              <path
-                d="M12 2L22 12L12 22L2 12L12 2Z"
-                stroke="currentColor"
-                strokeWidth="3"
-                fill="white"
-              />
-            </svg>
-          </div>
-
-          {/* Top-right diamond */}
-          <div className="hidden sm:block absolute -right-2 sm:-right-3 -top-2 sm:-top-3 z-20 optimized">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              className="text-blue-300 sm:w-6 sm:h-6"
-            >
-              <path
-                d="M12 2L22 12L12 22L2 12L12 2Z"
-                stroke="currentColor"
-                strokeWidth="3"
-                fill="white"
-              />
-            </svg>
-          </div>
-
-          {/* Bottom-left diamond */}
-          <div className="hidden sm:block absolute -left-2 sm:-left-3 -bottom-2 sm:-bottom-3 z-20 optimized">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              className="text-blue-300 sm:w-6 sm:h-6"
-            >
-              <path
-                d="M12 2L22 12L12 22L2 12L12 2Z"
-                stroke="currentColor"
-                strokeWidth="3"
-                fill="white"
-              />
-            </svg>
-          </div>
-
-          {/* Bottom-middle diamond 1 (25%) */}
-          <div className="hidden sm:block absolute left-[25%] -translate-x-1/2 -bottom-2 sm:-bottom-3 z-20 optimized">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              className="text-blue-300 sm:w-6 sm:h-6"
-            >
-              <path
-                d="M12 2L22 12L12 22L2 12L12 2Z"
-                stroke="currentColor"
-                strokeWidth="3"
-                fill="white"
-              />
-            </svg>
-          </div>
-
-          {/* Bottom-middle diamond 2 (50%) */}
-          <div className="hidden sm:block absolute left-1/2 -translate-x-1/2 -bottom-2 sm:-bottom-3 z-20 optimized">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              className="text-blue-300 sm:w-6 sm:h-6"
-            >
-              <path
-                d="M12 2L22 12L12 22L2 12L12 2Z"
-                stroke="currentColor"
-                strokeWidth="3"
-                fill="white"
-              />
-            </svg>
-          </div>
-
-          {/* Bottom-middle diamond 3 (75%) */}
-          <div className="hidden sm:block absolute left-[75%] -translate-x-1/2 -bottom-2 sm:-bottom-3 z-20 optimized">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              className="text-blue-300 sm:w-6 sm:h-6"
-            >
-              <path
-                d="M12 2L22 12L12 22L2 12L12 2Z"
-                stroke="currentColor"
-                strokeWidth="3"
-                fill="white"
-              />
-            </svg>
-          </div>
-
-          {/* Bottom-right diamond */}
-          <div className="hidden sm:block absolute -right-2 sm:-right-3 -bottom-2 sm:-bottom-3 z-20 optimized">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              className="text-blue-300 sm:w-6 sm:h-6"
-            >
-              <path
-                d="M12 2L22 12L12 22L2 12L12 2Z"
-                stroke="currentColor"
-                strokeWidth="3"
-                fill="white"
-              />
-            </svg>
-          </div>
-
+        <div className="max-w-[1176px] mx-auto grid grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-0 mb-8 sm:mb-12 lg:mb-0">
           {features.map((feature, index) => (
-            <div
-              key={index}
-              className={`border bg-white border-gray-300 p-4 sm:p-6 rounded-none flex flex-col ${
-                index === 0
-                  ? "sm:rounded-l-lg"
-                  : index === features.length - 1
-                    ? "sm:rounded-r-lg"
-                    : ""
-              } ${index !== features.length - 1 ? "sm:border-r-0" : ""}`}
-            >
-              {/* Icon and Title */}
-              <div className="flex items-start gap-2 sm:gap-3 mb-3 sm:mb-4">
-                <Image
-                  src={feature.icon}
-                  alt={feature.title}
-                  width={24}
-                  height={24}
-                  className="w-5 h-5 sm:w-6 sm:h-6"
-                />
-                <h3 className="text-base sm:text-lg font-noto-sans font-semibold text-[#004040]">
-                  {feature.title}
-                </h3>
-              </div>
+            <div key={index} className="flex ">
+              <div
+                className={`${gradientMap[feature.gradient] ?? "bg-linear-gradient-1"} w-[18px] h-[183px]`}
+              />
+              <div
+                className={`flex-1 border border-[#F3F4F6] p-4 sm:p-6 rounded-none flex flex-col ${
+                  index === 0
+                    ? "sm:rounded-l-lg"
+                    : index === features.length - 1
+                      ? "sm:rounded-r-lg"
+                      : ""
+                } ${index !== features.length - 1 ? "sm:border-r-0" : ""}`}
+              >
+                {/* Icon and Title */}
+                <div className="flex items-start gap-2 sm:gap-3 mb-3 sm:mb-4">
+                  <Image
+                    src={feature.icon}
+                    alt={feature.title}
+                    width={24}
+                    height={24}
+                    className="w-5 h-5 sm:w-6 sm:h-6"
+                  />
+                  <h3 className="text-black font-[DM Sans] text-[20px] font-medium leading-[28px] tracking-[-0.08px]">
+                    {feature.title}
+                  </h3>
+                </div>
 
-              {/* Description */}
-              <p className="text-xs sm:text-sm font-noto-sans font-normal text-[#525252] mb-3 sm:mb-4 leading-relaxed grow">
-                {feature.description}
-              </p>
+                {/* Description */}
+                <p className="text-[#7D8690] font-[DM_Sans] text-[16px] leading-[28px] tracking-[-0.064px]">
+                  {feature.description}
+                </p>
 
-              {/* Badges */}
-              <div className="flex flex-wrap gap-1 sm:gap-2 mt-auto">
-                {feature.badges.map((badge, badgeIndex) => (
-                  <span
-                    key={badgeIndex}
-                    className="px-2 sm:px-3 py-1 text-xs font-medium text-[#004040] bg-blue-50 border border-blue-200 rounded"
-                  >
-                    {badge}
-                  </span>
-                ))}
+                {/* Badges */}
+                <div className="flex flex-wrap gap-1 sm:gap-2 mt-auto font-dm-sans">
+                  {feature.badges.map((badge, badgeIndex) => (
+                    <span
+                      key={badgeIndex}
+                      className="px-2 sm:px-3 py-1 rounded-[4px] border border-solid border-[#A7C6ED] bg-[rgba(167,198,237,0.35)] text-[#3D5678] text-center font-[DM Sans] text-[16px] font-medium leading-[28px] tracking-[-0.064px]"
+                    >
+                      {badge}
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
           ))}
         </div>
-      </div>
-
-      {/* Diagonal blue lines at bottom */}
-      <div className="relative z-10 w-full mt-10 px-4 py-2">
-        <DiagonalPattern
-          width="100%"
-          height={34}
-          color="#A7C6ED"
-          strokeWidth={1.5}
-          spacing={14}
-        />
+        <div className="h-[100px] w-screen bg-transparent border-t-2 border-b-2 border-[#F3F4F6]"></div>
       </div>
     </section>
   );
