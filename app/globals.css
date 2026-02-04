@@ -207,7 +207,7 @@
   }
 
   .smart-chain-text {
-    @apply text-[#3D5678] text-center font-[DM Sans] text-[16px] font-medium leading-[28px] tracking-[-0.064px];
+    @apply text-[#3D5678] text-center font-dm-sans text-[16px] font-medium leading-[28px] tracking-[-0.064px];
   }
 }
 

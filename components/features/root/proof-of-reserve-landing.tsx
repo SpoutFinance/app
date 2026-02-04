@@ -66,7 +66,7 @@ export function ProofOfReserveLanding() {
                   className="relative overflow-hidden rounded-[4px] flex justify-center items-center bg-white h-[59.819px] w-[208.511px] border-[2.5px] border-[#DEE9F8] drop-shadow-[filter: drop-shadow(0 4px 13.9px rgba(0, 0, 0, 0.05))]"
                   key={logo.id}
                 >
-                  <Image src={logo.src} alt={logo.alt} objectFit="contain" />
+                  <Image src={logo.src} alt={logo.alt} className="object-contain" />
                 </div>
               ))}
             </div>
