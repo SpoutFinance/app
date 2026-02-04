@@ -5,7 +5,6 @@ import { User, Shield } from "lucide-react";
 import KYCFlow from "@/components/kycFlow";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { getAppRoute } from "@/lib/utils";
 import {
   Tooltip,
   TooltipContent,
@@ -23,14 +22,14 @@ export default function ProfileTabs() {
   useEffect(() => {
     setTab(initialTab);
     if (initialTab !== "kyc") {
-      router.replace(getAppRoute("/app/profile?tab=kyc"));
+      router.replace("/app/profile?tab=kyc");
     }
   }, [initialTab, router]);
 
   const handleTabChange = (value: string) => {
     if (value === "profile") return;
     setTab(value);
-    router.replace(getAppRoute(`/app/profile?tab=${value}`));
+    router.replace(`/app/profile?tab=${value}`);
   };
 
   return (

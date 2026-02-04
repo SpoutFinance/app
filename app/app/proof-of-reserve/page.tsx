@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useReserveContract } from "@/hooks/view/onChain/useReserveContract";
 import { useTotalSupply } from "@/hooks/view/onChain/useTotalSupply";
 import { useMarketData } from "@/hooks/api/useMarketData";
@@ -10,6 +11,7 @@ import {
   ReserveSummary,
   ReserveOverview,
   ReserveVerification,
+  CorporateBonds,
 } from "@/components/features/reserve";
 import { useContractAddress } from "@/lib/addresses";
 
@@ -19,9 +21,7 @@ function ProofOfReservePage() {
   const { price: currentPrice, isLoading: priceLoading } = useMarketData("LQD");
   const { data: lqdYield, isLoading: lqdYieldLoading } = useYieldData("LQD");
 
-  const reserveContractAddress = useContractAddress(
-    "proofOfReserve",
-  ) as `0x${string}`;
+  const reserveContractAddress = useContractAddress("proofOfReserve") as `0x${string}`;
   const { requestReserves, isRequestPending, totalReserves } =
     useReserveContract(reserveContractAddress);
 
@@ -48,7 +48,26 @@ function ProofOfReservePage() {
         priceLoading={priceLoading}
       />
 
-      <ReserveOverview />
+      <Tabs defaultValue="overview" className="space-y-6">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="corporate-bonds">Corporate Bonds</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="overview" className="space-y-6">
+          <ReserveOverview />
+        </TabsContent>
+
+        <TabsContent value="corporate-bonds" className="space-y-6">
+          <CorporateBonds
+            totalSupply={totalSupplyTokens}
+            currentPrice={currentPrice}
+            yieldRate={yieldRate}
+            priceLoading={priceLoading}
+            lqdYieldLoading={lqdYieldLoading}
+          />
+        </TabsContent>
+      </Tabs>
 
       <ReserveVerification />
     </div>

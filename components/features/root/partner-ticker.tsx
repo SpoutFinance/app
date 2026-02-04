@@ -1,18 +1,24 @@
 "use client";
 
-import React, { useRef, useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 
 const partners = [
   {
-    src: "/partners/solana-logo.svg",
-    alt: "Solana",
-    link: "https://solana.org/",
+    src: "/partners/chainlink-logo.svg",
+    alt: "Chainlink",
+    link: "https://chain.link/",
   },
   {
-    src: "/partners/Solayer.svg",
-    alt: "Solayer",
-    link: "https://solayer.org/",
+    src: "/partners/inco-logo.svg",
+    alt: "Inco",
+    link: "https://www.inco.org/",
+  },
+  {
+    src: "/partners/blocksense-logo.svg",
+    alt: "Blocksense",
+    link: "https://blocksense.network/",
   },
   {
     src: "/partners/circle-logo.svg",
@@ -20,170 +26,142 @@ const partners = [
     link: "https://circle.com/",
   },
   {
-    src: "/partners/Raydium.svg",
-    alt: "Raydium",
-    link: "https://raydium.io/",
+    src: "/partners/solana-logo.svg",
+    alt: "Solana",
+    link: "https://solana.org/",
   },
   {
-    src: "/partners/Jupiter.svg",
-    alt: "Jupiter",
-    link: "https://jup.ag/",
+    src: "/partners/ripple-logo.svg",
+    alt: "Ripple",
+    link: "https://ripple.com/",
   },
   {
-    src: "/partners/chainlink-logo.svg",
-    alt: "Chainlink",
-    link: "https://chain.link/",
+    src: "/partners/Pharos.svg",
+    alt: "Pharos",
+    link: "https://pharosnetwork.xyz/",
   },
+  // {
+  //   src: "/partners/faroswap-full.svg",
+  //   alt: "Faroswap",
+  //   link: "https://faroswap.xyz/",
+  // }
   {
-    src: "/partners/Tether.svg",
-    alt: "Tether",
-    link: "https://tether.to/",
-  },
-  {
-    src: "/partners/Agora.svg",
-    alt: "Agora",
-    link: "https://agora.finance/",
-  },
-  {
-    src: "/partners/Pyth.svg",
-    alt: "Pyth",
-    link: "https://pyth.network/",
-  },
-  {
-    src: "/partners/inco-logo.svg",
-    alt: "Inco",
-    link: "https://www.inco.org/",
+    src: "/partners/injective-logo.svg",
+    alt: "Injective",
+    link: "https://injective.com/",
   },
 ];
 
 export function PartnerTicker() {
-  const firstSetRef = useRef<HTMLDivElement>(null);
-  const [scrollWidth, setScrollWidth] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+
+  const tickerRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  const offsetRef = useRef(0);
+  const segmentWidthRef = useRef(0);
+  const rafIdRef = useRef<number | null>(null);
+
+  const speed = 0.7;
 
   useEffect(() => {
-    const updateWidth = () => {
-      if (firstSetRef.current) {
-        setScrollWidth(firstSetRef.current.scrollWidth);
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    if (prefersReducedMotion) return;
+
+    const updateSegmentWidth = () => {
+      if (contentRef.current) {
+        segmentWidthRef.current = contentRef.current.scrollWidth / 3;
       }
     };
 
-    // Wait for images to load
-    const timeout = setTimeout(updateWidth, 100);
-    window.addEventListener("resize", updateWidth);
+    updateSegmentWidth();
+    window.addEventListener("resize", updateSegmentWidth);
+
+    const animate = () => {
+      if (!tickerRef.current || isPaused) return;
+
+      let next = offsetRef.current - speed;
+      const segment = segmentWidthRef.current;
+
+      if (segment > 0 && Math.abs(next) >= segment) {
+        next = 0;
+      }
+
+      offsetRef.current = next;
+      tickerRef.current.style.transform = `translate3d(${next}px,0,0)`;
+
+      rafIdRef.current = requestAnimationFrame(animate);
+    };
+
+    const start = () => {
+      if (rafIdRef.current == null) {
+        rafIdRef.current = requestAnimationFrame(animate);
+      }
+    };
+
+    const stop = () => {
+      if (rafIdRef.current != null) {
+        cancelAnimationFrame(rafIdRef.current);
+        rafIdRef.current = null;
+      }
+    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          start();
+        } else {
+          stop();
+        }
+      },
+      { threshold: 0.1 },
+    );
+
+    if (tickerRef.current) {
+      observer.observe(tickerRef.current);
+    }
 
     return () => {
-      clearTimeout(timeout);
-      window.removeEventListener("resize", updateWidth);
+      stop();
+      observer.disconnect();
+      window.removeEventListener("resize", updateSegmentWidth);
     };
-  }, []);
+  }, [isPaused]);
 
   return (
-    <div className="w-full rounded-lg border border-gray-300 relative">
-      {/* Horizontal lines extending from center to screen edges */}
-      {/* Left side line */}
-      <div className="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 -translate-x-[50vw] w-[50vw] h-[1.5px] bg-[#A7C6ED] z-10"></div>
-      {/* Right side line */}
-      <div className="hidden md:block absolute right-0 top-1/2 -translate-y-1/2 translate-x-[50vw] w-[50vw] h-[1.5px] bg-[#A7C6ED] z-10"></div>
-
-      {/* Diamonds at intersection points with vertical page lines */}
-      {/* Left intersection diamond - positioned at left vertical page line */}
-      <div className="hidden md:block absolute -left-[120px] top-1/2 -translate-y-1/2 z-20">
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          className="text-blue-300"
-        >
-          <path
-            d="M12 2L22 12L12 22L2 12L12 2Z"
-            stroke="currentColor"
-            strokeWidth="3"
-            fill="white"
-          />
-        </svg>
-      </div>
-
-      {/* Right intersection diamond - positioned at right vertical page line */}
-      <div className="hidden md:block absolute -right-[120px] top-1/2 -translate-y-1/2 z-20">
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          className="text-blue-300"
-        >
-          <path
-            d="M12 2L22 12L12 22L2 12L12 2Z"
-            stroke="currentColor"
-            strokeWidth="3"
-            fill="white"
-          />
-        </svg>
-      </div>
-      <div className="flex flex-col sm:flex-row items-stretch">
-        {/* Fixed "Who We're Working With" box */}
-        <div className="bg-white rounded-t-lg sm:rounded-t-none sm:rounded-l-lg px-4 sm:px-6 lg:px-8 py-4 sm:py-6 border-b sm:border-b-0 sm:border-r border-gray-300 shrink-0 w-full sm:w-auto flex items-center justify-center">
-          <h3 className="text-base sm:text-lg font-noto-sans text-[#334155] font-semibold text-center leading-tight">
-            Who We&apos;re
-            <br />
-            Working With
+    <div className="w-full overflow-hidden h-[96px] flex items-center">
+      <div className="flex flex-col sm:flex-row items-center">
+        <div className="pr-12 flex-shrink-0">
+          <h3 className="text-black font-dm-sans text-[18px] not-italic font-medium leading-6 tracking-[0.072px]">
+            WORKING WITH
           </h3>
         </div>
 
-        {/* Animated partner logos */}
-        <div className="flex-1 overflow-hidden bg-white rounded-b-lg sm:rounded-bl-none sm:rounded-r-lg">
-          <style>
-            {scrollWidth > 0
-              ? `
-              @keyframes ticker-scroll {
-                0% { transform: translateX(0); }
-                100% { transform: translateX(-${scrollWidth}px); }
-              }
-            `
-              : ""}
-          </style>
+        <div className="flex-1 overflow-hidden">
           <div
-            className="flex hover:paused motion-reduce:animate-none"
-            style={{
-              animation:
-                scrollWidth > 0 ? `ticker-scroll 20s linear infinite` : "none",
-            }}
+            ref={tickerRef}
+            className="flex items-center will-change-transform"
           >
-            {/* First set - measure this */}
-            <div ref={firstSetRef} className="flex shrink-0">
-              {partners.map((partner, idx) => (
-                <div
-                  key={`first-${idx}`}
-                  className="bg-white px-6 sm:px-8 lg:px-12 py-4 sm:py-5 lg:py-6 border-r border-gray-200 flex items-center justify-center min-w-[140px] sm:min-w-[160px] lg:min-w-[180px] relative shrink-0"
-                >
-                  <Image
-                    src={partner.src}
-                    alt={partner.alt}
-                    width={80}
-                    height={80}
-                    className="h-10 sm:h-12 lg:h-14 w-auto max-w-[100px] sm:max-w-[120px] lg:max-w-[140px] object-contain"
-                    draggable={false}
-                  />
-                </div>
-              ))}
-            </div>
-            {/* Duplicate set for seamless loop */}
-            <div className="flex shrink-0">
-              {partners.map((partner, idx) => (
-                <div
-                  key={`second-${idx}`}
-                  className="bg-white px-6 sm:px-8 lg:px-12 py-4 sm:py-5 lg:py-6 border-r border-gray-200 flex items-center justify-center min-w-[140px] sm:min-w-[160px] lg:min-w-[180px] relative shrink-0"
-                >
-                  <Image
-                    src={partner.src}
-                    alt={partner.alt}
-                    width={80}
-                    height={80}
-                    className="h-10 sm:h-12 lg:h-14 w-auto max-w-[100px] sm:max-w-[120px] lg:max-w-[140px] object-contain"
-                    draggable={false}
-                  />
-                </div>
+            <div
+              ref={contentRef}
+              className="flex shrink-0 justify-center items-center"
+            >
+              {[...partners, ...partners, ...partners].map((p, i) => (
+                <Link key={i} href={p.link} target="_blank">
+                  <div className="px-8 py-5 min-w-[160px] m-h-[30px] flex justify-center">
+                    <Image
+                      src={p.src}
+                      alt={p.alt}
+                      width={100}
+                      height={30}
+                      draggable={false}
+                      className="object-contain"
+                    />
+                  </div>
+                </Link>
               ))}
             </div>
           </div>

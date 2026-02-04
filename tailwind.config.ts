@@ -1,6 +1,5 @@
 import type { Config } from "tailwindcss";
 import defaultTheme from "tailwindcss/defaultTheme";
-import tailwindcssAnimate from "tailwindcss-animate";
 
 // Helper function to flatten the color palette
 function flattenColorPalette(colors: Record<string, any>) {
@@ -19,7 +18,7 @@ function flattenColorPalette(colors: Record<string, any>) {
 }
 
 const config = {
-  darkMode: "class",
+  darkMode: ["class"],
   content: [
     "./pages/**/*.{ts,tsx}",
     "./components/**/*.{ts,tsx}",
@@ -36,10 +35,18 @@ const config = {
       },
     },
     extend: {
+      gridTemplateRows: {
+        "fit-3": "repeat(3, minmax(0, 1fr))",
+      },
+      gridTemplateColumns: {
+        "fit-2": "repeat(2, minmax(0, 1fr))",
+      },
       fontFamily: {
         sans: ["var(--font-sans)", ...defaultTheme.fontFamily.sans],
         lora: ["var(--font-lora)", ...defaultTheme.fontFamily.serif],
         "noto-sans": ["var(--font-noto-sans)", ...defaultTheme.fontFamily.sans],
+        "pt-serif": ["var(--font-pt-serif)", ...defaultTheme.fontFamily.serif],
+        "dm-sans": ["var(--font-dm-sans)", ...defaultTheme.fontFamily.sans],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -86,18 +93,43 @@ const config = {
           ring: "hsl(var(--sidebar-ring))",
         },
         spout: {
-          primary: "#004040",
-          accent: "#A7C6ED",
-          "text-muted": "#525252",
-          "text-secondary": "#3D5678",
-          "text-gray": "#8C9BAA",
-          border: "#E5E5E5",
+          primary: "hsl(var(--spout-primary))",
+          accent: "hsl(var(--spout-accent))",
+          "text-muted": "hsl(var(--spout-text-muted))",
+          "text-secondary": "hsl(var(--spout-text-secondary))",
+          "text-gray": "hsl(var(--spout-text-gray))",
+          border: "hsl(var(--spout-border))",
+          blue: "hsl(var(--spout-blue))",
+          gray: "hsl(var(--spout-gray))",
+          "light-gray": "hsl(var(--spout-light-gray))",
+          "deep-teal": "#004040",
+          "text-muted-dark": "#525252",
         },
       },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+      },
+      backgroundImage: {
+        "radial-gradient-green-blue":
+          "`radial-gradient(60% 100% at left 60%, rgba(61, 199, 132, 0.38), transparent 70%),\r\n          radial-gradient(150% 100% at right 60%, rgba(88, 162, 255, 0.38), transparent 70%)`",
+        "linear-gradient-1":
+          "linear-gradient(180deg, #ABFFE1 0%, #DCFFE2 100%)",
+        "linear-gradient-2":
+          "linear-gradient(180deg, #FEC8BB 0%, #FFE4C8 100%)",
+        "linear-gradient-3":
+          "linear-gradient(180deg, #ADE1FF 0%, #E8FBF9 100%)",
+        "linear-gradient-green-2":
+          "linear-gradient(180deg, #48CA83 0%, #C1F672 100%)",
+        "linear-gradient-blue-2":
+          "linear-gradient(180deg, #0168FF 0%, #02BFFF 100%)",
+        "linear-gradient-4":
+          "linear-gradient(180deg, #FEBB46 0%, #FEE6A9 100%)",
+        "linear-gradient-5":
+          "linear-gradient(180deg, #FAB6E4 0%, #F8CCE9 100%)",
+        "linear-gradient-blue-3":
+          "linear-gradient(180deg, #4FACFF 0%, #00F5FF 100%)",
       },
       keyframes: {
         "accordion-down": {
@@ -116,23 +148,14 @@ const config = {
             height: "0",
           },
         },
-        scroll: {
-          "0%": {
-            transform: "translateX(0)",
-          },
-          "100%": {
-            transform: "translateX(calc(var(--scroll-width) * -1))",
-          },
-        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        scroll: "scroll 20s linear infinite",
       },
     },
   },
-  plugins: [tailwindcssAnimate, addVariablesForColors],
+  plugins: [require("tailwindcss-animate"), addVariablesForColors],
 } satisfies Config;
 
 export default config;

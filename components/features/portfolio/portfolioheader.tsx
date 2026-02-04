@@ -73,10 +73,7 @@ export default function PortfolioHeader({
         </div>
         <div className="flex gap-4 mt-6">
           <Link href="/app/trade">
-            <Button
-              variant="white"
-              className="text-[#004040] font-semibold border border-[#004040] hover:bg-[#004040] hover:text-white"
-            >
+            <Button variant="white" className="text-[#004040] font-semibold border border-[#004040] hover:bg-[#004040] hover:text-white">
               <Plus className="h-4 w-4 mr-2" />
               Add Position
             </Button>

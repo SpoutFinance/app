@@ -6,7 +6,7 @@ import onchainidABI from "@/abi/onchainid.json";
 import { AbiCoder, keccak256 } from "ethers";
 import { contractaddresses } from "@/lib/addresses";
 import { useChainId } from "wagmi";
-import { base } from "@/lib/chainconfigs/base";
+import { pharos } from "@/lib/chainconfigs/pharos";
 import identityRegistryABI from "@/abi/identityregistry.json";
 import tokenABI from "@/abi/token.json";
 import { useState, useEffect } from "react";
@@ -23,7 +23,7 @@ export function useOnchainID({
   topic?: number;
 }) {
   const chainId = useChainId();
-  const isBase = chainId === base.id;
+  const isPharos = chainId === pharos.id;
 
   // Initialize cache from localStorage immediately to prevent initial fetch
   const [cachedIdentityAddress, setCachedIdentityAddress] = useState<
@@ -38,8 +38,14 @@ export function useOnchainID({
   // First check if onchain ID actually exists using ID factory
   // Only fetch if we don't have a cached result or if user address changed
   const canReadIdentity =
-    !!userAddress && !!idFactoryAddress && isBase && !cachedIdentityAddress;
+    !!userAddress && !!idFactoryAddress && isPharos && !cachedIdentityAddress;
 
+  console.log("[useOnchainID] 🔍 Fetch decision:", {
+    userAddress,
+    idFactoryAddress,
+    cachedIdentityAddress,
+    canReadIdentity,
+  });
   const {
     data: actualOnchainID,
     isLoading: isLoadingActualID,
@@ -70,7 +76,7 @@ export function useOnchainID({
 
   // Check verification status using identity registry
   const canReadVerification =
-    !!userAddress && !!identityRegistryAddress && isBase;
+    !!userAddress && !!identityRegistryAddress && isPharos;
   const {
     data: isVerified,
     isLoading: isVerificationLoading,
@@ -93,6 +99,13 @@ export function useOnchainID({
     !cachedIdentityAddress &&
     (isLoadingActualID || isLoadingRegistry || isVerificationLoading);
 
+  console.log("[useOnchainID] 🔍 Loading state:", {
+    cachedIdentityAddress,
+    isLoadingActualID,
+    isLoadingRegistry,
+    isVerificationLoading,
+    isLoading,
+  });
   const error = actualIDError || registryError || verificationError;
 
   // Combined refetch function
@@ -108,8 +121,8 @@ export function useOnchainID({
 
   const hasOnchainID = Boolean(
     onchainID &&
-    typeof onchainID === "string" &&
-    onchainID !== "0x0000000000000000000000000000000000000000",
+      typeof onchainID === "string" &&
+      onchainID !== "0x0000000000000000000000000000000000000000",
   );
 
   // Persistent state to track if user has ever had an onchain ID
@@ -122,6 +135,13 @@ export function useOnchainID({
         `hasEverHadOnchainID_${userAddress}_${chainId}`,
       );
       const initialHasEverHad = storedHasEverHad === "true";
+
+      console.log("[useOnchainID] 🔍 Loading from localStorage (useEffect):", {
+        userAddress,
+        storedHasEverHad,
+        initialHasEverHad,
+        cachedIdentityAddress,
+      });
 
       setHasEverHadOnchainID(initialHasEverHad);
       // Only set cached address if it's not already set from initial state
@@ -155,15 +175,53 @@ export function useOnchainID({
 
   // Track when user has an onchain ID and persist that state
   useEffect(() => {
+    console.log("[useOnchainID] 🔄 Effect triggered:", {
+      hasOnchainID,
+      isLoading,
+      userAddress,
+    });
+
     if (hasOnchainID === true && !isLoading && userAddress) {
+      console.log(
+        "[useOnchainID] ✅ User has onchain ID, setting persistent state",
+      );
       setHasEverHadOnchainID(true);
       // Store in localStorage for persistence across remounts
       localStorage.setItem(
         `hasEverHadOnchainID_${userAddress}_${chainId}`,
         "true",
       );
+      console.log(
+        "[useOnchainID] 💾 Stored in localStorage:",
+        `hasEverHadOnchainID_${userAddress}_${chainId}`,
+      );
     }
   }, [hasOnchainID, isLoading, userAddress, chainId]);
+
+  // Debug: Log any changes to hasEverHadOnchainID
+  useEffect(() => {
+    console.log(
+      "[useOnchainID] 🎯 hasEverHadOnchainID changed to:",
+      hasEverHadOnchainID,
+    );
+
+    // Check if localStorage still has the value
+    if (userAddress && typeof window !== "undefined") {
+      const stored = localStorage.getItem(
+        `hasEverHadOnchainID_${userAddress}_${chainId}`,
+      );
+      console.log("[useOnchainID] 🔍 localStorage check:", {
+        key: `hasEverHadOnchainID_${userAddress}_${chainId}`,
+        stored,
+        matches: stored === "true" && hasEverHadOnchainID === true,
+      });
+    }
+  }, [hasEverHadOnchainID, userAddress, chainId]);
+
+  // Debug: Track userAddress changes
+  useEffect(() => {
+    console.log("[useOnchainID] 👤 userAddress changed to:", userAddress);
+  }, [userAddress]);
 
   // Return null instead of zero address to prevent UI from showing it
   const onchainIDAddress =
@@ -180,6 +238,10 @@ export function useOnchainID({
     claimId = keccak256(
       abiCoder.encode(["address", "uint256"], [issuer as `0x${string}`, topic]),
     ) as `0x${string}`;
+    // Log only when all values are present
+    // console.log("issuer address", issuer);
+    // console.log("topic", topic);
+    // console.log("claimId", claimId);
   }
 
   // Only read claim if onchainID and claimId are present
@@ -199,6 +261,12 @@ export function useOnchainID({
 
   // Check if claim is valid (issuer should not be zero address and topic should match)
   let hasKYCClaim = false;
+  console.log("kycClaim data:", kycClaim);
+  console.log("🔍 KYC Claim Verification Debug:");
+  console.log("Claim data:", kycClaim);
+  console.log("Expected issuer:", issuer);
+  console.log("Expected topic:", topic);
+  console.log("ClaimId:", claimId);
 
   if (kycClaim && issuer && topic !== undefined && Array.isArray(kycClaim)) {
     const claimIssuer = kycClaim[2];
@@ -210,16 +278,32 @@ export function useOnchainID({
     const isNotZeroAddress =
       claimIssuer !== "0x0000000000000000000000000000000000000000";
 
+    // console.log("Claim issuer:", claimIssuer);
+    // console.log("Claim topic:", claimTopic);
+    // console.log("Issuer match:", isIssuerMatch);
+    // console.log("Topic match:", isTopicMatch);
+    // console.log("Not zero address:", isNotZeroAddress);
+
     hasKYCClaim = isIssuerMatch && isTopicMatch && isNotZeroAddress;
+    console.log("Final hasKYCClaim:", hasKYCClaim);
+  } else {
+    console.log("❌ KYC claim verification failed - missing data:");
+    console.log("kycClaim exists:", !!kycClaim);
+    console.log("issuer exists:", !!issuer);
+    console.log("topic defined:", topic !== undefined);
+    console.log("is array:", Array.isArray(kycClaim));
   }
 
   // Combined refetch function that refetches both identity and claim data
   const refetch = async () => {
+    console.log("🔄 Refetching onchain identity data...");
     await refetchIdentity();
     if (canReadClaim) {
       await refetchClaim();
     }
   };
+
+  console.log("user has the OnchainID?", hasOnchainID);
 
   return {
     hasOnchainID,

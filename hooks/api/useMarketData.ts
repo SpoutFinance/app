@@ -6,7 +6,7 @@ import { clientCacheHelpers } from "@/lib/cache/client-cache";
 // This matches what our API returns
 interface MarketDataResponse {
   symbol: string;
-  price: number; // Ask/current price from Alpaca
+  price: number; // Ask price from Alpaca (no mid price calculation)
   askPrice: number; // Original ask price from Alpaca
   bidPrice: number; // Original bid price from Alpaca
   timestamp: string;
@@ -70,7 +70,7 @@ export function useMarketData(symbol: string) {
     isLoading,
     error,
     // These values come from our API's transformed response
-    price: data?.price ?? null, // current price from Alpaca/our API
+    price: data?.price ?? null, // Ask price from Alpaca
     askPrice: data?.askPrice ?? null, // Original ask price
     bidPrice: data?.bidPrice ?? null, // Original bid price
     timestamp: data?.timestamp ?? null,

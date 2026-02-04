@@ -1,78 +1,35 @@
 "use client";
-import React, { useEffect, useState, useMemo, Suspense } from "react";
-import dynamic from "next/dynamic";
-import { useSearchParams, useRouter } from "next/navigation";
-import { getAppRoute } from "@/lib/utils";
+import React, { useEffect, useState } from "react";
 import { clientCacheHelpers } from "@/lib/cache/client-cache";
-import { TradeEquitySearch } from "@/components/features/trade/tradeequitysearch";
+import TradeTokenSelector from "@/components/features/trade/tradetokenselector";
+import TradeChart from "@/components/features/trade/tradechart";
 import TradeForm from "@/components/features/trade/tradeform";
-
-// Lazy load heavy chart component to reduce initial bundle size
-const TradeChart = dynamic(
-  () => import("@/components/features/trade/tradechart"),
-  {
-    loading: () => (
-      <div className="h-[400px] bg-gray-50 animate-pulse rounded-lg flex items-center justify-center">
-        <span className="text-gray-400">Loading chart...</span>
-      </div>
-    ),
-    ssr: false,
-  },
-);
 import TransactionModal from "@/components/ui/transaction-modal";
-import { useAccount, useConfig, useChainId } from "wagmi";
+import { useAccount, useConfig } from "wagmi";
 import { useERC20Approve } from "@/hooks/writes/onChain/useERC20Approve";
 import { useOrdersContract } from "@/hooks/writes/onChain/useOrders";
-import { useAssetPrice } from "@/hooks/api/useAssetPrice";
 import { waitForTransactionReceipt } from "wagmi/actions";
 import { useTokenBalance } from "@/hooks/view/onChain/useTokenBalance";
 import { useUSDCTokenBalance } from "@/hooks/view/onChain/useUSDCTokenBalance";
 import { useContractAddress } from "@/lib/addresses";
 import { useReadContract } from "wagmi";
 import erc3643ABI from "@/abi/erc3643.json";
-import { getAssetConfig, getTokenAddress } from "@/lib/types/assets";
 
-const TradePageContent = () => {
-  const chainId = useChainId();
-  const searchParams = useSearchParams();
-  const tickerParam = searchParams?.get("ticker");
-  const router = useRouter();
+const TOKENS = [{ label: "LQD", value: "LQD" }];
 
-  // Redirect to equities page if no ticker is selected
-  useEffect(() => {
-    if (!tickerParam) {
-      router.replace(getAppRoute("/app/trade/equities"));
-      return;
-    }
-  }, [tickerParam, router]);
-
-  const [selectedToken, setSelectedToken] = useState(tickerParam || "LQD");
+const TradePage = () => {
+  const [selectedToken, setSelectedToken] = useState("LQD");
+  const [tokenData, setTokenData] = useState<any[]>([]);
+  const [currentPrice, setCurrentPrice] = useState<number | null>(null);
+  const [priceLoading, setPriceLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [buyUsdc, setBuyUsdc] = useState("");
   const [sellToken, setSellToken] = useState("");
   const [tradeType, setTradeType] = useState<"buy" | "sell">("buy");
-  const [etfData, setEtfData] = useState<any>(null);
-
-  // Get asset config for selected token
-  const assetConfig = useMemo(
-    () => getAssetConfig(selectedToken),
-    [selectedToken],
+  const [chartDataSource, setChartDataSource] = useState<"real" | "mock">(
+    "real",
   );
-
-  // Get token address dynamically from registry
-  const tokenAddress = useMemo(() => {
-    if (!assetConfig) return undefined;
-    return getTokenAddress(selectedToken, chainId);
-  }, [selectedToken, chainId, assetConfig]);
-
-  // Use generic asset price hook for selected token
-  const {
-    latestPrice,
-    previousPrice: prevPrice,
-    dailyChangePercent,
-    chartData,
-    isLoading: priceLoading,
-    chartLoading,
-  } = useAssetPrice(selectedToken);
+  const [etfData, setEtfData] = useState<any>(null);
 
   // Transaction modal state
   const [transactionModal, setTransactionModal] = useState({
@@ -87,14 +44,14 @@ const TradePageContent = () => {
   const { address: userAddress } = useAccount();
   const ordersAddress = useContractAddress("orders") as `0x${string}`;
   const usdcAddress = useContractAddress("usdc") as `0x${string}`;
-  const { approve, isPending: isApprovePending } = useERC20Approve(usdcAddress);
+  const rwaTokenAddress = useContractAddress("rwatoken") as `0x${string}`;
   const {
-    buyAsset,
-    sellAsset,
-    isPending: isOrderPending,
-    isSuccess: isOrderSuccess,
-    error: orderError,
-  } = useOrdersContract();
+    amountUi: tokenBalance,
+    isLoading: balanceLoading,
+    refetch: refetchTokenBalance,
+  } = useTokenBalance(rwaTokenAddress, (userAddress ?? null) as any);
+  const { approve, isPending: isApprovePending } = useERC20Approve(usdcAddress);
+  const { buyAsset, sellAsset, isPending: isOrderPending, isSuccess: isOrderSuccess, error: orderError } = useOrdersContract();
   const config = useConfig();
   const {
     amountUi: usdcBalance,
@@ -103,29 +60,14 @@ const TradePageContent = () => {
     refetch: refetchUSDCBalance,
   } = useUSDCTokenBalance();
 
-  // Get token decimals from asset config or contract
+  // Get token decimals dynamically
   const { data: tokenDecimals } = useReadContract({
-    address: tokenAddress,
+    address: rwaTokenAddress,
     abi: erc3643ABI.abi,
     functionName: "decimals",
-    query: { enabled: Boolean(tokenAddress) },
   });
 
-  const actualTokenDecimals = useMemo(() => {
-    if (tokenDecimals) return Number(tokenDecimals);
-    if (assetConfig) return assetConfig.decimals;
-    return 18; // Default to 18 decimals
-  }, [tokenDecimals, assetConfig]);
-
-  // Get token balance for selected token
-  const {
-    amountUi: tokenBalance,
-    isLoading: balanceLoading,
-    refetch: refetchTokenBalance,
-  } = useTokenBalance(
-    tokenAddress || ("0x" as `0x${string}`),
-    (userAddress ?? null) as any,
-  );
+  const actualTokenDecimals = tokenDecimals ? Number(tokenDecimals) : 6;
 
   // Monitor order transaction state
   useEffect(() => {
@@ -163,13 +105,6 @@ const TradePageContent = () => {
     refetchUSDCBalance,
   ]);
 
-  // Update selected token when ticker param changes
-  useEffect(() => {
-    if (tickerParam) {
-      setSelectedToken(tickerParam);
-    }
-  }, [tickerParam]);
-
   useEffect(() => {
     async function fetchETFData() {
       try {
@@ -180,15 +115,93 @@ const TradePageContent = () => {
     fetchETFData();
   }, [selectedToken]);
 
-  // Calculate price change from latest and previous prices
-  const priceChange = useMemo(() => {
-    if (latestPrice && prevPrice) {
-      return latestPrice - prevPrice;
+  useEffect(() => {
+    async function fetchChartData() {
+      setLoading(true);
+      try {
+        const json = await clientCacheHelpers.fetchStockData(selectedToken);
+        if (json.error) {
+          // Don't use mock data, just keep the loading state
+          console.log("📊 Chart data error:", json.error);
+          setTokenData([]);
+          setChartDataSource("real");
+        } else {
+          setTokenData(json.data || []);
+          setChartDataSource(json.dataSource);
+        }
+      } catch (e) {
+        // Don't use mock data, just keep the loading state
+        console.log("📊 Chart data fetch error:", e);
+        setTokenData([]);
+        setChartDataSource("real");
+      } finally {
+        setLoading(false);
+      }
     }
-    return 0;
-  }, [latestPrice, prevPrice]);
+    fetchChartData();
+  }, [selectedToken]);
 
-  const priceChangePercent = dailyChangePercent || 0;
+  useEffect(() => {
+    let isMounted = true;
+    let lastKnownPrice: number | null = null;
+
+    async function fetchPriceData() {
+      try {
+        setPriceLoading(true);
+        const json = await clientCacheHelpers.fetchMarketData(selectedToken);
+        if (!isMounted) return;
+
+        if (json.price && json.price > 0) {
+          // Only update if price has actually changed
+          if (lastKnownPrice !== json.price) {
+            setCurrentPrice(json.price);
+            lastKnownPrice = json.price;
+          }
+        } else {
+          setCurrentPrice(null); // No valid price data
+        }
+      } catch (e) {
+        if (isMounted) {
+          setCurrentPrice(null); // Error fetching price
+        }
+      } finally {
+        if (isMounted) {
+          setPriceLoading(false);
+        }
+      }
+    }
+
+    // Initial fetch
+    fetchPriceData();
+
+    // Refetch every 5 minutes to reduce Vercel compute usage
+    const interval = setInterval(fetchPriceData, 5 * 60 * 1000);
+
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+    };
+  }, [selectedToken]);
+
+  // Use chart data as primary source for price calculations
+  const chartLatestPrice =
+    tokenData.length > 0 ? tokenData[tokenData.length - 1].close : null;
+  const chartPrevPrice =
+    tokenData.length > 1 ? tokenData[tokenData.length - 2].close : null;
+
+  // Use currentPrice (from market data API) as fallback only if chart data is not available
+  const latestPrice = chartLatestPrice || currentPrice || null;
+  const prevPrice =
+    chartPrevPrice ||
+    (tokenData.length > 0
+      ? tokenData[tokenData.length - 1].close
+      : latestPrice);
+
+  const priceChange = latestPrice && prevPrice ? latestPrice - prevPrice : 0;
+  const priceChangePercent =
+    prevPrice > 0 && latestPrice
+      ? ((latestPrice - prevPrice) / prevPrice) * 100
+      : 0;
 
   const tradingFee = 0.0025;
   const estimatedTokens =
@@ -232,84 +245,25 @@ const TradePageContent = () => {
     });
 
     try {
-      // Validate inputs before proceeding
-      if (
-        !tokenAddress ||
-        tokenAddress === "0x0000000000000000000000000000000000000000"
-      ) {
-        throw new Error(
-          `Token address not configured for ${selectedToken}. Please update the asset registry.`,
-        );
-      }
-      if (!selectedToken || selectedToken.trim() === "") {
-        throw new Error("Invalid token ticker");
-      }
-      if (amount <= BigInt(0)) {
-        throw new Error("Invalid amount: must be greater than 0");
-      }
-
-      // Get subscription ID from asset config or use default
-      const subscriptionId = assetConfig?.chainlinkSubscriptionId
-        ? BigInt(assetConfig.chainlinkSubscriptionId)
-        : BigInt(process.env.NEXT_PUBLIC_CHAINLINK_SUBSCRIPTION_ID || 522);
-
-      console.log("🔍 Buy transaction inputs:", {
-        asset: selectedToken,
-        ticker: selectedToken,
-        token: tokenAddress,
-        usdcAmount: amount.toString(),
-        subscriptionId: subscriptionId.toString(),
-        ordersAddress,
-      });
-
       // Step 1: Approve USDC
-      console.log("📝 Step 1: Approving USDC...");
       const approveTx = await approve(ordersAddress, amount);
-      if (!approveTx) {
-        throw new Error("USDC approval failed - no transaction hash returned");
-      }
-      console.log("⏳ Waiting for USDC approval confirmation...");
       await waitForTransactionReceipt(config, { hash: approveTx });
       console.log("✅ USDC approval completed");
 
       // Step 2: Execute buy transaction
-      console.log("📤 Step 2: Executing buy transaction...");
       console.log("📤 Sending USDC amount to contract:", amount.toString());
-
-      // buyAsset returns void - it triggers the transaction and the hash will be available
-      // through the hook's data property. Errors will be thrown if validation fails.
-      // Parameters match documentation exactly:
-      // 1. asset: ticker (asset symbol for Chainlink)
-      // 2. ticker: ticker (display ticker)
-      // 3. token: token contract address from registry
-      // 4. usdcAmount: amount in 6 decimals (BigInt)
-      // 5. subscriptionId: Chainlink subscription ID (from config or default)
-      buyAsset(
-        selectedToken, // asset: string
-        selectedToken, // ticker: string
-        tokenAddress, // token: address (from asset registry)
-        amount, // usdcAmount: uint256 (6 decimals)
-        subscriptionId, // subscriptionId: uint64 (from config or default)
-      );
-
-      console.log(
-        "✅ Buy transaction submitted (hash will be available in hook data)",
-      );
+      buyAsset(BigInt(2000002), selectedToken, rwaTokenAddress, amount);
       setBuyUsdc("");
 
       // Keep modal open for buy transaction to complete
       // The modal will stay in "waiting" state until the buy transaction is processed
       console.log("⏳ Buy transaction submitted, keeping modal open...");
-    } catch (error: any) {
+    } catch (error) {
       console.error("❌ Error in buy transaction:", error);
-      const errorMessage =
-        error?.message ||
-        error?.reason ||
-        "Transaction failed. Please try again.";
       setTransactionModal((prev) => ({
         ...prev,
         status: "failed",
-        error: errorMessage,
+        error: "Transaction failed. Please try again.",
       }));
     }
   };
@@ -331,7 +285,7 @@ const TradePageContent = () => {
         isOpen: true,
         status: "waiting",
         transactionType: "sell",
-        amount: `${sellToken}`, // Just the number, modal will add SLQD
+        amount: `${sellToken} ${selectedToken}`,
         receivedAmount: "",
         error: "",
       });
@@ -341,17 +295,16 @@ const TradePageContent = () => {
         setTransactionModal((prev) => ({
           ...prev,
           status: "failed",
-          error: `Transaction reverted: Order exceeds balance. You don't have enough ${selectedToken} tokens.`,
+          error:
+            "Transaction reverted: Order exceeds balance. You don't have enough SLQD tokens.",
         }));
       }, 3000);
 
       return;
     }
 
-    // Multiply by token decimals for token amount
-    const tokenAmount = BigInt(
-      Math.floor(sellTokenAmount * 10 ** actualTokenDecimals),
-    );
+    // Multiply by 18 decimals for token amount
+    const tokenAmount = BigInt(Math.floor(sellTokenAmount * 1e18));
 
     const estimatedUsdcAmount =
       latestPrice > 0 ? sellTokenAmount * latestPrice : 0;
@@ -361,36 +314,14 @@ const TradePageContent = () => {
       isOpen: true,
       status: "waiting",
       transactionType: "sell",
-      amount: `${sellToken}`, // Just the number, modal will add SLQD
+      amount: `${sellToken} ${selectedToken}`,
       receivedAmount: netReceiveUsdc,
       error: "",
     });
 
     try {
-      // Validate token address
-      if (
-        !tokenAddress ||
-        tokenAddress === "0x0000000000000000000000000000000000000000"
-      ) {
-        throw new Error(
-          `Token address not configured for ${selectedToken}. Please update the asset registry.`,
-        );
-      }
-
-      // Get subscription ID from asset config or use default
-      const subscriptionId = assetConfig?.chainlinkSubscriptionId
-        ? BigInt(assetConfig.chainlinkSubscriptionId)
-        : BigInt(process.env.NEXT_PUBLIC_CHAINLINK_SUBSCRIPTION_ID || 522);
-
       // Execute sell transaction
-      // Parameters match documentation exactly (same as buyAsset)
-      sellAsset(
-        selectedToken,
-        selectedToken,
-        tokenAddress,
-        tokenAmount,
-        subscriptionId,
-      );
+      sellAsset(BigInt(2000002), selectedToken, rwaTokenAddress, tokenAmount);
       setSellToken("");
 
       console.log("⏳ Sell transaction submitted, keeping modal open...");
@@ -408,20 +339,16 @@ const TradePageContent = () => {
     setTransactionModal((prev) => ({ ...prev, isOpen: false }));
   };
 
-  // Don't render trading interface if no ticker is selected (will redirect)
-  if (!tickerParam) {
-    return null;
-  }
-
   return (
     <div className="space-y-8 max-w-5xl mx-auto px-2 md:px-0">
-      <TradeEquitySearch
+      <TradeTokenSelector
+        tokens={TOKENS}
         selectedToken={selectedToken}
-        onSelectToken={setSelectedToken}
+        setSelectedToken={setSelectedToken}
       />
       <TradeChart
-        loading={chartLoading}
-        tokenData={chartData}
+        loading={loading}
+        tokenData={tokenData}
         selectedToken={selectedToken}
       />
       <TradeForm
@@ -463,20 +390,6 @@ const TradePageContent = () => {
         error={transactionModal.error}
       />
     </div>
-  );
-};
-
-const TradePage = () => {
-  return (
-    <Suspense
-      fallback={
-        <div className="flex items-center justify-center min-h-screen">
-          Loading...
-        </div>
-      }
-    >
-      <TradePageContent />
-    </Suspense>
   );
 };
 

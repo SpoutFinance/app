@@ -3,7 +3,7 @@ import { Waves } from "@/components/wave-background";
 export function ProofOfReserveSection() {
   return (
     <>
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 z-0 optimized">
         <Waves />
       </div>
 

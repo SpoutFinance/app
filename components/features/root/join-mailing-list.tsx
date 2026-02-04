@@ -1,11 +1,10 @@
 "use client";
 
-import { useState } from "react";
-import { Input } from "@/components/ui/input";
-import { Button as JoinButton } from "@/components/ui/button";
 import { LoadingSpinner } from "@/components/loadingSpinner";
+import { Button as JoinButton } from "@/components/ui/button";
 import { AnimatePresence, motion } from "framer-motion";
 import { CheckCircle } from "lucide-react";
+import { useState } from "react";
 
 export function JoinMailingList() {
   const [email, setEmail] = useState("");
@@ -74,21 +73,22 @@ export function JoinMailingList() {
   };
 
   return (
-    <form
+    <div className="flex flex-col justify-start items-start">
+      <form
       onSubmit={handleSubmit}
       noValidate
-      className="flex flex-col sm:flex-row gap-2 w-full max-w-sm items-center"
+      className="flex flex-col sm:flex-row gap-3 w-full items-center"
     >
       {!joined && (
-        <Input
+        <input
           type="email"
           placeholder="Enter your email to join our mailing list"
           value={email}
           onChange={handleEmailChange}
           onBlur={handleEmailBlur}
           autoComplete="email"
-          className={`flex-1 w-72 bg-white/80 border-slate-200 focus-visible:ring-emerald-600 ${
-            error ? "border-red-300 focus-visible:ring-red-400" : ""
+          className={`text-[#9F9F9F] w-[395px] flex h-[44px] py-[14px] pr-[88px] pl-[20px] items-center font-dm-sans text-sm not-italic font-normal leading-4 outline-none border-[#E2E2E2] border rounded-[6px] focus-visible:border-primary focus-visible:border-2 ${
+            error ? "border-2 border-red-300 focus-visible:ring-red-400" : ""
           }`}
           disabled={loading}
         />
@@ -101,11 +101,11 @@ export function JoinMailingList() {
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.8, opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="flex"
+            className="flex justify-center items-center "
           >
             <JoinButton
               type="submit"
-              className="bg-[#DAE5F2] hover:bg-[#DAE5F2] data-[hovered]:bg-[#DAE5F2] border-[1.5px] border-[#A7C6ED] text-[#3D5678] px-6 py-2 rounded-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+              className="bg-[#DAE5F2] hover:bg-[#DAE5F2] rounded-md data-[hovered]:bg-[#DAE5F2] border-[1.5px] border-[#A7C6ED] text-[#3D5678] w-[105px] h-[40px] font-['DM_Sans'] text-[20px] not-italic font-medium leading-normal disabled:opacity-50 disabled:cursor-not-allowed"
               isDisabled={
                 loading || (email.length > 0 && !isValidEmail(email.trim()))
               }
@@ -115,19 +115,22 @@ export function JoinMailingList() {
           </motion.div>
         ) : null}
       </AnimatePresence>
+    
+    </form>
       {joined && (
         <div className="flex items-center justify-center w-full mt-2 flex-nowrap whitespace-nowrap">
           <CheckCircle className="h-8 w-8 text-emerald-600 mr-2" />
-          <span className="text-[#004040] font-medium text-base align-middle">
+          <span className="text-emerald-700 font-semibold text-lg align-middle">
             {message || "Already joined!"}
           </span>
         </div>
       )}
+
       {error && !joined && (
-        <div className="w-full text-center text-red-500 text-xs mt-2">
+        <div className="w-full text-start text-red-500 text-xs mt-2 ">
           {error}
         </div>
       )}
-    </form>
+    </div>
   );
 }

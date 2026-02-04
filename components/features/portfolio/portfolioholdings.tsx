@@ -58,7 +58,7 @@ export default function PortfolioHoldings({
           {holdings.map((holding) => (
             <div
               key={holding.symbol}
-              className="flex items-center gap-2 p-6 bg-slate-50 rounded-none hover:bg-slate-200 transition-colors"
+              className="flex items-center gap-2 p-6 bg-slate-50 rounded-none hover:bg-slate-100 transition-colors"
             >
               <div className="flex items-center space-x-4 flex-1 min-w-0">
                 <div className="w-14 h-14 bg-gradient-to-br from-[#004040] to-[#035a5a] rounded-none flex items-center justify-center relative overflow-hidden flex-shrink-0">
@@ -87,10 +87,7 @@ export default function PortfolioHoldings({
               </div>
               <div className="text-right w-[150px] font-mono flex-shrink-0">
                 <p className="font-semibold text-lg tabular-nums whitespace-nowrap">
-                  $
-                  {Number(holding.value || 0)
-                    .toFixed(2)
-                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                  ${Number(holding.value || 0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                 </p>
                 <p
                   className={`text-sm font-medium tabular-nums whitespace-nowrap ${holding.dayChange >= 0 ? "text-green-600" : "text-red-600"}`}

@@ -32,7 +32,7 @@ const buttonVariants = cva(
         secondary:
           "bg-secondary text-secondary-foreground data-[hovered]:bg-secondary/80",
         ghost: "data-[hovered]:bg-accent data-[hovered]:text-accent-foreground",
-        link: "text-primary underline-offset-4 data-[hovered]:underline",
+        link: "text-primary underline-offset-4 data-[hovered]:no-underline",
         white: "bg-white data-[hovered]:bg-white/90",
         "white-outline":
           "border border-white/30 text-white data-[hovered]:bg-white/10",
@@ -55,7 +55,8 @@ const buttonVariants = cva(
 );
 
 interface ButtonProps
-  extends AriaButtonProps, VariantProps<typeof buttonVariants> {}
+  extends AriaButtonProps,
+    VariantProps<typeof buttonVariants> {}
 
 const Button = ({ className, variant, size, ...props }: ButtonProps) => {
   return (

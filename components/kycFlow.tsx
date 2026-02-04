@@ -5,6 +5,7 @@ import {
   useAccount,
   useWriteContract,
   useWaitForTransactionReceipt,
+  useChainId,
 } from "wagmi";
 
 import {
@@ -31,8 +32,6 @@ import { useOnchainID } from "@/hooks/view/onChain/useOnchainID";
 import { useAddClaim } from "@/hooks/writes/onChain/useAddClaim";
 import { useIdentityVerification } from "@/hooks/view/onChain/useIdentityVerification";
 import { useNetwork } from "@/context/NetworkContext";
-import { ethers } from "ethers";
-
 interface KYCSignatureResponse {
   signature: {
     r: string;
@@ -46,7 +45,7 @@ interface KYCSignatureResponse {
 
 export default function KYCFlow() {
   const { address, isConnected } = useAccount();
-  const { checkAndSwitchNetwork, isBase } = useNetwork();
+  const { checkAndSwitchNetwork, isPharos } = useNetwork();
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedCountry, setSelectedCountry] = useState<number>(91);
   const [onchainIDAddressCurrent, setOnchainIDAddressCurrent] =
@@ -114,6 +113,7 @@ export default function KYCFlow() {
   // Refetch identity data when deployment is successful
   useEffect(() => {
     if (isDeployed) {
+      console.log("✅ Identity deployed successfully, refetching data...");
       // Add a small delay to ensure the blockchain state has updated
       const timer = setTimeout(async () => {
         await refetchOnchainID();
@@ -123,12 +123,20 @@ export default function KYCFlow() {
     }
   }, [isDeployed, refetchOnchainID]);
 
-  // Automatically switch to Base Sepolia when wallet connects with better error handling
+  // Console log wallet address when it changes
+  useEffect(() => {
+    if (address) {
+      console.log("Wallet address:", address);
+    }
+  }, [address]);
+
+  // Automatically switch to Pharos when wallet connects with better error handling
   useEffect(() => {
     if (isConnected) {
       checkAndSwitchNetwork().catch((error: Error) => {
+        console.error("Failed to switch network in KYC flow:", error);
         setError(
-          "Failed to switch to Base Sepolia network. Please try switching manually.",
+          "Failed to switch to Pharos network. Please try switching manually.",
         );
       });
     }
@@ -137,8 +145,8 @@ export default function KYCFlow() {
   // Check if identity exists (avoid unknown type in JSX)
   const hasExistingIdentity = Boolean(
     onchainIDAddress &&
-    typeof onchainIDAddress === "string" &&
-    onchainIDAddress !== "0x0000000000000000000000000000000000000000",
+      typeof onchainIDAddress === "string" &&
+      onchainIDAddress !== "0x0000000000000000000000000000000000000000",
   );
 
   const steps = [
@@ -218,8 +226,10 @@ export default function KYCFlow() {
         functionName: "deployIdentityForWallet",
         args: [address],
       });
+      console.log("Deploy transaction hash:", deployHash);
     } catch (err) {
       setError("Failed to deploy identity");
+      console.error(err);
     } finally {
       setIsLoading(false);
     }
@@ -264,16 +274,23 @@ export default function KYCFlow() {
             const errorData = await response.json();
             errorMessage = errorData.error || errorMessage;
             errorDetails = errorData.details || errorData.message;
+            console.error("KYC API error response:", {
+              error: errorMessage,
+              details: errorDetails,
+              status: errorData.status || response.status,
+            });
           } else {
             const errorText = await response.text();
+            console.error("Non-JSON error response:", errorText);
             errorMessage = `Server error (${response.status}): ${response.statusText}`;
             errorDetails = errorText;
           }
         } catch (parseError) {
+          console.error("Error parsing error response:", parseError);
           errorMessage = `Server error (${response.status}): ${response.statusText}`;
         }
-        const fullErrorMessage = errorDetails
-          ? `${errorMessage}: ${errorDetails}`
+        const fullErrorMessage = errorDetails 
+          ? `${errorMessage}: ${errorDetails}` 
           : errorMessage;
         throw new Error(fullErrorMessage);
       }
@@ -282,60 +299,9 @@ export default function KYCFlow() {
       try {
         data = await response.json();
       } catch (parseError) {
+        console.error("Error parsing success response:", parseError);
         throw new Error("Invalid response format from server");
       }
-
-      // Verify the signature immediately by recovering the signer address
-      // Step 1: Compute claim data hash (should match API's dataHash)
-      const claimDataString = "KYC passed";
-      const claimDataBytes = ethers.toUtf8Bytes(claimDataString);
-      const claimDataHash = ethers.keccak256(claimDataBytes);
-
-      // Step 2: Compute the hash that the contract will verify
-      // Contract computes: keccak256(abi.encode(_identity, claimTopic, data))
-      // The contract receives _data as bytes memory, and when it encodes it, it uses the bytes as-is
-      // We can pass the hash hex string directly - ethers.js will handle the conversion
-      const abiCoder = ethers.AbiCoder.defaultAbiCoder();
-
-      const encodedForDataHash = abiCoder.encode(
-        ["address", "uint256", "bytes"],
-        [onchainIDAddress, data.topic, claimDataHash], // Pass hash hex string directly
-      );
-      const dataHash = ethers.keccak256(encodedForDataHash);
-
-      // Step 3: Compute prefixed hash (what contract uses for signature recovery)
-      // Contract computes: keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n32", dataHash))
-      const messagePrefix = "\x19Ethereum Signed Message:\n32";
-      const dataHashBytes = ethers.getBytes(dataHash);
-      const prefixedHashBytes = ethers.concat([
-        ethers.toUtf8Bytes(messagePrefix),
-        dataHashBytes,
-      ]);
-      const prefixedHash = ethers.keccak256(prefixedHashBytes);
-
-      // Step 4: Recover the signer address from the signature
-      const r = (
-        data.signature.r.startsWith("0x")
-          ? data.signature.r
-          : `0x${data.signature.r}`
-      ) as `0x${string}`;
-      const s = (
-        data.signature.s.startsWith("0x")
-          ? data.signature.s
-          : `0x${data.signature.s}`
-      ) as `0x${string}`;
-
-      let recoveredAddress: string | null = null;
-      try {
-        recoveredAddress = ethers.recoverAddress(prefixedHash, {
-          r: r,
-          s: s,
-          v: data.signature.v,
-        });
-      } catch (recoverError) {
-        // Failed to recover address
-      }
-
       setKycSignature(data);
       setCurrentStep(3);
     } catch (err) {
@@ -346,6 +312,7 @@ export default function KYCFlow() {
           err instanceof Error ? err.message : "Failed to get KYC signature",
         );
       }
+      console.error("KYC signature error:", err);
       // Start 60s cooldown after any failure
       const until = Date.now() + 60000;
       setCooldownUntilMs(until);
@@ -408,19 +375,16 @@ export default function KYCFlow() {
     return () => clearInterval(id);
   }, [cooldownUntilMs, address]);
 
-  // Handler for add claim button - EXACT MATCH with pharos branch
+  // Handler for add claim button
   const handleAddClaim = async () => {
     if (!kycSignature || !onchainIDAddressCurrent || !address) return;
-    // Use issuer address from signature response to match what backend signed
-    const finalIssuerAddress = (kycSignature.issuerAddress ||
-      issuerAddress) as `0x${string}`;
-
     addClaim({
       onchainIDAddress: onchainIDAddressCurrent,
-      issuerAddress: finalIssuerAddress,
+      issuerAddress: issuerAddress as `0x${string}`,
       signature: kycSignature.signature,
       topic: 1,
       claimData: "KYC passed",
+      account: address,
     });
   };
 
@@ -463,22 +427,24 @@ export default function KYCFlow() {
 
   // Update onchain ID address when identity is deployed or already exists
   useEffect(() => {
-    // Identity address is available from contract
+    if (hasExistingIdentity && typeof onchainIDAddress === "string") {
+      console.log("Identity address from contract:", onchainIDAddress);
+    } else if (
+      isDeployed &&
+      onchainIDAddress &&
+      typeof onchainIDAddress === "string"
+    ) {
+      console.log("Identity address from contract:", onchainIDAddress);
+    }
   }, [isDeployed, onchainIDAddress, hasExistingIdentity]);
 
-  // Track when claim is successfully added and refetch verification
+  // Track when claim is successfully added
   useEffect(() => {
     if (isClaimAdded) {
       setClaimAdded(true);
-      // Refetch verification status after claim is added
-      // Add a delay to ensure the blockchain state has updated
-      const timer = setTimeout(async () => {
-        await refetchVerification();
-      }, 2000); // 2 second delay
-
-      return () => clearTimeout(timer);
+      console.log("KYC claim added successfully to identity");
     }
-  }, [isClaimAdded, refetchVerification]);
+  }, [isClaimAdded]);
 
   const getStepIcon = (step: (typeof steps)[0]) => {
     if (
@@ -535,18 +501,18 @@ export default function KYCFlow() {
           <div className="flex justify-center">
             <div
               className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
-                isBase
+                isPharos
                   ? "bg-emerald-100 text-emerald-800"
                   : "bg-yellow-100 text-yellow-800"
               }`}
             >
               <div
                 className={`w-2 h-2 rounded-full mr-2 ${
-                  isBase ? "bg-emerald-500" : "bg-yellow-500"
+                  isPharos ? "bg-emerald-500" : "bg-yellow-500"
                 }`}
               />
-              {isBase
-                ? "Connected to Base Sepolia Network"
+              {isPharos
+                ? "Connected to Pharos Network"
                 : "Wrong Network - Switching..."}
             </div>
           </div>
@@ -653,7 +619,10 @@ export default function KYCFlow() {
                       <Button
                         onClick={handleDeployIdentity}
                         isDisabled={
-                          isDeploying || isConfirming || !isConnected || !isBase
+                          isDeploying ||
+                          isConfirming ||
+                          !isConnected ||
+                          !isPharos
                         }
                         className="w-full"
                       >
@@ -664,8 +633,8 @@ export default function KYCFlow() {
                               ? "Deploying Identity..."
                               : "Confirming Transaction..."}
                           </>
-                        ) : !isBase ? (
-                          "Switch to Base Sepolia Network"
+                        ) : !isPharos ? (
+                          "Switch to Pharos Network"
                         ) : (
                           "Deploy Identity"
                         )}
@@ -781,7 +750,7 @@ export default function KYCFlow() {
                           !address ||
                           !onchainIDAddress ||
                           isLoading ||
-                          !isBase ||
+                          !isPharos ||
                           (cooldownUntilMs !== null &&
                             cooldownRemainingSeconds > 0)
                         }
@@ -792,8 +761,8 @@ export default function KYCFlow() {
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                             Getting KYC Signature...
                           </>
-                        ) : !isBase ? (
-                          "Switch to Base Sepolia Network"
+                        ) : !isPharos ? (
+                          "Switch to Pharos Network"
                         ) : cooldownUntilMs !== null &&
                           cooldownRemainingSeconds > 0 ? (
                           `Retry in ${Math.max(1, cooldownRemainingSeconds)}s`
@@ -847,7 +816,7 @@ export default function KYCFlow() {
                           isAddingClaim ||
                           isConfirmingClaim ||
                           !kycSignature ||
-                          !isBase
+                          !isPharos
                         }
                         className="w-full"
                       >
@@ -858,8 +827,8 @@ export default function KYCFlow() {
                               ? "Adding Verification Claim..."
                               : "Confirming Transaction..."}
                           </>
-                        ) : !isBase ? (
-                          "Switch to Base Sepolia Network"
+                        ) : !isPharos ? (
+                          "Switch to Pharos Network"
                         ) : (
                           "Add Verification Claim"
                         )}
@@ -874,27 +843,15 @@ export default function KYCFlow() {
                         </div>
                       )}
                     </div>
-                  ) : isClaimAdded && !isIdentityVerified ? (
-                    <div className="flex items-center space-x-3 p-4 bg-yellow-50 rounded-lg">
-                      <Loader2 className="h-5 w-5 text-yellow-600 animate-spin" />
-                      <div>
-                        <p className="font-medium text-yellow-800">
-                          Verifying On-Chain...
-                        </p>
-                        <p className="text-sm text-yellow-600">
-                          Waiting for on-chain verification to complete
-                        </p>
-                      </div>
-                    </div>
                   ) : (
                     <div className="flex items-center space-x-3 p-4 bg-emerald-50 rounded-lg">
                       <CheckCircle className="h-5 w-5 text-emerald-600" />
                       <div>
                         <p className="font-medium text-emerald-800">
-                          KYC Claim Added & Verified
+                          KYC Claim Added
                         </p>
                         <p className="text-sm text-emerald-600">
-                          KYC claim has been added and verified on-chain
+                          KYC claim has been added to your identity
                         </p>
                       </div>
                     </div>
@@ -906,8 +863,8 @@ export default function KYCFlow() {
         ))}
       </div>
 
-      {/* Summary - Only show when identity is verified on-chain */}
-      {isIdentityVerified && (
+      {/* Summary */}
+      {isClaimAdded && (
         <Card className="bg-gradient-to-r from-emerald-50 to-blue-50">
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">

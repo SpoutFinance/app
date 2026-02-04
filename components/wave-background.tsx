@@ -47,9 +47,6 @@ export function Waves({
   const noiseRef = useRef<((x: number, y: number) => number) | null>(null); // 替换any为具体的函数类型
   const rafRef = useRef<number | null>(null);
   const boundingRef = useRef<DOMRect | null>(null);
-  const lastFrameTimeRef = useRef<number>(0);
-  const isVisibleRef = useRef<boolean>(true);
-  const frameInterval = 1000 / 30; // Throttle to 30fps for better performance
 
   // Set SVG size
   const setSize = useCallback(() => {
@@ -251,27 +248,14 @@ export function Waves({
     });
   }, [moved]);
 
-  // Animation tick with throttling for better performance
+  // Animation tick
   const tick = useCallback(
     (time: number) => {
-      // Skip frame if not visible or if not enough time has passed (throttle to 30fps)
-      if (!isVisibleRef.current) {
-        rafRef.current = requestAnimationFrame(tick);
-        return;
-      }
-
-      const elapsed = time - lastFrameTimeRef.current;
-      if (elapsed < frameInterval) {
-        rafRef.current = requestAnimationFrame(tick);
-        return;
-      }
-
-      lastFrameTimeRef.current = time - (elapsed % frameInterval);
       movePoints(time);
       drawLines();
       rafRef.current = requestAnimationFrame(tick);
     },
-    [movePoints, drawLines, frameInterval],
+    [movePoints, drawLines],
   );
 
   // Initialization
@@ -299,21 +283,11 @@ export function Waves({
     // Start animation
     rafRef.current = requestAnimationFrame(tick);
 
-    // Add visibility detection to pause animation when not visible
-    const observer = new IntersectionObserver(
-      (entries) => {
-        isVisibleRef.current = entries[0]?.isIntersecting ?? false;
-      },
-      { threshold: 0.1 },
-    );
-    observer.observe(currentContainerRef);
-
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
       window.removeEventListener("resize", onResize);
       window.removeEventListener("mousemove", onMouseMove);
       currentContainerRef.removeEventListener("touchmove", onTouchMove);
-      observer.disconnect();
     };
   }, [onMouseMove, onResize, onTouchMove, setLines, setSize, tick]);
 

@@ -135,11 +135,7 @@ export default function StockChart({
                 variant={timeRange === "7d" ? "default" : "outline"}
                 size="sm"
                 onClick={() => setTimeRange("7d")}
-                className={
-                  timeRange === "7d"
-                    ? "bg-[#004040] hover:bg-[#004040] text-white"
-                    : ""
-                }
+                className={timeRange === "7d" ? "bg-[#004040] hover:bg-[#004040] text-white" : ""}
               >
                 7D
               </Button>
@@ -147,11 +143,7 @@ export default function StockChart({
                 variant={timeRange === "30d" ? "default" : "outline"}
                 size="sm"
                 onClick={() => setTimeRange("30d")}
-                className={
-                  timeRange === "30d"
-                    ? "bg-[#004040] hover:bg-[#004040] text-white"
-                    : ""
-                }
+                className={timeRange === "30d" ? "bg-[#004040] hover:bg-[#004040] text-white" : ""}
               >
                 30D
               </Button>
@@ -159,11 +151,7 @@ export default function StockChart({
                 variant={timeRange === "90d" ? "default" : "outline"}
                 size="sm"
                 onClick={() => setTimeRange("90d")}
-                className={
-                  timeRange === "90d"
-                    ? "bg-[#004040] hover:bg-[#004040] text-white"
-                    : ""
-                }
+                className={timeRange === "90d" ? "bg-[#004040] hover:bg-[#004040] text-white" : ""}
               >
                 90D
               </Button>

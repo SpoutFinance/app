@@ -5,13 +5,11 @@ import {
   useWatchContractEvent,
   usePublicClient,
   useReadContract,
-  useAccount,
+  useChainId,
 } from "wagmi";
 import { useMarketData } from "@/hooks/api/useMarketData";
 import erc3643ABI from "@/abi/erc3643.json";
-import ordersAbiFile from "@/abi/ordersChainlink.json";
 import { useContractAddress } from "@/lib/addresses";
-import { formatUnits, keccak256, toHex, stringToHex } from "viem";
 
 export interface ActivityEvent {
   id: string;
@@ -21,29 +19,21 @@ export interface ActivityEvent {
   time: string;
   value: string;
   blockNumber?: number;
-  transactionType: "BUY" | "SELL";
+  transactionType: string;
 }
 
-const ordersABI = Array.isArray(ordersAbiFile)
-  ? ordersAbiFile
-  : ordersAbiFile.abi;
-const USDC_DECIMALS = 6;
-const DEFAULT_TOKEN_DECIMALS = 18;
-
-export function useRecentActivity(explicitUserAddress?: string) {
+export function useRecentActivity(userAddress?: string) {
   const [activities, setActivities] = useState<ActivityEvent[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [hasMore, setHasMore] = useState(false);
   const [allTransactions, setAllTransactions] = useState<any[]>([]);
   const [showCount, setShowCount] = useState(5);
   const publicClient = usePublicClient();
+  const chainId = useChainId();
   const { price: currentPrice } = useMarketData("LQD");
-  const { address: connectedAddress } = useAccount();
-  const userAddress = (explicitUserAddress ?? connectedAddress)?.toLowerCase();
 
   // Get the correct contract address for the current network
   const rwaTokenAddress = useContractAddress("rwatoken") as `0x${string}`;
-  const ordersAddress = useContractAddress("orders") as `0x${string}`;
 
   // Add a constant for fallback price
   const FALLBACK_PRICE = 108.725;
@@ -118,45 +108,10 @@ export function useRecentActivity(explicitUserAddress?: string) {
     address: rwaTokenAddress,
     abi: erc3643ABI.abi,
     functionName: "decimals",
-    query: {
-      enabled: Boolean(rwaTokenAddress),
-    },
   });
 
-  const tokenDecimals = contractDecimals
-    ? Number(contractDecimals)
-    : DEFAULT_TOKEN_DECIMALS;
-
-  const formatTokenAmount = (
-    amount?: bigint,
-    decimals: number = DEFAULT_TOKEN_DECIMALS,
-    fractionDigits = 3,
-  ) => {
-    if (!amount) return "0";
-    try {
-      const formatted = Number(formatUnits(amount, decimals));
-      return formatted.toLocaleString(undefined, {
-        maximumFractionDigits: fractionDigits,
-      });
-    } catch (error) {
-      console.error("Error formatting token amount:", error);
-      return "0";
-    }
-  };
-
-  const formatUsdcAmount = (amount?: bigint) => {
-    if (!amount) return "$0";
-    try {
-      const formatted = Number(formatUnits(amount, USDC_DECIMALS));
-      return `$${formatted.toLocaleString(undefined, {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      })}`;
-    } catch (error) {
-      console.error("Error formatting USDC amount:", error);
-      return "$0";
-    }
-  };
+  console.log("Contract decimals:", contractDecimals);
+  const decimals = contractDecimals ? Number(contractDecimals) : 18; // Change default to 18 which is more common
 
   // Helper functions - we'll get decimals dynamically
   const getTimeAgo = (timestamp: number) => {
@@ -170,586 +125,306 @@ export function useRecentActivity(explicitUserAddress?: string) {
     return "Just now";
   };
 
-  const formatTimestampToRelative = (timestampMs: number) => {
-    const diffMs = Date.now() - timestampMs;
-    const minutes = Math.floor(diffMs / (1000 * 60));
-    const hours = Math.floor(diffMs / (1000 * 60 * 60));
-    const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-
-    if (minutes < 1) return "Just now";
-    if (minutes < 60) return `${minutes}m ago`;
-    if (hours < 24) return `${hours}h ago`;
-    return `${days}d ago`;
-  };
-
-  const mapLogToActivity = (
-    log: any,
-    type: "BUY" | "SELL",
-    timestampMs: number,
-  ): ActivityEvent => {
-    console.log("📝 mapLogToActivity called:", {
-      txHash: log.transactionHash,
-      type,
-      typeIsBUY: type === "BUY",
-      typeIsSELL: type === "SELL",
-    });
-
-    // Normalize symbol to always show SLQD format (not LQD)
-    const rawSymbol = log.args.ticker || "LQD";
-    const symbol =
-      rawSymbol === "LQD"
-        ? "SLQD"
-        : rawSymbol.startsWith("S")
-          ? rawSymbol
-          : `S${rawSymbol}`;
-
-    // Always use 18 decimals for token amounts (LQD token uses 18 decimals)
-    const assetAmount = formatTokenAmount(
-      log.args.assetAmount,
-      DEFAULT_TOKEN_DECIMALS,
-    );
-
-    const action = type === "BUY" ? "Purchased" : "Sold";
-
-    console.log("📝 mapLogToActivity result:", {
-      txHash: log.transactionHash,
-      type,
-      action,
-      transactionType: type,
-      actionIsSold: action === "Sold",
-      actionIsPurchased: action === "Purchased",
-    });
-
-    return {
-      id: `${log.transactionHash}-${log.logIndex}`,
-      action,
-      symbol,
-      amount: `${assetAmount} ${symbol}`,
-      time: formatTimestampToRelative(timestampMs),
-      value: formatUsdcAmount(log.args.usdcAmount),
-      blockNumber: Number(log.blockNumber ?? BigInt(0)),
-      transactionType: type,
-    };
-  };
-
-  const buildBlockTimestampMap = async (logs: any[]) => {
-    if (!publicClient) return {};
-    const uniqueBlocks = Array.from(
-      new Set(
-        logs
-          .map((log) => log.blockNumber)
-          .filter((blockNumber): blockNumber is bigint => Boolean(blockNumber)),
-      ),
-    );
-
-    const entries = await Promise.all(
-      uniqueBlocks.map(async (blockNumber) => {
-        try {
-          const block = await publicClient.getBlock({ blockNumber });
-          return [blockNumber.toString(), Number(block.timestamp) * 1000];
-        } catch (error) {
-          console.error("Error fetching block timestamp:", error);
-          return [blockNumber.toString(), Date.now()];
-        }
-      }),
-    );
-
-    return Object.fromEntries(entries);
-  };
-
-  const dedupeActivities = (items: ActivityEvent[]) => {
-    const seen = new Set<string>();
-    return items.filter((item) => {
-      if (seen.has(item.id)) return false;
-      seen.add(item.id);
-      return true;
-    });
-  };
-
-  const handleRealtimeLogs = async (logs: any[], type: "BUY" | "SELL") => {
-    if (!userAddress || !publicClient) return;
-    const filtered = logs.filter(
-      (log) => log.args.user?.toLowerCase() === userAddress,
-    );
-    if (filtered.length === 0) return;
-
-    console.log(`Processing ${type} order logs:`, filtered.length);
-    const timestampMap = await buildBlockTimestampMap(filtered);
-    const newActivities = filtered.map((log) => {
-      console.log(`Real-time ${type} order:`, {
-        txHash: log.transactionHash,
-        assetAmount: log.args.assetAmount?.toString(),
-        usdcAmount: log.args.usdcAmount?.toString(),
-      });
-      return mapLogToActivity(
-        log,
-        type,
-        timestampMap[log.blockNumber?.toString()] ?? Date.now(),
-      );
-    });
-
-    setAllTransactions((prev) => {
-      const updated = dedupeActivities([...newActivities, ...prev]);
-      return updated;
-    });
-  };
-
+  // Watch for new mint/burn events (Transfer from/to zero address involving user's address)
   useWatchContractEvent({
-    address: ordersAddress,
-    abi: ordersABI as any,
-    eventName: "BuyOrderCreated",
+    address: rwaTokenAddress,
+    abi: erc3643ABI.abi as any,
+    eventName: "Transfer",
     onLogs(logs) {
-      handleRealtimeLogs(logs, "BUY");
+      if (!userAddress) return; // Skip if no user address provided
+
+      const newTransactions = logs
+        .filter((log: any) => {
+          const isMint =
+            log.args.from === "0x0000000000000000000000000000000000000000" &&
+            log.args.to?.toLowerCase() === userAddress.toLowerCase();
+          const isBurn =
+            log.args.to === "0x0000000000000000000000000000000000000000" &&
+            log.args.from?.toLowerCase() === userAddress.toLowerCase();
+          return isMint || isBurn;
+        })
+        .map((log: any) => {
+          const amount = Number(formatAmount(log.args.value, decimals));
+          const value = currentPrice ? amount * currentPrice : 0;
+          const isMint =
+            log.args.from === "0x0000000000000000000000000000000000000000";
+          const action = isMint ? "Purchased" : "Burned";
+          return {
+            id: `${log.transactionHash}-${log.logIndex}`,
+            action,
+            symbol: "RWA",
+            amount: `${amount} tokens`,
+            time: getTimeAgo(Date.now()),
+            value: `$${value.toFixed(0)}`,
+            blockNumber: Number(log.blockNumber),
+            transactionType: action === "Burned" ? "SLQD Sold" : "SLQD Bought",
+          };
+        });
+
+      if (newTransactions.length > 0) {
+        setActivities((prev) => {
+          const updatedTransactions = newTransactions.map((tx) => ({
+            ...tx,
+            transactionType:
+              tx.action === "Burned" ? "SLQD Sold" : "SLQD Bought",
+          }));
+          return [...updatedTransactions, ...prev].slice(0, 10);
+        });
+      }
     },
   });
 
-  useWatchContractEvent({
-    address: ordersAddress,
-    abi: ordersABI as any,
-    eventName: "SellOrderCreated",
-    onLogs(logs) {
-      handleRealtimeLogs(logs, "SELL");
-    },
-  });
-
-  // Fetch recent order events on mount
+  // Fetch recent mint events on mount
   useEffect(() => {
-    const fetchRecentOrders = async () => {
-      if (!publicClient || !userAddress || !ordersAddress) {
-        setActivities([]);
-        setAllTransactions([]);
+    console.log("🔄 Starting transaction fetch...");
+    console.log("Current state:", {
+      decimals,
+      currentPrice,
+      hasUserAddress: !!userAddress,
+      userAddress,
+      chainId,
+      rwaTokenAddress,
+      hasPublicClient: !!publicClient,
+    });
+
+    const fetchRecentMints = async () => {
+      if (!publicClient || !userAddress) {
+        console.log("❌ Missing required data:", {
+          hasPublicClient: !!publicClient,
+          hasUserAddress: !!userAddress,
+        });
         setIsLoading(false);
         return;
       }
 
       try {
+        console.log("🔍 Starting block number fetch...");
         const currentBlock = await publicClient.getBlockNumber();
-        const lookbackBlocks = BigInt(3000);
-        const fromBlock =
-          currentBlock > lookbackBlocks
-            ? currentBlock - lookbackBlocks
-            : BigInt(0);
+        // console.log(`✅ Current block: ${currentBlock}`);
 
-        const buyEvent = ordersABI.find(
-          (item: any) =>
-            item.type === "event" && item.name === "BuyOrderCreated",
-        );
-        const sellEvent = ordersABI.find(
-          (item: any) =>
-            item.type === "event" && item.name === "SellOrderCreated",
-        );
+        // console.log(`🔍 Debugging Recent Activity:`);
+        // console.log(`Current block: ${currentBlock}`);
+        // console.log(`Contract address: ${rwaTokenAddress}`);
+        // console.log(`Filtering for user address: ${userAddress}`);
+        // console.log(`Token decimals: ${decimals}`);
+        // console.log(`Chain ID: ${chainId}`);
 
-        console.log("🔍 Event definitions:", {
-          buyEventFound: !!buyEvent,
-          sellEventFound: !!sellEvent,
-          buyEventName: buyEvent?.name,
-          sellEventName: sellEvent?.name,
-        });
-
-        if (!buyEvent || !sellEvent) {
-          console.error("❌ Order events not found in ABI", {
-            buyEventFound: !!buyEvent,
-            sellEventFound: !!sellEvent,
-            availableEvents: ordersABI
-              .filter((item: any) => item.type === "event")
-              .map((item: any) => item.name),
+        // Verify contract exists
+        try {
+          console.log("🔍 Checking if contract exists...");
+          const contractCode = await publicClient.getCode({
+            address: rwaTokenAddress,
           });
+          console.log(`📋 Contract exists: ${contractCode ? "YES" : "NO"}`);
+          console.log(`📋 Contract code length: ${contractCode?.length || 0}`);
+
+          if (!contractCode) {
+            console.error("❌ Contract does not exist on this network!");
+            setActivities([]);
+            setIsLoading(false);
+            return;
+          }
+        } catch (error) {
+          console.error("❌ Error checking contract:", error);
           setActivities([]);
-          setAllTransactions([]);
+          setIsLoading(false);
           return;
         }
 
-        // Fetch logs for both events
-        const [buyLogsRaw, sellLogsRaw] = await Promise.all([
-          publicClient.getLogs({
-            address: ordersAddress,
-            event: buyEvent as any,
-            fromBlock,
-            toBlock: currentBlock,
-          }),
-          publicClient.getLogs({
-            address: ordersAddress,
-            event: sellEvent as any,
-            fromBlock,
-            toBlock: currentBlock,
-          }),
-        ]);
+        // Find Transfer event from the ABI
+        const transferEvent = erc3643ABI.abi.find(
+          (item: any) => item.type === "event" && item.name === "Transfer",
+        ) as any;
 
-        console.log("📊 Fetched logs:", {
-          buyLogsCount: buyLogsRaw.length,
-          sellLogsCount: sellLogsRaw.length,
-          userAddress,
-        });
+        console.log("📋 Transfer event definition:", transferEvent);
 
-        // Debug: Log actual sell logs structure
-        if (sellLogsRaw.length > 0) {
-          const firstSellLog = sellLogsRaw[0] as any;
-          console.log("🔍 DEBUG: First sell log structure:", {
-            log: firstSellLog,
-            topics: firstSellLog?.topics,
-            topics0: firstSellLog?.topics?.[0],
-            eventName: firstSellLog?.eventName,
-            args: firstSellLog?.args,
-            user: firstSellLog?.args?.user,
-          });
+        if (!transferEvent) {
+          console.error("❌ Transfer event not found in ABI!");
+          setActivities([]);
+          return;
         }
 
-        // Debug: Log actual buy logs structure
-        if (buyLogsRaw.length > 0) {
-          const firstBuyLog = buyLogsRaw[0] as any;
-          console.log("🔍 DEBUG: First buy log structure:", {
-            log: firstBuyLog,
-            topics: firstBuyLog?.topics,
-            topics0: firstBuyLog?.topics?.[0],
-            eventName: firstBuyLog?.eventName,
-            args: firstBuyLog?.args,
-            user: firstBuyLog?.args?.user,
-          });
-        }
+        // Use a much more conservative approach to avoid RPC timeouts
+        const chunkSize = BigInt(100); // Only search 100 blocks at a time
+        const maxChunks = 1; // Only search 1 chunk (100 blocks total)
+        let allTransactions: any[] = [];
 
-        type OrderLog = any & { orderType: "BUY" | "SELL" };
+        for (let i = 0; i < maxChunks; i++) {
+          const fromBlock = currentBlock - BigInt(i + 1) * chunkSize;
+          const toBlock = currentBlock - BigInt(i) * chunkSize;
 
-        // Compute event signature hashes to verify event types
-        // Event signature: "SellOrderCreated(address,string,address,uint256,uint256,uint256)"
-        const sellEventSignature = keccak256(
-          stringToHex(
-            "SellOrderCreated(address,string,address,uint256,uint256,uint256)",
-          ),
-        );
-        // Event signature: "BuyOrderCreated(address,string,address,uint256,uint256,uint256)"
-        const buyEventSignature = keccak256(
-          stringToHex(
-            "BuyOrderCreated(address,string,address,uint256,uint256,uint256)",
-          ),
-        );
+          console.log(
+            `🔍 Chunk ${i + 1}: Searching blocks ${fromBlock} to ${toBlock}`,
+          );
 
-        console.log("🔍 Event signature hashes:", {
-          sellEventSignature,
-          buyEventSignature,
-        });
+          try {
+            // Add timeout to the request with shorter timeout
+            const logs = (await Promise.race([
+              publicClient.getLogs({
+                address: rwaTokenAddress,
+                event: transferEvent,
+                fromBlock,
+                toBlock,
+              }),
+              new Promise(
+                (_, reject) =>
+                  setTimeout(() => reject(new Error("Request timeout")), 3000), // Reduced to 3 seconds
+              ),
+            ])) as any[];
 
-        // Helper function to determine event type from log topics
-        const getEventTypeFromLog = (log: any): "BUY" | "SELL" | null => {
-          if (!log.topics || log.topics.length === 0) {
-            console.warn("⚠️ Log has no topics:", log);
-            return null;
-          }
-          const eventSignature = log.topics[0];
-
-          console.log("🔍 Checking event signature:", {
-            topics0: eventSignature,
-            sellSig: sellEventSignature,
-            buySig: buyEventSignature,
-            matchesSell:
-              eventSignature.toLowerCase() === sellEventSignature.toLowerCase(),
-            matchesBuy:
-              eventSignature.toLowerCase() === buyEventSignature.toLowerCase(),
-          });
-
-          if (
-            eventSignature.toLowerCase() === sellEventSignature.toLowerCase()
-          ) {
-            return "SELL";
-          }
-          if (
-            eventSignature.toLowerCase() === buyEventSignature.toLowerCase()
-          ) {
-            return "BUY";
-          }
-          return null;
-        };
-
-        // Tag logs immediately when fetched - this ensures orderType is always correct
-        const buyLogs = (buyLogsRaw as any[]).map((log) => {
-          // Verify this is actually a BuyOrderCreated event by checking topics
-          const verifiedType = getEventTypeFromLog(log);
-          if (verifiedType && verifiedType !== "BUY") {
-            console.warn("⚠️ Buy log has SELL event signature!", {
-              txHash: log.transactionHash,
-              expected: "BUY",
-              actual: verifiedType,
-            });
-          }
-          const taggedLog = { ...log, orderType: "BUY" as const };
-          console.log("🔵 BUY log tagged:", {
-            txHash: log.transactionHash,
-            logIndex: log.logIndex,
-            user: log.args?.user,
-            orderType: taggedLog.orderType,
-            verifiedType,
-            topics0: log.topics?.[0],
-          });
-          return taggedLog;
-        });
-
-        const sellLogs = (sellLogsRaw as any[]).map((log: any) => {
-          // CRITICAL: Tag as SELL immediately - this log came from sellLogsRaw query
-          const taggedLog = { ...log, orderType: "SELL" as const };
-
-          // Verify this is actually a SellOrderCreated event by checking topics
-          const verifiedType = getEventTypeFromLog(log);
-          if (verifiedType && verifiedType !== "SELL") {
-            console.error(
-              "❌ CRITICAL ERROR: Sell log has wrong event signature!",
-              {
-                txHash: log.transactionHash,
-                expected: "SELL",
-                actual: verifiedType,
-                topics0: log.topics?.[0],
-              },
+            console.log(
+              `📋 Chunk ${i + 1}: Found ${logs.length} Transfer events`,
             );
-          }
 
-          console.log("🔴 SELL log tagged (from sellLogsRaw):", {
-            txHash: log.transactionHash,
-            logIndex: log.logIndex,
-            user: log.args?.user,
-            orderType: taggedLog.orderType,
-            verifiedType,
-            topics0: log.topics?.[0],
-            hasOrderType: "orderType" in taggedLog,
-          });
+            // Debug ALL transfers in first chunk to see what's happening
+            if (i === 0 && logs.length > 0) {
+              console.log("🔍 Detailed Transfer analysis:");
+              logs.forEach((log: any, index: number) => {
+                const isMint =
+                  log.args.from ===
+                  "0x0000000000000000000000000000000000000000";
+                const isBurn =
+                  log.args.to === "0x0000000000000000000000000000000000000000";
+                const isToUser =
+                  log.args.to?.toLowerCase() === userAddress.toLowerCase();
+                const isFromUser =
+                  log.args.from?.toLowerCase() === userAddress.toLowerCase();
+                const isUserMint = isMint && isToUser;
+                const isUserBurn = isBurn && isFromUser;
 
-          // Double-check: ensure orderType is SELL
-          if (taggedLog.orderType !== "SELL") {
-            console.error("❌ CRITICAL: orderType was not set to SELL!", {
-              txHash: log.transactionHash,
-              orderType: taggedLog.orderType,
-            });
-            taggedLog.orderType = "SELL";
-          }
+                let label = "🔄 REGULAR";
+                if (isUserMint) label = "🎯 YOUR MINT";
+                else if (isUserBurn) label = "🔥 YOUR BURN";
+                else if (isMint) label = "🟢 OTHER MINT";
+                else if (isBurn) label = "🔴 OTHER BURN";
 
-          return taggedLog;
-        });
-
-        // Combine all logs - they're already tagged with correct orderType
-        const combinedLogs: OrderLog[] = [...buyLogs, ...sellLogs];
-
-        console.log("📋 Combined logs:", {
-          total: combinedLogs.length,
-          buyCount: combinedLogs.filter((log: any) => log.orderType === "BUY")
-            .length,
-          sellCount: combinedLogs.filter((log: any) => log.orderType === "SELL")
-            .length,
-        });
-
-        const filteredLogs = combinedLogs.filter((log: any) => {
-          const logUser = log.args?.user?.toLowerCase();
-          const matches = logUser === userAddress;
-
-          // Debug ALL logs, not just matching ones
-          if (log.orderType === "SELL") {
-            console.log("🔍 Checking SELL log:", {
-              txHash: log.transactionHash,
-              orderType: log.orderType,
-              logUser,
-              userAddress,
-              matches,
-              userMatches: logUser === userAddress,
-            });
-          }
-
-          if (matches) {
-            console.log("✅ Matching log:", {
-              txHash: log.transactionHash,
-              orderType: log.orderType,
-              hasOrderType: "orderType" in log,
-              user: log.args?.user,
-              isSell: log.orderType === "SELL",
-              isBuy: log.orderType === "BUY",
-            });
-
-            // CRITICAL: Verify orderType is still present after filtering
-            if (
-              !log.orderType ||
-              (log.orderType !== "BUY" && log.orderType !== "SELL")
-            ) {
-              console.error("❌ CRITICAL: orderType lost during filtering!", {
-                txHash: log.transactionHash,
-                orderType: log.orderType,
-                logKeys: Object.keys(log),
-              });
-            }
-          } else if (log.orderType === "SELL") {
-            console.warn("⚠️ SELL log did NOT match user filter:", {
-              txHash: log.transactionHash,
-              logUser,
-              userAddress,
-              orderType: log.orderType,
-            });
-          }
-          return matches;
-        });
-
-        console.log("🎯 Filtered logs for user:", {
-          count: filteredLogs.length,
-          orderTypes: filteredLogs.map((log: any) => log.orderType),
-          sellCount: filteredLogs.filter((log: any) => log.orderType === "SELL")
-            .length,
-          buyCount: filteredLogs.filter((log: any) => log.orderType === "BUY")
-            .length,
-        });
-
-        const timestampMap = await buildBlockTimestampMap(filteredLogs);
-
-        const parsedActivities = filteredLogs
-          .map((log: any) => {
-            // CRITICAL: Get orderType directly from log - it should already be set when we tagged the logs
-            // This is the source of truth since we tagged them when fetched
-            let orderType: "BUY" | "SELL" = log.orderType;
-
-            console.log("🔍 Processing filtered log:", {
-              txHash: log.transactionHash,
-              logOrderType: log.orderType,
-              hasOrderType: "orderType" in log,
-              orderTypeValue: orderType,
-              isSELL: log.orderType === "SELL",
-              isBUY: log.orderType === "BUY",
-            });
-
-            // Verify event signature as a double-check, but TRUST the log.orderType first
-            const verifiedType = getEventTypeFromLog(log);
-
-            // Only override if orderType is missing or invalid, OR if there's a clear mismatch
-            if (!orderType || (orderType !== "BUY" && orderType !== "SELL")) {
-              // If orderType is missing, use verified type or fallback
-              if (verifiedType) {
-                orderType = verifiedType;
-                console.log(
-                  "🔧 Using verified type (orderType was missing):",
-                  orderType,
-                );
-              } else {
-                // Last resort: check if this log is in the sellLogs array
-                const isInSellLogs = sellLogs.some(
-                  (sellLog: any) =>
-                    sellLog.transactionHash === log.transactionHash &&
-                    sellLog.logIndex === log.logIndex,
-                );
-                orderType = isInSellLogs ? "SELL" : "BUY";
-                console.log(
-                  "🔧 Determined orderType from array check:",
-                  orderType,
-                );
-              }
-            } else if (verifiedType && orderType !== verifiedType) {
-              // If there's a mismatch, log it but TRUST the log.orderType (it was set when fetched)
-              console.warn(
-                "⚠️ Mismatch between log.orderType and verified type:",
-                {
+                console.log(`Transfer ${index + 1} ${label}:`, {
+                  from: log.args.from,
+                  to: log.args.to,
+                  value: log.args.value?.toString(),
+                  amount: `${(Number(log.args.value) / Math.pow(10, decimals)).toFixed(2)} tokens`,
                   txHash: log.transactionHash,
-                  logOrderType: orderType,
-                  verifiedType,
-                  topics0: log.topics?.[0],
-                  decision: "Using log.orderType (source of truth)",
-                },
-              );
-              // Keep the log.orderType - it's more reliable since we set it when fetching
-            } else if (verifiedType) {
-              console.log("✅ OrderType matches verified type:", orderType);
-            }
-
-            // FINAL CHECK: Ensure orderType is definitely SELL or BUY
-            if (orderType !== "BUY" && orderType !== "SELL") {
-              console.error(
-                "❌ CRITICAL: Invalid orderType after all checks:",
-                orderType,
-              );
-              // Last resort fallback
-              const isInSellLogs = sellLogs.some(
-                (sellLog: any) =>
-                  sellLog.transactionHash === log.transactionHash &&
-                  sellLog.logIndex === log.logIndex,
-              );
-              orderType = isInSellLogs ? "SELL" : "BUY";
-              console.log("🔧 Final fallback - set orderType to:", orderType);
-            }
-
-            // Verify orderType is set correctly
-            if (!orderType || (orderType !== "BUY" && orderType !== "SELL")) {
-              console.error("❌ CRITICAL: Missing or invalid orderType!", {
-                txHash: log.transactionHash,
-                orderType: log.orderType,
-                verifiedType,
-                logKeys: Object.keys(log),
-                hasOrderType: "orderType" in log,
+                  block: log.blockNumber?.toString(),
+                });
               });
-              // This should never happen if logs are tagged correctly
-              // But if it does, we'll log an error and skip this log
-              return null;
+            } else if (i === 0 && logs.length === 0) {
+              console.log("⚠️ No Transfer events found in most recent chunk");
             }
 
-            // Explicit logging for SELL orders
-            if (orderType === "SELL") {
-              console.log("🔴🔴🔴 PROCESSING SELL ORDER:", {
-                txHash: log.transactionHash,
-                orderType,
-                logOrderType: log.orderType,
-                verifiedType,
-                user: log.args?.user,
+            // Get both mints (from zero) and burns (to zero) for this user
+            const chunkTransactions = logs
+              .filter((log: any) => {
+                const isMint =
+                  log.args.from ===
+                    "0x0000000000000000000000000000000000000000" &&
+                  log.args.to?.toLowerCase() === userAddress.toLowerCase();
+                const isBurn =
+                  log.args.to ===
+                    "0x0000000000000000000000000000000000000000" &&
+                  log.args.from?.toLowerCase() === userAddress.toLowerCase();
+                return isMint || isBurn;
+              })
+              .map((log: any) => {
+                try {
+                  const price = getValidPrice(currentPrice);
+                  const value = calculateValue(log.args.value, price, decimals);
+
+                  // Use block time estimation instead of random
+                  const blocksAgo = Number(currentBlock - log.blockNumber);
+                  const hoursAgo = Math.floor((blocksAgo * 2) / 3600); // 2 sec per block
+                  const timestamp = Date.now() - hoursAgo * 3600000;
+
+                  // Determine if this is a mint or burn
+                  const isMint =
+                    log.args.from ===
+                    "0x0000000000000000000000000000000000000000";
+                  const action = isMint ? "Purchased" : "Burned";
+
+                  const formattedAmount = formatAmount(
+                    log.args.value,
+                    decimals,
+                  );
+
+                  return {
+                    id: `${log.transactionHash}-${log.logIndex}`,
+                    action,
+                    symbol: "SLQD",
+                    amount: formattedAmount,
+                    time: getTimeAgo(timestamp),
+                    value: formatCurrencyValue(value),
+                    blockNumber: Number(log.blockNumber),
+                    transactionType:
+                      action === "Burned" ? "SLQD Sold" : "SLQD Bought",
+                  };
+                } catch (error) {
+                  console.error("Error processing transaction:", error);
+                  return {
+                    id: `${log.transactionHash}-${log.logIndex}`,
+                    action:
+                      log.args.from ===
+                      "0x0000000000000000000000000000000000000000"
+                        ? "Purchased"
+                        : "Burned",
+                    symbol: "SLQD",
+                    amount: "0",
+                    time: getTimeAgo(Date.now()),
+                    value: "$0",
+                    blockNumber: Number(log.blockNumber),
+                    transactionType:
+                      log.args.from ===
+                      "0x0000000000000000000000000000000000000000"
+                        ? "SLQD Bought"
+                        : "SLQD Sold",
+                  };
+                }
               });
-            }
 
-            console.log("🔄 Processing order:", {
-              txHash: log.transactionHash,
-              orderType,
-              logOrderType: log.orderType,
-              verifiedType,
-              user: log.args?.user,
-              assetAmount: log.args?.assetAmount?.toString(),
-              usdcAmount: log.args?.usdcAmount?.toString(),
-            });
-
-            const activity = mapLogToActivity(
-              log,
-              orderType,
-              timestampMap[log.blockNumber?.toString()] ?? Date.now(),
+            allTransactions.push(...chunkTransactions);
+            console.log(
+              `🔥 Chunk ${i + 1}: Found ${chunkTransactions.length} YOUR transactions (mints/burns) (total: ${allTransactions.length})`,
             );
 
-            // Explicit logging for SELL activities
-            if (orderType === "SELL") {
-              console.log("🔴🔴🔴 CREATED SELL ACTIVITY:", {
-                id: activity.id,
-                action: activity.action,
-                transactionType: activity.transactionType,
-                expectedAction: "Sold",
-                actualAction: activity.action,
-                isCorrect: activity.action === "Sold",
-              });
+            // If we found transactions, we can stop searching
+            if (allTransactions.length > 0) {
+              console.log("✅ Found transactions, stopping search...");
+              break;
             }
 
-            console.log("✅ Created activity:", {
-              id: activity.id,
-              action: activity.action,
-              transactionType: activity.transactionType,
-              expectedAction: orderType === "BUY" ? "Purchased" : "Sold",
-              matches:
-                activity.action ===
-                (orderType === "BUY" ? "Purchased" : "Sold"),
-            });
+            // Continue collecting all transactions (no early exit)
+          } catch (chunkError) {
+            console.error(`❌ Chunk ${i + 1} failed:`, chunkError);
+            // If any chunk fails, just stop and show what we have
+            console.log("⚠️ RPC timeout detected, stopping search...");
+            break;
+          }
+        }
 
-            return activity;
-          })
-          .filter((activity): activity is ActivityEvent => activity !== null);
+        // If we found no transactions, show empty state
+        if (allTransactions.length === 0) {
+          console.log("📭 No transactions found in recent blocks");
+        }
 
-        parsedActivities.sort(
-          (a, b) => (b.blockNumber ?? 0) - (a.blockNumber ?? 0),
+        // Sort transactions by block number (most recent first)
+        allTransactions.sort((a, b) => b.blockNumber - a.blockNumber);
+
+        console.log(
+          `🎯 Total YOUR transactions (mints/burns) found: ${allTransactions.length}`,
         );
 
-        setAllTransactions(parsedActivities);
-        setActivities(parsedActivities.slice(0, showCount));
-        setHasMore(parsedActivities.length > showCount);
+        // Store all transactions and show subset
+        setAllTransactions(allTransactions);
+        setHasMore(allTransactions.length > showCount);
+        setActivities(allTransactions.slice(0, showCount));
       } catch (error) {
-        console.error("Error fetching order history:", error);
+        console.error("Error fetching mint events:", error);
         setActivities([]);
-        setAllTransactions([]);
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchRecentOrders();
-  }, [publicClient, userAddress, ordersAddress, showCount, tokenDecimals]);
+    fetchRecentMints();
+  }, [publicClient, currentPrice, userAddress, decimals, rwaTokenAddress]);
 
   // Update displayed activities when showCount changes
   useEffect(() => {

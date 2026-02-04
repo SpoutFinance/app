@@ -143,7 +143,7 @@ export default function SignInForm() {
         <div className="mt-8 text-center space-y-2">
           <a
             href="/auth/forgot-password"
-            className="text-emerald-600 hover:underline mr-4 font-medium"
+            className="text-emerald-600 hover:no-underline mr-4 font-medium"
           >
             Forgot password?
           </a>

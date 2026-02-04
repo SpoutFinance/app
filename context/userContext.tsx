@@ -2,6 +2,8 @@
 
 import { createContext, useContext } from "react";
 
+console.log("UserContext file loaded");
+
 export const UserContext = createContext<{ username: string } | string>("");
 
 export function useUser() {
