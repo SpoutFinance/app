@@ -1,108 +1,71 @@
-"use client";
-
-import BgGrain from "@/components/bg-grain-svg";
-import { DiagonalPattern } from "@/components/slant-dashes-svg";
-import { Button } from "@/components/ui/button";
-import { useScreenSize } from "@/hooks/use-screen-size";
-import { ArrowRight, ArrowUpRight } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { JoinMailingList } from "./join-mailing-list";
-import { PartnerTicker } from "./partner-ticker";
+
+import image1 from "@/assets/images/hero/1.png";
+import Image from "next/image";
 
 export function HeroSection() {
-  const screenSize = useScreenSize();
-
   return (
-    <section className="w-full flex flex-col relative overflow-hidden">
-      {/* Background grain */}
-      <BgGrain className="absolute inset-0 w-full h-full z-0 optimized" />
-
+    <section className="w-full flex flex-col relative pl-5 mb-[-34px]">
       {/* Hero content wrapper */}
-      <div className="relative w-full">
+      <div className="relative w-full h-[702px]">
         {/* Grid background */}
-        <div className="absolute inset-0 z-0 bg-[linear-gradient(rgba(0,0,0,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.05)_1px,transparent_1px)] bg-size-[35px_35px] optimized"></div>
+        <div className="absolute inset-0 pointer-events-none z-0">
+          <img
+            src="/svg-assets/landingpage/grid-bg.svg"
+            className="object-cover w-full h-full optimized"
+          />
+        </div>
 
         {/* Main content */}
-        <div className="relative z-10 w-full max-w-[1800px] mx-auto px-4 sm:px-8 lg:px-16 pt-6 sm:pt-12 lg:pt-20 pb-0 flex flex-col lg:flex-row items-start justify-between gap-0">
+        <div className="relative z-10 w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:ps-16 pt-6 sm:pt-12 lg:pt-0 pb-16 flex flex-col lg:flex-row gap-10 xl:gap-[80px] justify-center items-center">
           {/* Left column */}
-          <div className="w-full lg:w-[55%] mb-6 sm:mb-12 lg:mb-0">
-            <div className="max-w-5xl space-y-4 sm:space-y-6">
-              <h1 className="text-2xl capitalize sm:text-3xl lg:text-5xl font-lora font-medium text-[#004040] leading-tight!">
-                The Go-To Platform for Margin Trading at 0% Rates
+          <div className="lg:max-w-[840px]">
+            <div className="">
+              <h1 className="  mb-[16px] text-[#004040] font-pt-serif text-[52px] font-normal leading-[72px] tracking-[0.208px]">
+                The Go-To Platform for Margin Trading at{" "}
+                <span className="text-spout-blue">0%</span> Rates
               </h1>
 
-              <p className="text-sm sm:text-base lg:text-lg tracking-[-0.072px] font-noto-sans text-[#525252] ">
+              <p className="mb-[36px] text-[#757679] font-dm-sans text-[18px] font-normal leading-[24px] tracking-[0.072px]">
                 Spout enables you to borrow against your equities at 0% APR or
-                lend your stablecoins for 10%+ APY
+                lend your stablecoins for <br /> 10%+ APY
               </p>
 
-              <div className="pt-2 sm:pt-0 flex flex-col sm:flex-row gap-3 sm:gap-4">
-                <Link href="https://demo.spout.finance ">
-                  <Button
-                    size="lg"
-                    className="bg-[#004040] hover:bg-[#003030] data-hovered:bg-[#003030] text-white px-6 sm:px-8 lg:px-10 py-3 sm:py-4 lg:py-5 text-base sm:text-lg lg:text-xl font-semibold rounded-none shadow-lg hover:shadow-xl transition-all duration-300 w-full sm:w-auto"
-                  >
-                    Launch Platform
-                    <ArrowRight className="ml-2 sm:ml-3 h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6" />
-                  </Button>
+              <div className="mb-[44px] sm:pt-0 flex flex-col lg:flex-row  items-center gap-4 sm:gap-6 ">
+                <Link
+                  href="/app"
+                  className="flex h-9 px-4 py-3 justify-center items-center gap-3 bg-spout-primary hover:bg-spout-primary/90 text-white font-dm-sans text-[16px] font-medium leading-normal rounded-[4.766px] transition-all"
+                >
+                  Launch Platform
                 </Link>
-                <Link href="https://app.spout.finance">
-                  <Button
-                    size="lg"
-                    className="border-2 border-[#004040] bg-white hover:bg-gray-50 data-hovered:bg-gray-50 text-[#004040] px-6 sm:px-7 lg:px-8 py-3 sm:py-4 lg:py-5 text-base sm:text-lg lg:text-xl font-semibold rounded-none shadow-lg hover:shadow-xl transition-all duration-300 w-full sm:w-auto"
-                  >
-                    Try Demo
-                    <ArrowUpRight className="ml-2 sm:ml-3 h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6" />
-                  </Button>
-                </Link>
+
+                <button className="flex h-9 px-4 py-3 justify-center items-center gap-[11.916px] border-[1px]  rounded-[4.766px] not-italic font-medium leading-normal border-spout-light-gray text-primary font-dm-sans !text-black  text-[16px] transition-all group">
+                  Try Demo
+                </button>
               </div>
 
-              <p className="text-xs sm:text-sm lg:text-base font-noto-sans text-[#004040] uppercase tracking-wide">
-                [JOIN THE PLATFORM THAT&apos;S MAKING TRADITIONAL CAPITAL MORE
-                EFFICIENT]
+              <p className="text-[#004040] font-dm-sans text-base not-italic font-medium leading-normal uppercase">
+                [ Join our mailing list for early access and updates ]
               </p>
 
-              <div className="max-w-md pt-2 sm:pt-0">
+              <div className="max-w-lg pt-4">
                 <JoinMailingList />
               </div>
             </div>
           </div>
 
           {/* Right column - image */}
-          <div className="w-full lg:w-[45%] flex items-center justify-center lg:justify-end -mt-2 sm:-mt-6 lg:-mt-8">
-            <div className="w-full max-w-[280px] sm:max-w-sm lg:max-w-xl optimized">
-              <Image
-                src="/svg-assets/landingpage/spout-water-tokens.svg"
-                alt="Spout Water Tokens"
-                width={452}
-                height={496}
-                priority
-              />
-            </div>
+          <div className="w-[365px] h-[640px] relative">
+            <Image
+              src={image1}
+              alt="Spout Water Tokens"
+              fill
+              quality={100}
+              objectFit="cover"
+            />
           </div>
         </div>
-
-        {/* Partner Ticker */}
-        <div className="relative z-10 w-full max-w-[1800px] mx-auto px-4 sm:px-8 lg:px-16 mb-3 sm:mb-6">
-          <div className="px-16 hidden md:block optimized">
-            <PartnerTicker />
-          </div>
-          <div className="block md:hidden optimized">
-            <PartnerTicker />
-          </div>
-        </div>
-      </div>
-
-      {/* Slant Dashes */}
-      <div className="relative z-10 w-full mt-10 px-4 py-2 optimized">
-        <DiagonalPattern
-          width="100%"
-          height={34}
-          color="#A7C6ED"
-          strokeWidth={1.5}
-          spacing={14}
-        />
       </div>
     </section>
   );

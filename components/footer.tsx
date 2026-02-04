@@ -1,8 +1,7 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
-import Link from "next/link";
-import { ArrowUp } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
+import React, { useEffect, useRef, useState } from "react";
 interface LinkItem {
   href: string;
   label: string;
@@ -86,16 +85,9 @@ export const Footer: React.FC<FooterProps> = ({
   return (
     <footer
       ref={footerRef}
-      className="bg-gray-50 text-gray-900 relative flex flex-col w-full h-full justify-between select-none z-0"
+      className="bg-white text-gray-900 relative flex flex-col w-full h-full justify-between select-none z-0"
     >
-      {/* Vertical lines for footer - hidden on mobile */}
-      <div className="hidden md:block absolute inset-0 pointer-events-none z-0">
-        {/* Left vertical line */}
-        <div className="absolute left-4 top-0 bottom-0 w-[1.5px] bg-[#A7C6ED]"></div>
-        {/* Right vertical line */}
-        <div className="absolute right-4 top-0 bottom-0 w-[1.5px] bg-[#A7C6ED]"></div>
-      </div>
-      <div className="container mx-auto flex flex-col lg:flex-row justify-between w-full gap-12 py-12 px-6 lg:px-16 max-w-7xl relative z-10">
+      <div className="border-b-2 border-[#F3F4F6]  flex flex-col lg:flex-row justify-between w-full gap-12  relative z-10">
         {/* Mobile Layout - Logo and copyright at top, links below */}
         <div className="lg:hidden space-y-8">
           {/* Logo and copyright */}
@@ -197,9 +189,9 @@ export const Footer: React.FC<FooterProps> = ({
         </div>
 
         {/* Desktop Layout - Original layout */}
-        <div className="hidden lg:flex lg:flex-row lg:justify-between lg:w-full lg:gap-12">
+        <div className="hidden lg:flex lg:flex-row lg:justify-between lg:w-full lg:gap-12 max-w-[1305px] mx-auto">
           {/* Left side - Logo and copyright */}
-          <div className="space-y-6 lg:max-w-xs">
+          <div className="space-y-5 pt-[52px] pb-[104px] border-r-2  border-[#F3F4F6] pr-[55px]">
             <div className="flex items-center mb-4">
               <Image
                 src="/Spout_complete.png"
@@ -209,14 +201,14 @@ export const Footer: React.FC<FooterProps> = ({
                 className="h-10 w-auto"
               />
             </div>
-            <p className="text-sm text-gray-600">{copyrightText}</p>
+            <p className="text-sm font-dm-sans">{copyrightText}</p>
           </div>
 
           {/* Right side - Links grid */}
-          <div className="grid grid-cols-3 gap-16">
+          <div className="grid grid-cols-3 gap-16 py-12 font-noto-sans mr-16">
             {/* Platform Column */}
             <div>
-              <h4 className="font-semibold text-gray-400 mb-4 text-sm uppercase tracking-wider">
+              <h4 className="text-[#8C9BAA] font-['DM_Sans'] text-sm font-medium leading-[22.4px] tracking-[-0.24px] mb-4 uppercase">
                 PLATFORM
               </h4>
               <ul className="space-y-3">
@@ -224,7 +216,7 @@ export const Footer: React.FC<FooterProps> = ({
                   <li key={index}>
                     <Link
                       href={link.href}
-                      className="text-gray-900 hover:text-[#004040] transition-colors duration-200 text-base"
+                      className="text-black font-['DM_Sans'] text-sm font-normal leading-[22.4px] tracking-[-0.24px] hover:text-[#004040] transition-colors duration-200 "
                     >
                       {link.label}
                     </Link>
@@ -235,7 +227,7 @@ export const Footer: React.FC<FooterProps> = ({
 
             {/* Company Column */}
             <div>
-              <h4 className="font-semibold text-gray-400 mb-4 text-sm uppercase tracking-wider">
+              <h4 className="text-[#8C9BAA] font-['DM_Sans'] text-sm font-medium leading-[22.4px] tracking-[-0.24px] mb-4 uppercase">
                 COMPANY
               </h4>
               <ul className="space-y-3">
@@ -243,7 +235,7 @@ export const Footer: React.FC<FooterProps> = ({
                   <li key={index}>
                     <Link
                       href={link.href}
-                      className="text-gray-900 hover:text-[#004040] transition-colors duration-200 text-base"
+                      className="text-black font-['DM_Sans'] text-sm font-normal leading-[22.4px] tracking-[-0.24px] hover:text-[#004040] transition-colors duration-200"
                     >
                       {link.label}
                     </Link>
@@ -254,7 +246,7 @@ export const Footer: React.FC<FooterProps> = ({
 
             {/* Social Column */}
             <div>
-              <h4 className="font-semibold text-gray-400 mb-4 text-sm uppercase tracking-wider">
+              <h4 className="text-[#8C9BAA] font-['DM_Sans'] text-sm font-medium leading-[22.4px] tracking-[-0.24px] mb-4 uppercase">
                 SOCIAL
               </h4>
               <ul className="space-y-3">
@@ -263,19 +255,9 @@ export const Footer: React.FC<FooterProps> = ({
                     href="https://www.linkedin.com/company/spoutfinance/posts/?feedView=all"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-gray-900 hover:text-[#004040] transition-colors duration-200 text-base"
+                    className="text-black font-['DM_Sans'] text-sm font-normal leading-[22.4px] tracking-[-0.24px] hover:text-[#004040] transition-colors duration-200"
                   >
                     LinkedIn
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://t.me/+BCqhsA4Nmv0wZDU5"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-gray-900 hover:text-[#004040] transition-colors duration-200 text-base"
-                  >
-                    Telegram
                   </a>
                 </li>
                 <li>
@@ -283,9 +265,19 @@ export const Footer: React.FC<FooterProps> = ({
                     href="https://x.com/0xspout"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-gray-900 hover:text-[#004040] transition-colors duration-200 text-base"
+                    className="text-black font-['DM_Sans'] text-sm font-normal leading-[22.4px] tracking-[-0.24px] hover:text-[#004040] transition-colors duration-200"
                   >
                     X
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://t.me/+BCqhsA4Nmv0wZDU5"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-black font-['DM_Sans'] text-sm font-normal leading-[22.4px] tracking-[-0.24px] hover:text-[#004040] transition-colors duration-200"
+                  >
+                    Telegram
                   </a>
                 </li>
               </ul>
@@ -295,51 +287,16 @@ export const Footer: React.FC<FooterProps> = ({
       </div>
 
       {/* Disclaimer Section - Hidden on mobile */}
-      <div className="hidden md:block border-t-[1.5px] border-[#A7C6ED] relative z-10">
-        {/* Top-left diamond */}
-        <div className="hidden sm:block absolute left-1 sm:left-2 -top-1 sm:-top-2 z-20">
-          <svg
-            width="12"
-            height="12"
-            viewBox="0 0 24 24"
-            fill="none"
-            className="text-blue-300 sm:w-4 sm:h-4"
-          >
-            <path
-              d="M12 2L22 12L12 22L2 12L12 2Z"
-              stroke="currentColor"
-              strokeWidth="3"
-              fill="white"
-            />
-          </svg>
-        </div>
-
-        {/* Top-right diamond */}
-        <div className="hidden sm:block absolute right-1 sm:right-2 -top-1 sm:-top-2 z-20">
-          <svg
-            width="12"
-            height="12"
-            viewBox="0 0 24 24"
-            fill="none"
-            className="text-blue-300 sm:w-4 sm:h-4"
-          >
-            <path
-              d="M12 2L22 12L12 22L2 12L12 2Z"
-              stroke="currentColor"
-              strokeWidth="3"
-              fill="white"
-            />
-          </svg>
-        </div>
-
-        <div className="container mx-auto px-6 lg:px-16 py-8 max-w-7xl">
-          <h5 className="font-semibold text-gray-900 mb-3 text-base">
+      <div className="hidden md:block  relative z-10 w-full max-w-[1305px] mx-auto h-[85px]">
+        <div className="flex flex-col gap-2 py-10 ml-[-4px] max-w-[755px] font-dm-sans ">
+          <h5 className="text-[#525252] font-['DM_Sans'] text-[18px] not-italic font-medium leading-[28px] tracking-[-0.072px]">
             Disclaimer
           </h5>
-          <p className="text-sm text-gray-600 leading-relaxed">
+          <p className="text-[#525252] font-['DM_Sans'] text-[14px] not-italic font-normal leading-[24px] tracking-[-0.056px]">
             All provided information has been carefully researched and checked.
-            In spite of taking due care, Spout does not accept any warranty for
-            the information being correct, complete, and up to date.
+            In spite of taking due care, Spout Finance does not accept any
+            warranty for the information being correct, complete, and up to
+            date.
           </p>
         </div>
       </div>
@@ -363,7 +320,7 @@ const DefaultFooter = () => {
     <Footer
       leftLinks={leftLinks}
       rightLinks={rightLinks}
-      copyrightText={`© ${new Date().getFullYear()} Spout Finance. All rights reserved.`}
+      copyrightText={`${new Date().getFullYear()} Spout Finance. All rights reserved.`}
       barCount={25}
     />
   );
