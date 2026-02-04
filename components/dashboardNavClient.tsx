@@ -27,16 +27,10 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useAccount, useBalance, useDisconnect } from "wagmi";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
-import { isAppSubdomain, normalizePathname } from "@/lib/utils";
-
-function useAppHome() {
-  const router = useRouter();
-  return () => router.push(isAppSubdomain() ? "/" : "/app");
-}
 
 export function DashboardSidebarNavClient() {
   const { open } = useSidebar();
-  const goHome = useAppHome();
+  const router = useRouter();
   const pathname = usePathname();
   const { address, isConnected } = useAccount();
   const { disconnect } = useDisconnect();
@@ -48,16 +42,13 @@ export function DashboardSidebarNavClient() {
     return address ? `${address.slice(0, 6)}...${address.slice(-4)}` : null;
   }, [address]);
 
-  const { data: bal, isLoading: balLoading } = useBalance({
-    address,
-    query: { enabled: Boolean(address) },
-  });
+  const { data: bal, isLoading: balLoading } = useBalance({ address, query: { enabled: Boolean(address) } });
   useEffect(() => {
     setIsBalanceLoading(balLoading);
     if (!balLoading && bal) {
       const balance = Number(bal.value) / 10 ** bal.decimals;
       // Format to show max 6 decimal places, removing trailing zeros
-      const formattedBalance = balance.toFixed(6).replace(/\.?0+$/, "");
+      const formattedBalance = balance.toFixed(6).replace(/\.?0+$/, '');
       setBalanceSol(`${formattedBalance} ${bal.symbol}`);
     } else if (!address) {
       setBalanceSol(null);
@@ -65,11 +56,10 @@ export function DashboardSidebarNavClient() {
   }, [bal, balLoading, address]);
 
   const isActive = (path: string) => {
-    const normalizedPathname = normalizePathname(pathname);
     if (path === "/app") {
-      return normalizedPathname === "/app";
+      return pathname === "/app";
     }
-    return normalizedPathname.startsWith(path);
+    return pathname.startsWith(path);
   };
 
   return (
@@ -79,7 +69,7 @@ export function DashboardSidebarNavClient() {
           <div className="flex h-8 w-8 items-center justify-center">
             <Image
               className="cursor-pointer"
-              onClick={goHome}
+              onClick={() => router.push("/app")}
               src="/Whale.png"
               alt="Spout Finance logo"
               width={32}
@@ -88,7 +78,7 @@ export function DashboardSidebarNavClient() {
           </div>
           {open && (
             <h1
-              onClick={goHome}
+              onClick={() => router.push("/app")}
               className="text-lg font-semibold text-gray-900 cursor-pointer"
             >
               Spout Finance
@@ -114,7 +104,7 @@ export function DashboardSidebarNavClient() {
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
-          {/* <SidebarMenuItem>
+          <SidebarMenuItem>
             <SidebarMenuButton className="flex items-center gap-3 opacity-75 cursor-not-allowed">
               <BarChart3 className="h-4 w-4" />
               <span>Earn</span>
@@ -125,7 +115,7 @@ export function DashboardSidebarNavClient() {
                 Soon
               </Badge>
             </SidebarMenuButton>
-          </SidebarMenuItem> */}
+          </SidebarMenuItem>
           <SidebarMenuItem>
             <SidebarMenuButton asChild isActive={isActive("/app/borrow")}>
               <Link href="/app/borrow" className="flex items-center gap-3">
@@ -140,14 +130,14 @@ export function DashboardSidebarNavClient() {
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
-          {/* <SidebarMenuItem>
+          <SidebarMenuItem>
             <SidebarMenuButton asChild isActive={isActive("/app/proof-of-reserve")}>
               <Link href="/app/proof-of-reserve" className="flex items-center gap-3">
                 <TrendingUp className="h-4 w-4" />
                 <span>Proof of Reserve</span>
               </Link>
             </SidebarMenuButton>
-          </SidebarMenuItem> */}
+          </SidebarMenuItem>
           <SidebarMenuItem>
             <SidebarMenuButton className="flex items-center gap-3 opacity-75 cursor-not-allowed">
               <Store className="h-4 w-4" />
@@ -179,12 +169,8 @@ export function DashboardSidebarNavClient() {
                 if (openConnectModal) {
                   openConnectModal();
                 } else {
-                  console.error(
-                    "❌ openConnectModal is not available. Check RainbowKit configuration.",
-                  );
-                  alert(
-                    "Wallet connection is not available. Please check your browser console for details.",
-                  );
+                  console.error("❌ openConnectModal is not available. Check RainbowKit configuration.");
+                  alert("Wallet connection is not available. Please check your browser console for details.");
                 }
               }}
               className="mt-3 bg-black text-white text-sm rounded-none px-4 py-2 border border-gray-600/50 hover:bg-black/90 focus:outline-none w-full justify-center"
@@ -200,7 +186,7 @@ export function DashboardSidebarNavClient() {
                     {shortAddress}
                   </span>
                   <span className="text-xs font-medium text-gray-900">
-                    {isBalanceLoading ? "Loading…" : (balanceSol ?? "—")}
+                    {isBalanceLoading ? "Loading…" : balanceSol ?? "—"}
                   </span>
                 </div>
               </div>
@@ -230,11 +216,10 @@ export function DashboardNavbarHeaderClient() {
   const pathname = usePathname();
 
   const isActive = (path: string) => {
-    const normalizedPathname = normalizePathname(pathname);
     if (path === "/app") {
-      return normalizedPathname === "/app";
+      return pathname === "/app";
     }
-    return normalizedPathname.startsWith(path);
+    return pathname.startsWith(path);
   };
 
   return (

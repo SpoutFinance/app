@@ -2,30 +2,13 @@
 
 import Navbar from "@/components/navBar";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
 import { AnimatedFooterSection } from "./features/root";
-import { isAppSubdomain as checkIsAppSubdomain } from "@/lib/utils";
-
-function useIsAppSubdomain() {
-  const [isSubdomain, setIsSubdomain] = useState(false);
-
-  useEffect(() => {
-    setIsSubdomain(checkIsAppSubdomain());
-  }, []);
-
-  return isSubdomain;
-}
 
 export function ConditionalNavbar() {
   const pathname = usePathname();
-  const isOnAppSubdomain = useIsAppSubdomain();
 
-  // Hide navbar when in /app routes or on app subdomain
-  if (
-    pathname?.startsWith("/app") ||
-    pathname?.startsWith("/auth") ||
-    isOnAppSubdomain
-  ) {
+  // Hide navbar when in /app routes
+  if (pathname?.startsWith("/app") || pathname?.startsWith("/auth")) {
     return null;
   }
 
@@ -34,14 +17,9 @@ export function ConditionalNavbar() {
 
 export function ConditionalFooter() {
   const pathname = usePathname();
-  const isOnAppSubdomain = useIsAppSubdomain();
 
-  // Hide footer when in /app routes or on app subdomain
-  if (
-    pathname?.startsWith("/app") ||
-    pathname?.startsWith("/auth") ||
-    isOnAppSubdomain
-  ) {
+  // Hide footer when in /app routes
+  if (pathname?.startsWith("/app") || pathname?.startsWith("/auth")) {
     return null;
   }
 

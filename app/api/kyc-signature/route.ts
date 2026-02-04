@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
 
     // Call the external API
     const response = await fetchWithTimeout(
-      "https://rwa-deploy-backend-base-sepolia.onrender.com/user/kyc-signature",
+      "https://rwa-deploy-backend-w6i2.onrender.com/user/kyc-signature",
       {
         method: "POST",
         headers: {
@@ -46,6 +46,7 @@ export async function POST(request: NextRequest) {
 
     if (!response.ok) {
       const errorData = await response.text();
+      console.error("External API error:", errorData);
       return NextResponse.json(
         { error: "Failed to get KYC signature from external API" },
         { status: response.status },
@@ -54,20 +55,30 @@ export async function POST(request: NextRequest) {
 
     const data = await response.json();
 
-    // Validate issuer address - the external API might return the deployment owner instead of the issuer contract
-    const expectedIssuers = {
-      "84532": "0xec0B601c4C0c49aa67ca40948C0A841292Bda3D5", // Base Sepolia - CORRECT ClaimIssuer
-      "688688": "0xA5C77b623BEB3bC0071fA568de99e15Ccc06C7cb", // Pharos Testnet
-    };
+    // Debug: Check if the problematic address is being returned
+    ("🔍 KYC Signature API Debug:");
+    console.log("External API response:", data);
+    console.log("Issuer address from API:", data.issuerAddress);
+    console.log("Expected issuer addresses:");
+    console.log(
+      "  - Base Sepconsole.logolia: 0xfBbB54Ea804cC2570EeAba2fea09d0c66582498F",
+    );
+    console.log(
+      "  - Pharos Testnet: 0xA5C77b623BEB3bC0071fA568de99e15Ccc06C7cb",
+    );
+    console.log(
+      "  - Problematic address: 0x369B11fb8C65d02b3BdD68b922e8f0D6FDB58717",
+    );
 
-    // If the API returns the deployment owner address, replace it with the correct issuer
     if (data.issuerAddress === "0x369B11fb8C65d02b3BdD68b922e8f0D6FDB58717") {
-      // Default to Base Sepolia issuer (since the API URL suggests Base Sepolia)
-      data.issuerAddress = expectedIssuers["84532"];
+      console.warn(
+        "⚠️ WARNING: External API returned the problematic address!",
+      );
     }
 
     return NextResponse.json(data);
   } catch (error) {
+    console.error("KYC signature API error:", error);
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 },

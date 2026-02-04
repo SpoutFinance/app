@@ -27,17 +27,6 @@ export default function TransactionModal({
 }: TransactionModalProps) {
   if (!isOpen) return null;
 
-  // Normalize token symbol to always show SLQD format
-  const displaySymbol: string =
-    tokenSymbol === "LQD"
-      ? "SLQD"
-      : tokenSymbol && tokenSymbol.startsWith("S")
-        ? tokenSymbol
-        : `S${tokenSymbol || "LQD"}`;
-
-  // Strip any existing token symbols from amount (e.g., "0.001 LQD" -> "0.001")
-  const cleanAmount = amount.replace(/\s*(LQD|SLQD|S[A-Z]+)\s*$/i, "").trim();
-
   const modalContent = (
     <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[9999]">
       <div className="bg-white rounded-2xl p-6 w-full max-w-md mx-4 shadow-2xl">
@@ -85,7 +74,7 @@ export default function TransactionModal({
                     ) : (
                       <Image
                         src="/SLQD.png"
-                        alt={`${displaySymbol}`}
+                        alt={`S${tokenSymbol}`}
                         width={24}
                         height={24}
                         className="rounded-full"
@@ -94,7 +83,7 @@ export default function TransactionModal({
                     <span className="text-gray-700">
                       {transactionType === "buy"
                         ? amount
-                        : `${cleanAmount} ${displaySymbol}`}
+                        : `${amount} S${tokenSymbol}`}
                     </span>
                   </div>
                   <span className="text-gray-400">→</span>
@@ -102,7 +91,7 @@ export default function TransactionModal({
                     {transactionType === "buy" ? (
                       <Image
                         src="/SLQD.png"
-                        alt={`${displaySymbol}`}
+                        alt={`S${tokenSymbol}`}
                         width={24}
                         height={24}
                         className="rounded-full"
@@ -118,7 +107,7 @@ export default function TransactionModal({
                     )}
                     <span className="text-gray-700">
                       {transactionType === "buy"
-                        ? `${receivedAmount} ${displaySymbol}`
+                        ? `${receivedAmount} S${tokenSymbol}`
                         : `${receivedAmount} USDC`}
                     </span>
                   </div>
@@ -156,7 +145,7 @@ export default function TransactionModal({
                     ) : (
                       <Image
                         src="/SLQD.png"
-                        alt={`${displaySymbol}`}
+                        alt={`S${tokenSymbol}`}
                         width={24}
                         height={24}
                         className="rounded-full"
@@ -165,7 +154,7 @@ export default function TransactionModal({
                     <span className="text-gray-700">
                       {transactionType === "buy"
                         ? amount
-                        : `${cleanAmount} ${displaySymbol}`}
+                        : `${amount} S${tokenSymbol}`}
                     </span>
                   </div>
                   <span className="text-gray-400">→</span>
@@ -173,7 +162,7 @@ export default function TransactionModal({
                     {transactionType === "buy" ? (
                       <Image
                         src="/SLQD.png"
-                        alt={`${displaySymbol}`}
+                        alt={`S${tokenSymbol}`}
                         width={24}
                         height={24}
                         className="rounded-full"
@@ -189,7 +178,7 @@ export default function TransactionModal({
                     )}
                     <span className="text-gray-700">
                       {transactionType === "buy"
-                        ? `${receivedAmount} ${displaySymbol}`
+                        ? `${receivedAmount} S${tokenSymbol}`
                         : `${receivedAmount} USDC`}
                     </span>
                   </div>

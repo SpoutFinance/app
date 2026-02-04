@@ -6,7 +6,7 @@ export function CallToActionSection() {
   return (
     <div className="relative z-10 max-w-6xl mx-auto px-6">
       <div className="text-center">
-        <Link href="https://app.spout.finance">
+        <Link href="/app">
           <Button
             variant="outline"
             size="lg"

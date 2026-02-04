@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import BgGrain from "@/components/bg-grain-svg";
 import { DiagonalPattern } from "@/components/slant-dashes-svg";
 
@@ -11,86 +10,87 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { ArrowRight, ChevronDown } from "lucide-react";
+import Image from "next/image";
 import { useState } from "react";
 
 const faqData = [
   {
-    question: "Why not just use a traditional off-chain brokerage?",
+    question: "How does Spout bring traditional assets like bonds to DeFi?",
     answer:
-      'Traditional brokerages trap your wealth in a "walled garden" where accessing liquidity requires either selling your assets (triggering taxes) or paying predatory margin rates of 8–12%. Spout eliminates this friction by tokenizing the asset, allowing you to borrow against your portfolio at 0% APR while keeping your long-term position intact. Furthermore, Spout democratizes sophisticated prime brokerage services—like instant liquidity and automated yield—for global users who are typically gatekept from high-quality US credit markets.',
+      "Spout brings traditional assets like bonds to DeFi by tokenizing U.S. investment-grade ETFs into secure, yield-bearing tokens backed 1:1 by real assets. Our platform converts institutional-quality bonds into blockchain-native tokens that maintain their yield characteristics while gaining DeFi liquidity. Each token is fully collateralized by the underlying bond ETF held in secure custody.",
   },
   {
     question: "How does Spout handle off-hour market liquidations?",
     answer:
-      'Spout handles after-hours liquidations through an Internal Buyout Protocol where the Lending Pool acts as the "Buyer of Last Resort" to prevent gap risk. If a liquidation is triggered when markets are closed (e.g., overnight), the Lending Pool automatically purchases the distressed collateral from the borrower at a pre-defined discount (e.g., 5–10% below the last closing price). This discount protects lenders against the asset opening lower the next day. Once traditional markets reopen, the protocol sells the asset via our broker dealer to replenish the stablecoin pool, capturing the difference between the discounted buyout price and the market sell price as pure profit for the lenders.',
+      "Spout uses an advanced market-aware algorithm that adjusts collateral requirements and liquidation thresholds based on real-time market conditions. During off-hours, our system maintains enhanced liquidity pools and utilizes cross-chain bridges to ensure positions can be liquidated fairly even when traditional markets are closed. Our protocol also features a delay mechanism to prevent cascading liquidations.",
   },
   {
     question:
       "How can I integrate Spout's stablecoin into other DeFi protocols?",
     answer:
-      "In Phase 1 (Launch), you cannot. To guarantee solvency and maintain closed-loop liquidity, the stablecoin is initially non-transferable and locked to the Spout platform; borrowers instantly swap into stablecoins (i.e. USDC) internally rather than taking the Spout stablecoin elsewhere.\n\nIn Phase 2 (Scale), once the peg is battle-tested, we will upgrade it to a standard SPL Token. At that point, integration becomes permissionless: other protocols (like Kamino or Save) can onboard it by simply whitelisting our oracle feed and setting up a liquid DEX pool for liquidations.",
+      "Spout tokens are fully compatible with standard ERC-20 and major DeFi protocols including Uniswap, Aave, and Curve. You can use our REST API or smart contract interfaces to integrate directly. We provide comprehensive documentation and SDKs for popular languages. Integration typically takes 2-4 hours for standard use cases, and our developer team is available for custom implementations.",
   },
   {
-    question: "Why not just use another tokenized equity provider?",
+    question: "How does Spout tokenize U.S. stocks, ETFs, and bonds?",
     answer:
-      "Existing tokenized equity players issue static wrappers—you buy the token, and it sits idle in your wallet. To access liquidity, you would have to find a third-party lending market (if one even accepts the asset) and pay exorbitant interest rates of 8–12%.\n\nSpout issues productive assets that natively monetize volatility through our internal options engine. This allows us to subsidize your borrowing costs down to 0% APR, effectively combining the issuer, the hedge fund, and the bank into a single platform. With Spout, your asset works for you; with others, it just sits there.",
+      "Our tokenization process involves acquiring investment-grade securities, holding them in segregated custody accounts, and issuing 1:1 backed tokens on the blockchain. Each token represents a claim on the underlying asset. For stocks and ETFs, we use institutional custodians regulated by the SEC. Bonds are stored with DTCC-approved depositories. The entire process is audited monthly by independent third parties.",
   },
   {
-    question: "Why is DeFi an enormous evolutionary leap for equities?",
+    question: "What is the benefit of using Spout's tokenized assets in DeFi?",
     answer:
-      'DeFi transforms equities from static records into programmable, global money by replacing archaic T+2 settlement cycles with instant, 24/7 liquidity that reacts to information in real-time. It unlocks the latent utility of assets, turning idle stocks into composable "Money Legos" that can be instantly pledged as collateral for loans or automated yield strategies without a bank\'s permission. This evolution democratizes prime brokerage, allowing users anywhere in the world to access high-quality U.S. markets and sophisticated financial services without the friction of traditional banking borders.',
+      "Tokenized assets on Spout provide 24/7 liquidity, instant settlement, yield generation from underlying assets, and access to DeFi composability. Unlike traditional finance, you can use your positions as collateral, lend them out for additional yield, or trade them on secondary markets without waiting for market hours. Our tokens maintain stable yield regardless of crypto market volatility.",
   },
   {
     question: "How do I get started with Spout?",
     answer:
-      "To get started with Spout, you simply choose your role based on your capital needs. Equity buyers and borrowers first complete a quick on-chain KYC verification to mint tokenized assets (like spTSLA) using stablecoins, which can then be locked in vaults to access 0% APR liquidity via our automated yield strategy. Conversely, lenders can participate permissionlessly by simply connecting their wallet and depositing stablecoins into our liquidity pools to earn 10–15% APY generated from option premiums, with no identity verification required.",
+      "Getting started is simple: create an account at spout.finance, complete KYC verification (takes 10-15 minutes), connect your wallet, and deposit USD or USDC. You can then mint Spout tokens by selecting your desired asset and collateral amount. Our onboarding includes guided tutorials, live support, and a testnet environment to practice before using mainnet.",
   },
   {
-    question: "What is the Spout option strategy?",
+    question: "Is Spout compliant with U.S. regulations?",
     answer:
-      'Spout utilizes an automated covered call Strategy to generate yield that completely subsidizes your borrowing costs, enabling 0% APR loans. We algorithmically target deep Out-of-the-Money (OTM) strike prices, ensuring you retain the vast majority of your asset\'s upside potential. You simply trade away the extreme, unlikely "tail-end" of a rally in exchange for free liquidity, allowing you to capture significant market gains while your portfolio pays for itself.',
+      "Yes, Spout operates in full compliance with U.S. securities and financial regulations. We are registered with relevant regulatory bodies and maintain partnerships with licensed custodians and institutional service providers. All tokenized assets are held in regulated custody, and our smart contracts are regularly audited. We adhere to AML/KYC requirements for all users.",
   },
   {
     question: "What privacy features does Spout offer?",
     answer:
-      'Spout utilizes Inco\'s Fully Homomorphic Encryption (FHE) to secure user data, encrypting token balances on-chain so that position sizes and net worth remain completely invisible to the public and competitors. This allows users to trade and borrow with institutional privacy, preventing "whale watching" while ensuring regulatory compliance. Uniquely, FHE enables our smart contracts to mathematically verify collateral health and execute liquidations on this encrypted data without ever exposing the sensitive underlying values.',
+      "Spout balances privacy with regulatory compliance. On-chain transactions are pseudonymous using your wallet address, while KYC data is encrypted and stored separately. We implement privacy-preserving cross-chain bridges and support privacy-focused wallets. However, as a regulated platform, we maintain transaction records required by law while never sharing personal data with third parties without explicit consent.",
   },
   {
     question: "Can I use Spout's assets as collateral for lending?",
     answer:
-      "Yes, absolutely; utilizing your assets as collateral is the core function of the Spout platform. By depositing tokenized equities (like spTSLA), you can borrow stablecoins against them at 0% APR, as the yield generated from your collateral automatically subsidizes the interest costs. This unlocks flexible liquidity that you can use to either leverage your position by purchasing more equities or loop back into our lending pools to generate additional yield.",
+      "Absolutely. Spout tokens are accepted as collateral on lending protocols like Aave and Compound. You can deposit your tokens as collateral and borrow against them while still earning yield on the underlying assets. Our liquidation parameters are conservative to protect borrowers from sudden depegging, and we maintain a liquidation reserve fund to ensure protocol stability.",
   },
   {
     question: "What is the process for minting Spout's stablecoin?",
     answer:
-      'The process is fully automated within the Spout dApp. You simply deposit your spAssets (tokenized equities) into a vault to use as collateral, and then initiate a "Borrow" transaction. Behind the scenes, the protocol instantly mints Spout\'s native stablecoin against your collateral value and deposits it directly into your account, giving you immediate access to the liquidity.',
+      "To mint Spout tokens, deposit your collateral (USDC or USD) into our smart contract, which is held securely. The protocol verifies collateral sufficiency, and your tokens are minted at a 1:1 ratio to the underlying asset value. Minting is instant and costs only the blockchain gas fee (typically $2-10 on Ethereum). You can unmint at any time by sending tokens back to the protocol.",
   },
   {
     question:
       "How are collateralization rates determined for different assets?",
     answer:
-      'Collateralization rates are determined dynamically based on the asset\'s risk profile, utilizing real-time Implied Volatility and Beta to set a specific Loan-to-Value (LTV) limit. We generally assign 60% LTV to high-volatility stocks (like NVDA) to buffer against rapid price swings, while stable "Blue Chip" equities (like JNJ) can access up to 75% LTV. This tiered approach ensures the protocol remains solvent, maintaining a safety buffer before any liquidation event is triggered.',
+      "Collateralization rates are determined by risk assessment algorithms that consider asset volatility, market liquidity, and custody risk. Investment-grade bonds have minimum collateralization of 110%, while blue-chip stocks require 130%. Our oracle system updates rates every 4 hours based on real-time market data from multiple sources. Users are always notified 48 hours before any rate changes.",
   },
   {
     question: "What chains does Spout support?",
     answer:
-      "Spout currently supports Solana and Solayer (SVM) to leverage their high-speed, low-cost infrastructure for real-time asset settlement. While we are exclusively focused on the Solana ecosystem for our mainnet launch to maximize liquidity depth, we plan to deploy on additional high-performance chains in the future as we scale.",
+      "Spout is currently live on Ethereum mainnet and Polygon, with Beta support on Arbitrum and Optimism. We're actively developing support for Solana and Avalanche, with mainnet launch expected in Q2. Our cross-chain bridge technology allows seamless asset movement between supported networks with minimal fees (0.05% average).",
   },
   {
     question: "How does Spout verify asset backing and reserves?",
     answer:
-      'Spout verifies asset backing through a real-time proof of reserve system where all underlying equities are held in segregated, SIPC-insured accounts at our regulated U.S. Broker-Dealer. We bridge this custody data on-chain via an automated API that constantly synchronizes minted assets with held shares to ensure a 1:1 match. Additionally, we utilize Inco\'s FHE "Auditor View Keys," which allow regulators to mathematically verify solvency without ever exposing sensitive user positions or financial data to the public.',
+      "Spout maintains 100% backing for all issued tokens, verified through monthly third-party audits by Big Four accounting firms. We publish real-time attestations on-chain showing reserve balances updated daily. Users can verify backing through our transparency portal, which displays custody proofs, audit reports, and reserve data. We also participate in periodic multi-sig reconciliations with custodians.",
   },
   {
     question:
       "What yield opportunities does Spout provide for tokenized assets?",
     answer:
-      "Spout transforms static equities into productive yield-bearing instruments by monetizing their latent volatility to fully subsidize borrowing costs, unlocking 0% APR liquidity for users. This structure replaces the typical 8–12% margin interest with zero-cost capital, effectively creating yield through significant cost savings. Investors can utilize this free liquidity to leverage their positions and buy more stock without interest drag, or execute a risk-free carry trade by lending the borrowed stablecoins back to the protocol to earn 10–15% APY. Ultimately, Spout allows you to turn a passive portfolio into an active, cash-flowing asset while retaining your long-term market exposure.",
+      "Spout tokens automatically earn yields from the underlying assets—typically 4-6% annually for bonds and 2-4% for dividend-paying stocks. Additional yields come from lending through DeFi protocols (5-12%), liquidity mining rewards (10-20%), and governance token distributions. Composite yields can reach 15-25% annually for active users managing multiple positions.",
   },
   {
     question: "Can users from emerging markets access Spout?",
     answer:
-      "Yes, absolutely—users from emerging markets are a primary target audience for Spout. We democratize access to high-quality U.S. financial markets by removing the need for a U.S. bank account or social security number; lenders can participate permissionlessly just by connecting a wallet, while borrowers can mint and trade tokenized U.S. equities after completing a simple on-chain KYC check. This allows users in regions with volatile local currencies or restrictive banking infrastructures to access stable U.S. assets and institutional-grade yield strategies directly from their phone.",
+      "Spout is accessible globally with some regional restrictions due to local regulations. Users from most countries can participate in our platform. However, certain high-risk jurisdictions (OFAC sanctioned countries) are restricted for regulatory compliance. We're working with local regulators to expand access. All users must complete KYC verification regardless of location, in accordance with international AML standards.",
   },
 ];
 
@@ -101,7 +101,7 @@ export default function FaqPage() {
     <div className="min-h-screen bg-white relative">
       {/* Background grain for this section */}
       <BgGrain
-        className="absolute inset-0 w-full h-full"
+        className="absolute inset-0 w-full h-full z-0 optimized"
         style={{
           zIndex: 1,
         }}
@@ -154,7 +154,7 @@ export default function FaqPage() {
         <main className="relative font-noto-sans">
           <section className="py-16 px-6 md:px-12 lg:px-24 relative">
             {/* Background grid pattern - only for hero area */}
-            <div className="absolute inset-0 z-0 bg-[linear-gradient(rgba(0,0,0,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.05)_1px,transparent_1px)] bg-size-[35px_35px]"></div>
+            <div className="absolute inset-0 z-0 bg-[linear-gradient(rgba(0,0,0,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.05)_1px,transparent_1px)] bg-[size:35px_35px]"></div>
 
             <div className="max-w-7xl mx-auto text-center">
               <div className="inline-flex items-center justify-center px-2.5 py-1 rounded-[3px] bg-spout-accent/35 mb-8">
@@ -163,13 +163,13 @@ export default function FaqPage() {
                 </span>
               </div>
 
-              <h1 className="text-4xl md:text-5xl lg:text-[56px] font-normal text-spout-primary font-lora leading-tight mb-6">
-                Frequently Asked Questions
+              <h1 className="text-4xl font-bold capitalize md:text-5xl lg:text-[56px]  text-spout-primary font-lora leading-tight mb-6">
+                Frequently asked questions
               </h1>
 
               <p className="text-lg text-spout-text-muted max-w-2xl mx-auto leading-7">
-                Everything you need to know about Spout and how we&apos;re
-                changing decentralized investing
+                Everything you need to know about Spout and how we're changing
+                decentralized investing.
               </p>
             </div>
           </section>
@@ -245,13 +245,13 @@ export default function FaqPage() {
 
                   <div className="grid lg:grid-cols-2 gap-0">
                     <div className="p-10 lg:p-14 flex flex-col justify-center">
-                      <h2 className="text-3xl font-semibold text-spout-primary mb-5 leading-tight">
+                      <h2 className="text-3xl font-bold capitalize  text-spout-primary mb-5 leading-tight">
                         Ready to Start Earning Stable Yields?
                       </h2>
                       <p className="text-lg text-spout-text-muted leading-7 mb-8">
                         Join thousands of users who are already earning
                         consistent returns from investment-grade corporate bonds
-                        on the blockchain
+                        on the blockchain.
                       </p>
                       <button className="inline-flex items-center gap-3 px-5 py-2.5 rounded border border-spout-accent bg-spout-primary text-white text-xl font-medium hover:bg-spout-primary/90 transition-colors w-fit">
                         Get Started
@@ -263,12 +263,11 @@ export default function FaqPage() {
                       <div className="absolute -top-1.5 -left-1 w-2.5 h-2.5 rotate-45 border-2 border-spout-accent bg-white hidden lg:block"></div>
                       <div className="absolute -bottom-1.5 -left-1 w-2.5 h-2.5 rotate-45 border-2 border-spout-accent bg-white hidden lg:block"></div>
                       <Image
-                        src="/bank_image.png"
-                        alt="Financial building"
+                        src="/svg-assets/landingpage/spout-wallstreet.png"
+                        alt="Stock Exchange Building"
                         width={600}
                         height={400}
-                        className="w-full h-full object-cover border-2 border-spout-border"
-                        loading="lazy"
+                        className="w-full h-full object-cover border-4 border-spout-border min-h-[300px]"
                       />
                     </div>
                   </div>

@@ -1,10 +1,12 @@
-@import "tailwindcss";
-@config "../tailwind.config.ts";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 
 @layer base {
   html,
   body {
-    font-family:
+    /* font-family:
       var(--font-sans),
       ui-sans-serif,
       system-ui,
@@ -15,12 +17,9 @@
       "Helvetica Neue",
       Arial,
       "Noto Sans",
-      sans-serif;
-  }
-
-  /* Zoom only for landing page */
-  .landing-page {
-    zoom: 0.9;
+      sans-serif; */
+    /* zoom: 0.9; */
+    /* font-size: 14px; */
   }
   :root {
     --background: 0 0% 100%;
@@ -57,6 +56,14 @@
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* Custom Spout colors */
+    --spout-primary: 180 100% 12.5%; /* #004040 */
+    --spout-accent: 211 60% 80%; /* #A7C6ED */
+    --spout-text-muted: 0 0% 32%; /* #525252 */
+    --spout-blue: 218.5 100% 75.9%; /* #84B0FF */
+    --spout-gray: 225 2% 47%; /* #757679 */
+    --spout-light-gray: 0 0% 83%; /* #D4D4D4 */
   }
 
   .dark {
@@ -103,26 +110,9 @@
     @apply bg-background text-foreground;
   }
 
-  /* Lenis smooth scrolling */
-  html.lenis,
-  html.lenis body {
-    height: auto;
-  }
-
-  .lenis.lenis-smooth {
-    scroll-behavior: auto !important;
-  }
-
-  .lenis.lenis-smooth [data-lenis-prevent] {
-    overscroll-behavior: contain;
-  }
-
-  .lenis.lenis-stopped {
-    overflow: hidden;
-  }
-
-  .lenis.lenis-smooth iframe {
-    pointer-events: none;
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
   }
 
   /* Custom scrollbar */
@@ -147,6 +137,11 @@
 
 @layer components {
   /* Financial data colors */
+  .optimized {
+    will-change: transform;
+    transform: translateZ(0);
+  }
+
   .text-gain {
     @apply text-green-600;
   }
@@ -199,6 +194,21 @@
     scrollbar-width: none;
   }
 
+  .faq-title {
+@apply text-[#4F4F4F] font-dm-sans text-[20px] font-medium leading-[28px] tracking-[-0.08px]
+  }
+
+  .section-heading {
+   @apply text-3xl capitalize sm:text-4xl lg:text-5xl font-pt-serif leading-[56px] tracking-[0.192px] text-spout-deep-teal font-normal mb-4 sm:mb-6;
+  }
+  .section-description {
+  @apply text-[18px] sm:text-base lg:text-lg text-spout-text-muted-dark max-w-3xl mx-auto text-center font-dm-sans  font-normal leading-6 tracking-[0.064px];
+  }
+
+  .smart-chain-text {
+    @apply text-[#3D5678] text-center font-[DM Sans] text-[16px] font-medium leading-[28px] tracking-[-0.064px]
+  }
+
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
@@ -206,19 +216,5 @@
   /* Text utilities */
   .text-balance {
     text-wrap: balance;
-  }
-
-  /* GPU acceleration for fixed/absolute elements during scroll */
-  .optimized {
-    transform: translateZ(0);
-    backface-visibility: hidden;
-    will-change: auto;
-    contain: layout style;
-  }
-
-  /* Performance optimization for sections */
-  .gpu-accelerated {
-    transform: translate3d(0, 0, 0);
-    backface-visibility: hidden;
   }
 }

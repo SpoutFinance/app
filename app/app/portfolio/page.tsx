@@ -1,26 +1,12 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import PortfolioHeader from "@/components/features/portfolio/portfolioheader";
 import PortfolioSummaryCards from "@/components/features/portfolio/portfoliosummarycards";
 import PortfolioHoldings from "@/components/features/portfolio/portfolioholdings";
+import PortfolioPerformance from "@/components/features/portfolio/portfolioperformance";
 import PortfolioActivity from "@/components/features/portfolio/portfolioactivity";
-
-// Lazy load heavy chart component (uses recharts ~80KB)
-const PortfolioPerformance = dynamic(
-  () => import("@/components/features/portfolio/portfolioperformance"),
-  {
-    loading: () => (
-      <div className="h-[300px] bg-gray-50 animate-pulse rounded-lg flex items-center justify-center">
-        <span className="text-gray-400">Loading performance chart...</span>
-      </div>
-    ),
-    ssr: false,
-  },
-);
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { useMarketData } from "@/hooks/api/useMarketData";
-import { useLQDPrice } from "@/hooks/api/useLQDPrice";
 import { useCurrentUser } from "@/hooks/auth/useCurrentUser";
 import { useRecentActivity } from "@/hooks/view/onChain/useRecentActivity";
 import { useReturns } from "@/hooks/api/useReturns";
@@ -41,26 +27,16 @@ function PortfolioPage() {
   // Balances (EVM)
   const usdcBalHook = useUSDCTokenBalance();
   const slqdBalHook = useTokenBalance(lqdToken, (address ?? null) as any);
-  const lqdBal = useMemo(
-    () => Number(slqdBalHook.amountUi ?? 0) || 0,
-    [slqdBalHook.amountUi],
-  );
-  const usdcBal = useMemo(
-    () => Number(usdcBalHook.amountUi ?? 0) || 0,
-    [usdcBalHook.amountUi],
-  );
-  const balanceLoading = Boolean(
-    slqdBalHook.isLoading || usdcBalHook.isLoading,
-  );
+  const lqdBal = useMemo(() => Number(slqdBalHook.amountUi ?? 0) || 0, [slqdBalHook.amountUi]);
+  const usdcBal = useMemo(() => Number(usdcBalHook.amountUi ?? 0) || 0, [usdcBalHook.amountUi]);
+  const balanceLoading = Boolean(slqdBalHook.isLoading || usdcBalHook.isLoading);
 
-  // Use reusable hook for LQD price data (handles chart data, market data, and price calculations)
+  // Fetch per-asset market data
   const {
-    latestPrice: lqdLatestPrice,
-    previousPrice: lqdPrevPrice,
+    price: lqdPrice,
     previousClose: lqdPrevClose,
-    dailyChangePercent: lqdDailyChangePercent,
-    isLoading: lqdPriceLoading,
-  } = useLQDPrice();
+    isLoading: lqdLoading,
+  } = useMarketData("LQD");
   const {
     price: tslaPrice,
     previousClose: tslaPrevClose,
@@ -107,7 +83,7 @@ function PortfolioPage() {
 
   const { returns, isLoading: returnsLoading } = useReturns("LQD");
   const { username } = useCurrentUser();
-
+  
   // Fetch recent activity (buy/sell orders)
   const {
     activities,
@@ -129,9 +105,8 @@ function PortfolioPage() {
     () =>
       (activities ?? []).map((a) => ({
         id: a.id,
-        // Use the action and transactionType directly from the activity
-        action: a.action === "Sold" ? "Sold" : "Purchased",
-        transactionType: a.transactionType, // Use the transactionType directly
+        action: a.action === "Burned" ? "Sold" : "Purchased",
+        transactionType: a.action === "Burned" ? "SELL" : "BUY",
         ticker: (a as any).symbol ?? "SLQD",
         amount: a.amount,
         value: a.value,
@@ -166,18 +141,14 @@ function PortfolioPage() {
     allocation: number;
   };
 
-  const baseHoldings: Omit<
-    Holding,
-    "dayChange" | "totalReturn" | "allocation"
-  >[] = [
+  const baseHoldings: Omit<Holding, "dayChange" | "totalReturn" | "allocation">[] = [
     {
       symbol: "LQD",
       name: "Spout US Corporate Bond Token",
       shares: lqdBal,
-      avgPrice: lqdPrevPrice || lqdPrevClose || 0,
-      // Always use fetched price from Alpaca - no hardcoded fallback
-      currentPrice: lqdLatestPrice ?? 0,
-      value: lqdBal * (lqdLatestPrice ?? 0),
+      avgPrice: lqdPrevClose || 0,
+      currentPrice: lqdPrice ?? 0,
+      value: lqdBal * (lqdPrice ?? 0),
     },
     {
       symbol: "USDC",
@@ -189,7 +160,7 @@ function PortfolioPage() {
     },
     {
       symbol: "TSLA",
-      name: "Tesla Token",
+      name: "Tesla Synthetic",
       shares: Number(tslaBal || 0),
       avgPrice: tslaPrevClose || 0,
       currentPrice: tslaPrice ?? 0,
@@ -197,7 +168,7 @@ function PortfolioPage() {
     },
     {
       symbol: "AAPL",
-      name: "Apple Token",
+      name: "Apple Synthetic",
       shares: Number(aaplBal || 0),
       avgPrice: aaplPrevClose || 0,
       currentPrice: aaplPrice ?? 0,
@@ -205,37 +176,16 @@ function PortfolioPage() {
     },
     {
       symbol: "GOLD",
-      name: "Gold Token",
+      name: "Gold Synthetic",
       shares: Number(goldBal || 0),
       avgPrice: goldPrevClose || 0,
-      currentPrice: goldUsd ?? goldPrice ?? 0,
-      value: Number(goldBal || 0) * (goldUsd ?? goldPrice ?? 0),
+      currentPrice: (goldUsd ?? goldPrice) ?? 0,
+      value: Number(goldBal || 0) * ((goldUsd ?? goldPrice) ?? 0),
     },
   ];
 
-  const holdings: Holding[] = baseHoldings
-    .map((h) => {
-      // Calculate individual dayChange for each holding
-      // Only LQD shows actual price change, others show 0% (not disclosed)
-      let individualDayChange = 0;
-      if (h.symbol === "LQD") {
-        // Use the dailyChangePercent from the market data hook for LQD
-        individualDayChange = lqdDailyChangePercent ?? 0;
-      }
-      // For all other assets (USDC, TSLA, AAPL, GOLD), dayChange remains 0
-
-      return {
-        ...h,
-        dayChange: individualDayChange,
-        totalReturn: individualDayChange, // Use same value for totalReturn
-        allocation: 0, // Will be recalculated after filtering
-      };
-    })
-    .filter((h) => h.shares > 0); // Only show holdings with actual shares
-
-  // Recalculate portfolio value and allocations based on filtered holdings
-  const portfolioValue = holdings.reduce((sum, h) => sum + (h.value || 0), 0);
-  const previousDayValue = holdings.reduce(
+  const portfolioValue = baseHoldings.reduce((sum, h) => sum + (h.value || 0), 0);
+  const previousDayValue = baseHoldings.reduce(
     (sum, h) => sum + (h.shares || 0) * (h.avgPrice || 0),
     0,
   );
@@ -247,21 +197,15 @@ function PortfolioPage() {
   const totalReturn = dayChange;
   const totalReturnPercent = dayChangePercent;
 
-  // Update allocations based on filtered holdings
-  const holdingsWithAllocations = holdings.map((h) => ({
+  const holdings: Holding[] = baseHoldings.map((h) => ({
     ...h,
-    allocation:
-      portfolioValue > 0 ? Math.round((h.value / portfolioValue) * 100) : 0,
+    dayChange: dayChangePercent,
+    totalReturn: totalReturnPercent,
+    allocation: portfolioValue > 0 ? Math.round((h.value / portfolioValue) * 100) : 0,
   }));
 
   const isLoading =
-    balanceLoading ||
-    returnsLoading ||
-    lqdPriceLoading ||
-    tslaLoading ||
-    aaplLoading ||
-    goldLoading ||
-    goldUsdLoading;
+    balanceLoading || returnsLoading || lqdLoading || tslaLoading || aaplLoading || goldLoading || goldUsdLoading;
 
   // Function to refresh portfolio data
   const handleRefresh = () => {
@@ -288,12 +232,12 @@ function PortfolioPage() {
         <>
           <div className="border border-[#004040]/15 bg-white rounded-none shadow-sm">
             <PortfolioSummaryCards
-              portfolioValue={portfolioValue}
-              dayChange={dayChange}
-              dayChangePercent={dayChangePercent}
-              totalReturn={totalReturn}
-              totalReturnPercent={totalReturnPercent}
-              holdings={holdingsWithAllocations}
+            portfolioValue={portfolioValue}
+            dayChange={dayChange}
+            dayChangePercent={dayChangePercent}
+            totalReturn={totalReturn}
+            totalReturnPercent={totalReturnPercent}
+            holdings={holdings}
             />
           </div>
           <Tabs defaultValue="holdings" className="space-y-6">
@@ -320,17 +264,17 @@ function PortfolioPage() {
             <TabsContent value="holdings" className="space-y-6">
               <div className="border border-[#004040]/15 bg-white rounded-none shadow-sm">
                 <PortfolioHoldings
-                  holdings={holdingsWithAllocations}
-                  formatNumber={formatNumber}
+                holdings={holdings}
+                formatNumber={formatNumber}
                 />
               </div>
             </TabsContent>
             <TabsContent value="performance" className="space-y-6">
               <div className="border border-[#004040]/15 bg-white rounded-none shadow-sm">
                 <PortfolioPerformance
-                  holdings={holdingsWithAllocations}
-                  returns={returns}
-                  formatPercent={formatPercent}
+                holdings={holdings}
+                returns={returns}
+                formatPercent={formatPercent}
                 />
               </div>
             </TabsContent>

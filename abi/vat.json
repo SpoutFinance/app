@@ -241,55 +241,6 @@
     {
       "inputs": [
         {
-          "internalType": "address",
-          "name": "user",
-          "type": "address"
-        }
-      ],
-      "name": "getUserVaultsFull",
-      "outputs": [
-        {
-          "internalType": "uint256[]",
-          "name": "vaultIds",
-          "type": "uint256[]"
-        },
-        {
-          "internalType": "address[]",
-          "name": "owners",
-          "type": "address[]"
-        },
-        {
-          "internalType": "bytes32[]",
-          "name": "ilks",
-          "type": "bytes32[]"
-        },
-        {
-          "internalType": "uint256[]",
-          "name": "inks",
-          "type": "uint256[]"
-        },
-        {
-          "internalType": "uint256[]",
-          "name": "arts",
-          "type": "uint256[]"
-        },
-        {
-          "internalType": "uint256[]",
-          "name": "collRatios",
-          "type": "uint256[]"
-        },
-        {
-          "internalType": "uint256[]",
-          "name": "liqRatios",
-          "type": "uint256[]"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
           "internalType": "bytes32",
           "name": "ilk",
           "type": "bytes32"
@@ -297,21 +248,6 @@
       ],
       "name": "getIlk",
       "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "liqRatio",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "defaultCollRatio",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "defaultRate",
-          "type": "uint256"
-        },
         {
           "internalType": "uint256",
           "name": "Art",
@@ -335,19 +271,6 @@
         {
           "internalType": "uint256",
           "name": "dust",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "getGlobalBorrowRate",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
           "type": "uint256"
         }
       ],
@@ -427,3 +350,4 @@
     }
   ]
 }
+

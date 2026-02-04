@@ -5,45 +5,6 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-/**
- * Check if currently on the app subdomain (app.spout.finance)
- */
-export function isAppSubdomain(): boolean {
-  return (
-    typeof window !== "undefined" && window.location.host.startsWith("app.")
-  );
-}
-
-/**
- * Get the correct route for app pages based on current domain.
- * On app subdomain: /app/trade -> /trade
- * On main domain: keeps /app/trade as-is
- */
-export function getAppRoute(path: string): string {
-  if (isAppSubdomain()) {
-    // Remove /app prefix for subdomain
-    if (path.startsWith("/app")) {
-      const stripped = path.slice(4);
-      return stripped || "/";
-    }
-    return path;
-  }
-  // Ensure /app prefix on main domain
-  return path.startsWith("/app") ? path : `/app${path}`;
-}
-
-/**
- * Normalize pathname for comparison (handles subdomain differences).
- * On subdomain: / -> /app, /trade -> /app/trade
- * On main domain: returns pathname as-is
- */
-export function normalizePathname(pathname: string): string {
-  if (isAppSubdomain() && !pathname.startsWith("/app")) {
-    return pathname === "/" ? "/app" : `/app${pathname}`;
-  }
-  return pathname;
-}
-
 export const countryCodes = [
   { code: 1, name: "United States" },
   { code: 44, name: "United Kingdom" },

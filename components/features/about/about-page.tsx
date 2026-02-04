@@ -1,74 +1,49 @@
 "use client";
-import Image from "next/image";
 import BgGrain from "@/components/bg-grain-svg";
 import { DiagonalPattern } from "@/components/slant-dashes-svg";
+import lovish from "@/public/HeadshotLovish.jpg";
+import marc from "@/public/HeadshotMarc.png";
+import mihir from "@/public/HeadshotMihir.png";
+import pauljan from "@/public/HeadshotPJ.png";
+import paul from "@/public/HeadshotPaul.jpg";
 import { Linkedin, Mail, Twitter } from "lucide-react";
+import Image, { StaticImageData } from "next/image";
 
 const teamMembers = [
   {
     name: "Marc Ryan",
     title: "Co-Founder & CEO",
-    image:
-      "https://cdn.builder.io/api/v1/image/assets%2F124fa7d8b30741e3b582951ae96e0e12%2Fc8a0c783871f423da7867c0a72ddeaeb",
+    image: marc,
     description:
       "Former tech investment banker at HSBC, covering fintech and software. Founder of FlipVault, a web3 bartering platform. Angel investor in several blockchain AI companies, including Theoriq, PIN AI, and GAIB AI.",
-    links: {
-      email: "mailto:marc@spout.finance",
-      twitter: "https://x.com/0xmryan",
-      linkedin: "https://www.linkedin.com/in/marc-ryan/",
-    },
   },
   {
     name: "Paul van Mierlo",
     title: "Co-Founder & CTO",
-    image:
-      "https://cdn.builder.io/api/v1/image/assets%2F124fa7d8b30741e3b582951ae96e0e12%2Fa5a7799be5fe438dbc9ee43a6e98295e",
+    image: paul,
     description:
       "Paul brings years of expertise in programming having won major hackathon competitions on different blockchain ecosystems with privacy, payments and DeFi solutions.",
-    links: {
-      email: "mailto:paul@spout.finance",
-      twitter: "https://x.com/Mierlo1999",
-      linkedin: "https://www.linkedin.com/in/paul-van-mierlo-063b9417a/",
-    },
   },
   {
     name: "Paul Jan Reijn",
     title: "Co-Founder & General Counsel",
-    image:
-      "https://cdn.builder.io/api/v1/image/assets%2F124fa7d8b30741e3b582951ae96e0e12%2F2e3ffc42f7c94567a1967833a8d3ebf5",
+    image: pauljan,
     description:
       "Legal counsel with years of experience in software. Architect of the legal framework for various succesful software products, such as payments and factory automation.",
-    links: {
-      email: "mailto:pauljan@spout.finance",
-      twitter: "",
-      linkedin: "https://www.linkedin.com/in/paul-jan-reijn-70b635227/",
-    },
   },
   {
     name: "Mihir Sahu",
-    title: "Head of Blockchain",
-    image:
-      "https://cdn.builder.io/api/v1/image/assets%2F124fa7d8b30741e3b582951ae96e0e12%2Ffce54c748c2d436da64235d5f4ddaa3e",
+    title: "Head of Privacy",
+    image: mihir,
     description:
-      "Web3 engineer with expertise in smart contract development, cross-chain systems, privacy solutions and decentralized finance. Experience at Inco building confidential infrastructure, DeFi and payments, and recognized at major hackathon competitions.",
-    links: {
-      email: "",
-      twitter: "https://x.com/0xmihirsahu",
-      linkedin: "https://www.linkedin.com/in/0xmihirsahu/",
-    },
+      "Web3 engineer with expertise in privacy, cross-chain systems, and decentralized finance. Experience at Inco building TEE-powered applications for confidential DeFi and payments, and recognized at major hackathon competitions.",
   },
   {
     name: "Lovish Badlani",
     title: "Head of Engineering",
-    image:
-      "https://cdn.builder.io/api/v1/image/assets%2F124fa7d8b30741e3b582951ae96e0e12%2F08c9e404faeb40cc825c7e6c317c05d0",
+    image: lovish,
     description:
       "Former BlackRock engineer, experienced in scaling institutional fintech apps. Led engineering at DEX token launchpad with 150K+ users, $150M+ TVL. Skilled in EVM chains and Solana deployment, recognized at global hackathons.",
-    links: {
-      email: "mailto:lovish@spout.finance",
-      twitter: "https://x.com/BadlaniLovish",
-      linkedin: "https://www.linkedin.com/in/lovish-badlani-250a05151/",
-    },
   },
 ];
 
@@ -77,11 +52,12 @@ export default function AboutPage() {
     <div className="min-h-screen bg-white relative ">
       {/* Background grain for this section */}
       <BgGrain
-        className="absolute inset-0 w-full h-full"
+        className="absolute inset-0 w-full h-full z-0 optimized"
         style={{
           zIndex: 1,
         }}
       />
+
       <div className="relative z-50">
         {/* Top horizontal line - hidden on mobile */}
         <div className="hidden md:block absolute top-0 left-0 w-full h-[1.5px] bg-[#A7C6ED]"></div>
@@ -131,7 +107,7 @@ export default function AboutPage() {
         <main className="relative">
           {/* Hero Section */}
           <section className="py-16 px-6 md:px-12 lg:px-24 relative">
-            <div className="absolute inset-0 z-0 bg-[linear-gradient(rgba(0,0,0,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.05)_1px,transparent_1px)] bg-size-[35px_35px]"></div>
+            <div className="absolute inset-0 z-0 bg-[linear-gradient(rgba(0,0,0,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.05)_1px,transparent_1px)] bg-[size:35px_35px]"></div>
 
             <div className="max-w-7xl mx-auto text-center relative z-10">
               <div className="inline-flex items-center justify-center px-2.5 py-1 rounded-[3px] bg-spout-accent/35 mb-8">
@@ -140,7 +116,7 @@ export default function AboutPage() {
                 </span>
               </div>
 
-              <h1 className="text-4xl md:text-5xl lg:text-[56px] font-normal text-spout-primary font-lora leading-tight mb-6">
+              <h1 className="text-4xl capitalize md:text-5xl lg:text-[56px] font-bold text-spout-primary font-lora leading-tight mb-6">
                 Our Story
               </h1>
 
@@ -169,8 +145,8 @@ export default function AboutPage() {
 
           {/* Meet the Team Section */}
           <section className="py-16 px-6 md:px-12 lg:px-24">
-            <h2 className="text-4xl font-lora text-spout-primary text-center mb-12">
-              Meet the <span className="font-medium">Team</span>
+            <h2 className="text-4xl capitalize font-bold font-lora text-spout-primary text-center mb-12">
+              Meet the <span className="font-bold">Team</span>
             </h2>
 
             {/* Team Grid - First Row (3 members) */}
@@ -215,13 +191,13 @@ export default function AboutPage() {
 
                 <div className="grid lg:grid-cols-2 gap-0">
                   <div className="p-10 lg:p-14 flex flex-col justify-center">
-                    <h2 className="text-3xl font-semibold text-spout-primary mb-5 leading-tight">
+                    <h2 className="text-3xl capitalize font-bold text-spout-primary mb-5 leading-tight">
                       Ready to Start Earning Stable Yields?
                     </h2>
                     <p className="text-lg text-spout-text-muted leading-7 mb-8">
                       Join thousands of users who are already earning consistent
                       returns from investment-grade corporate bonds on the
-                      blockchain
+                      blockchain.
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4">
                       <button className="inline-flex items-center justify-center gap-3 px-5 py-2.5 rounded border border-spout-accent bg-spout-primary text-white text-xl font-medium hover:bg-spout-primary/90 transition-colors">
@@ -251,6 +227,9 @@ export default function AboutPage() {
                           />
                         </svg>
                       </button>
+                      <button className="inline-flex items-center justify-center px-5 py-2.5 rounded border-[1.5px] border-spout-border bg-white text-black text-xl font-medium hover:bg-gray-50 transition-colors">
+                        Contact Sales
+                      </button>
                     </div>
                   </div>
 
@@ -258,13 +237,11 @@ export default function AboutPage() {
                     <div className="absolute -top-1.5 -left-1 w-2.5 h-2.5 rotate-45 border-2 border-spout-accent bg-white hidden lg:block"></div>
                     <div className="absolute -bottom-1.5 -left-1 w-2.5 h-2.5 rotate-45 border-2 border-spout-accent bg-white hidden lg:block"></div>
                     <Image
-                      src="https://api.builder.io/api/v1/image/assets/TEMP/ca7c6ff73901d50613be8ccd22c1d83af5b9fed6?width=1074"
-                      alt="Financial building"
-                      width={1074}
-                      height={600}
+                      src="/svg-assets/landingpage/spout-wallstreet.png"
+                      alt="Stock Exchange Building"
+                      width={600}
+                      height={400}
                       className="w-full h-full object-cover border-4 border-spout-border min-h-[300px]"
-                      loading="lazy"
-                      unoptimized
                     />
                   </div>
                 </div>
@@ -293,17 +270,11 @@ function TeamCard({
   title,
   image,
   description,
-  links,
 }: {
   name: string;
   title: string;
-  image: string;
+  image: StaticImageData;
   description: string;
-  links?: {
-    email?: string;
-    twitter?: string;
-    linkedin?: string;
-  };
 }) {
   return (
     <div className="relative max-w-[390px]">
@@ -319,10 +290,10 @@ function TeamCard({
           <Image
             src={image}
             alt={name}
-            width={390}
-            height={224}
-            className="w-full h-full object-cover object-[center_26%]"
-            loading="lazy"
+            fill
+            objectFit="cover"
+            objectPosition="50% 24%"
+            className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-black/5 mix-blend-overlay"></div>
         </div>
@@ -347,37 +318,15 @@ function TeamCard({
           </p>
           {/* Social Icons */}
           <div className="flex items-center gap-5 mt-auto">
-            {links?.email && (
-              <a
-                href={links.email}
-                className="text-spout-text-secondary hover:text-spout-primary transition-colors"
-                aria-label={`Email ${name}`}
-              >
-                <Mail className="w-6 h-6" />
-              </a>
-            )}
-            {links?.twitter && (
-              <a
-                href={links.twitter}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-spout-text-secondary hover:text-spout-primary transition-colors"
-                aria-label={`${name}'s Twitter`}
-              >
-                <Twitter className="w-6 h-6" />
-              </a>
-            )}
-            {links?.linkedin && (
-              <a
-                href={links.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-spout-text-secondary hover:text-spout-primary transition-colors"
-                aria-label={`${name}'s LinkedIn`}
-              >
-                <Linkedin className="w-6 h-6" />
-              </a>
-            )}
+            <button className="text-spout-text-secondary hover:text-spout-primary transition-colors">
+              <Mail className="w-6 h-6" />
+            </button>
+            <button className="text-spout-text-secondary hover:text-spout-primary transition-colors">
+              <Twitter className="w-6 h-6" />
+            </button>
+            <button className="text-spout-text-secondary hover:text-spout-primary transition-colors">
+              <Linkedin className="w-6 h-6" />
+            </button>
           </div>
         </div>
       </div>

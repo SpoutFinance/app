@@ -1,14 +1,12 @@
 "use client";
 
-import { useAccount, useReadContract } from "wagmi";
+import { useAccount } from "wagmi";
 import { toast } from "sonner";
 import { useOnchainID } from "@/hooks/view/onChain/useOnchainID";
 import React from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import { getAppRoute, normalizePathname } from "@/lib/utils";
 import { useContractAddress } from "@/lib/addresses";
 import { useUSDCTokenBalance } from "@/hooks/view/onChain/useUSDCTokenBalance";
-import identityABI from "@/abi/identity.json";
 
 export default function OnchainIDChecker() {
   const { address: userAddress } = useAccount();
@@ -18,8 +16,6 @@ export default function OnchainIDChecker() {
     hasOnchainID,
     hasEverHadOnchainID,
     hasKYCClaim,
-    onchainIDAddress,
-    kycClaim,
     loading: onchainIDLoading,
     kycLoading,
   } = useOnchainID({
@@ -28,44 +24,6 @@ export default function OnchainIDChecker() {
     issuer: issuerAddress,
     topic: 1,
   });
-
-  // Check isClaimValid on ClaimIssuer contract
-  const canCheckClaimValid =
-    !!onchainIDAddress &&
-    !!issuerAddress &&
-    !!kycClaim &&
-    Array.isArray(kycClaim);
-  const claimSignature = canCheckClaimValid
-    ? (kycClaim[3] as string)
-    : undefined;
-  const claimData = canCheckClaimValid ? (kycClaim[4] as string) : undefined;
-
-  const { data: isClaimValid, isLoading: isClaimValidLoading } =
-    useReadContract({
-      address: canCheckClaimValid
-        ? (issuerAddress as `0x${string}`)
-        : undefined,
-      abi: identityABI.abi as any,
-      functionName: "isClaimValid",
-      args:
-        canCheckClaimValid && onchainIDAddress && claimSignature && claimData
-          ? [
-              onchainIDAddress as `0x${string}`,
-              BigInt(1), // topic
-              claimSignature as `0x${string}`,
-              claimData as `0x${string}`,
-            ]
-          : undefined,
-      query: { enabled: canCheckClaimValid && !!claimSignature && !!claimData },
-    });
-
-  // Determine if claim is actually valid
-  const claimIsValid =
-    canCheckClaimValid && isClaimValid !== undefined
-      ? Boolean(isClaimValid)
-      : kycClaim
-        ? hasKYCClaim
-        : false;
 
   // Track if we've already shown the KYC toast to prevent duplicates
   const [hasShownKYCToast, setHasShownKYCToast] = React.useState(false);
@@ -81,12 +39,22 @@ export default function OnchainIDChecker() {
 
   // Wait for data to settle before making any decisions
   React.useEffect(() => {
-    const isLoading = onchainIDLoading || kycLoading || isClaimValidLoading;
+    const isLoading = onchainIDLoading || kycLoading;
 
     if (!isLoading && !hasWaitedForSettlement) {
+      console.log(
+        "[KYC Sonner Debug] ⏳ Data loaded, waiting 0.5 seconds for settlement...",
+      );
+
       const timer = setTimeout(() => {
+        console.log(
+          "[KYC Sonner Debug] ✅ Data settled, hasOnchainID:",
+          hasOnchainID,
+          "hasEverHadOnchainID:",
+          hasEverHadOnchainID,
+        );
         setHasWaitedForSettlement(true);
-      }, 500);
+      }, 500); // Reduced from 1000ms to 500ms for faster response
 
       return () => clearTimeout(timer);
     }
@@ -94,85 +62,92 @@ export default function OnchainIDChecker() {
     hasOnchainID,
     onchainIDLoading,
     kycLoading,
-    isClaimValidLoading,
     hasWaitedForSettlement,
     hasEverHadOnchainID,
-    claimIsValid,
   ]);
 
   // Immediately dismiss any existing KYC toasts if KYC is completed
   React.useEffect(() => {
     if (
       hasOnchainID === true &&
-      claimIsValid === true &&
+      hasKYCClaim === true &&
       !onchainIDLoading &&
-      !kycLoading &&
-      !isClaimValidLoading
+      !kycLoading
     ) {
+      console.log(
+        "[KYC Sonner Debug] ✅ KYC completed, immediately dismissing any existing toasts",
+      );
       toast.dismiss("kyc-toast");
     }
-  }, [
-    hasOnchainID,
-    claimIsValid,
-    onchainIDLoading,
-    kycLoading,
-    isClaimValidLoading,
-  ]);
+  }, [hasOnchainID, hasKYCClaim, onchainIDLoading, kycLoading]);
 
   React.useEffect(() => {
     // Dismiss toast if already on the KYC tab
-    if (
-      normalizePathname(pathname ?? "") === "/app/profile" &&
-      searchParams?.get("tab") === "kyc"
-    ) {
+    if (pathname === "/app/profile" && searchParams?.get("tab") === "kyc") {
       toast.dismiss("kyc-toast");
     }
 
     // Also dismiss if KYC is completed, regardless of page
     if (
       hasOnchainID === true &&
-      claimIsValid === true &&
+      hasKYCClaim === true &&
       !onchainIDLoading &&
-      !kycLoading &&
-      !isClaimValidLoading
+      !kycLoading
     ) {
+      console.log(
+        "[KYC Sonner Debug] ✅ KYC completed, dismissing toast on navigation",
+      );
       toast.dismiss("kyc-toast");
     }
   }, [
     pathname,
     searchParams,
     hasOnchainID,
-    claimIsValid,
+    hasKYCClaim,
     onchainIDLoading,
     kycLoading,
-    isClaimValidLoading,
   ]);
 
   // Dismiss KYC toast when KYC is completed
   React.useEffect(() => {
+    console.log(
+      "[KYC Dismiss Debug] hasOnchainID:",
+      hasOnchainID,
+      "hasKYCClaim:",
+      hasKYCClaim,
+      "onchainIDLoading:",
+      onchainIDLoading,
+      "kycLoading:",
+      kycLoading,
+    );
+
     if (
       hasOnchainID === true &&
-      claimIsValid === true &&
+      hasKYCClaim === true &&
       !onchainIDLoading &&
-      !kycLoading &&
-      !isClaimValidLoading
+      !kycLoading
     ) {
+      console.log("[KYC Sonner Debug] ✅ KYC completed, dismissing toast");
       toast.dismiss("kyc-toast");
     }
-  }, [
-    hasOnchainID,
-    hasKYCClaim,
-    isClaimValid,
-    claimIsValid,
-    onchainIDLoading,
-    kycLoading,
-    isClaimValidLoading,
-  ]);
+  }, [hasOnchainID, hasKYCClaim, onchainIDLoading, kycLoading]);
 
   // Show 'Claim USDC' Sonner if user has no USDC, but only on the trade page
   React.useEffect(() => {
+    console.log(
+      "[USDC Sonner Debug] usdcBalance:",
+      usdcBalance,
+      "usdcLoading:",
+      usdcLoading,
+      "pathname:",
+      pathname,
+    );
+
     // Dismiss USDC toast if user has USDC balance
     if (!usdcLoading && Number(usdcBalance) > 50) {
+      console.log(
+        "[USDC Sonner Debug] ✅ User has USDC balance, dismissing toast",
+      );
       toast.dismiss("usdc-toast");
       return;
     }
@@ -180,7 +155,7 @@ export default function OnchainIDChecker() {
     if (
       !usdcLoading &&
       Number(usdcBalance) <= 0 &&
-      normalizePathname(pathname ?? "") === "/app/trade"
+      String(pathname) === "/app/trade"
     ) {
       toast.warning(
         "You need USDC to start trading. Claim your testnet USDC to begin.",
@@ -196,84 +171,97 @@ export default function OnchainIDChecker() {
           duration: Infinity,
         },
       );
+    } else {
+      console.log("[USDC Sonner Debug] ❌ Conditions not met:");
+      console.log("  - !usdcLoading:", !usdcLoading);
+      console.log("  - Number(usdcBalance) <= 0:", Number(usdcBalance) <= 0);
+      console.log(
+        '  - pathname === "/app/trade":',
+        String(pathname) === "/app/trade",
+      );
     }
   }, [usdcBalance, usdcLoading, pathname, searchParams]);
 
-  // Show 'Complete Profile' Sonner if user has not completed KYC or claim is not valid
+  // Show 'Complete Profile' Sonner if user has not completed KYC
   React.useEffect(() => {
-    // Wait for all loading to complete
-    const isLoading = onchainIDLoading || kycLoading || isClaimValidLoading;
+    console.log(
+      "[KYC Sonner Debug] hasOnchainID:",
+      hasOnchainID,
+      "hasEverHadOnchainID:",
+      hasEverHadOnchainID,
+      "hasKYCClaim:",
+      hasKYCClaim,
+      "onchainIDLoading:",
+      onchainIDLoading,
+      "kycLoading:",
+      kycLoading,
+      "pathname:",
+      pathname,
+      "searchParams:",
+      searchParams?.get("tab"),
+      "hasShownKYCToast:",
+      hasShownKYCToast,
+      "hasWaitedForSettlement:",
+      hasWaitedForSettlement,
+    );
+
+    // Only wait for onchainIDLoading, not kycLoading for faster response
+    const isLoading = onchainIDLoading;
 
     // Don't do anything while loading or before data has settled
     if (isLoading || !hasWaitedForSettlement) {
-      return;
-    }
-
-    // Don't show toast on KYC page
-    if (
-      normalizePathname(pathname ?? "") === "/app/profile" &&
-      searchParams?.get("tab") === "kyc"
-    ) {
-      toast.dismiss("kyc-toast");
-      return;
-    }
-
-    // FIRST: Check if claim is valid - if so, dismiss toast and return early
-    if (hasOnchainID && claimIsValid === true) {
-      toast.dismiss("kyc-toast");
-      setHasShownKYCToast(false);
-      return;
-    }
-
-    // SECOND: Show toast if user has identity but claim is not valid (or doesn't exist)
-    if (hasOnchainID && claimIsValid !== true && !hasShownKYCToast) {
-      setHasShownKYCToast(true);
-      toast.warning(
-        "Complete KYC and create your onchainIdentity to buy equities",
-        {
-          id: "kyc-toast",
-          action: {
-            label: "Complete Profile",
-            onClick: () => {
-              router.push(getAppRoute("/app/profile?tab=kyc"));
-              toast.dismiss("kyc-toast");
-            },
-          },
-          duration: Infinity,
-        },
+      console.log(
+        "[KYC Sonner Debug] ⏳ Still loading or waiting for settlement...",
       );
       return;
-    } else if (
-      !hasOnchainID &&
+    }
+
+    // FIRST: Check if KYC is completed - if so, dismiss toast and return early
+    if (hasEverHadOnchainID === true) {
+      toast.dismiss("kyc-toast");
+      setHasShownKYCToast(false); // Reset the flag when KYC is completed
+      return;
+    }
+
+    // SECOND: Only show toast if user has never had an onchain ID, not on KYC page, and haven't shown it yet
+    if (
       hasEverHadOnchainID === false &&
+      !(pathname === "/app/profile" && searchParams?.get("tab") === "kyc") &&
       !hasShownKYCToast
     ) {
-      // THIRD: Show toast if user has never had an onchain ID
-      setHasShownKYCToast(true);
+      setHasShownKYCToast(true); // Mark that we've shown the toast
       toast.warning(
-        "Complete KYC and create your onchainIdentity to buy equities",
+        "Complete KYC and create your onchainIdentity to buy Spout tokens",
         {
           id: "kyc-toast",
           action: {
             label: "Complete Profile",
             onClick: () => {
-              router.push(getAppRoute("/app/profile?tab=kyc"));
+              router.push("/app/profile?tab=kyc");
               toast.dismiss("kyc-toast");
             },
           },
           duration: Infinity,
         },
       );
+    } else {
+      console.log("[KYC Sonner Debug] ❌ Conditions not met:");
+      console.log(
+        "  - hasEverHadOnchainID === false:",
+        hasEverHadOnchainID === false,
+      );
+      console.log(
+        "  - Not on KYC page:",
+        !(pathname === "/app/profile" && searchParams?.get("tab") === "kyc"),
+      );
+      console.log("  - !hasShownKYCToast:", !hasShownKYCToast);
     }
   }, [
     hasOnchainID,
     hasEverHadOnchainID,
     hasKYCClaim,
-    isClaimValid,
-    claimIsValid,
     onchainIDLoading,
     kycLoading,
-    isClaimValidLoading,
     router,
     pathname,
     searchParams,
@@ -281,17 +269,32 @@ export default function OnchainIDChecker() {
     hasWaitedForSettlement,
   ]);
 
-  // Always dismiss KYC toast if claim is valid and data has settled
+  // Always dismiss KYC toast if user has ever had onchain ID and data has settled (runs on every render as backup)
   if (
-    hasOnchainID === true &&
-    claimIsValid === true &&
+    hasEverHadOnchainID === true &&
     !onchainIDLoading &&
     !kycLoading &&
-    !isClaimValidLoading &&
     hasWaitedForSettlement
   ) {
+    console.log(
+      "[KYC Sonner Debug] ✅ User has ever had onchain ID, dismissing KYC toast on render",
+    );
     toast.dismiss("kyc-toast");
   }
+
+  // Debug: Log all values on every render
+  console.log(
+    "[KYC Debug Render] hasOnchainID:",
+    hasOnchainID,
+    "hasKYCClaim:",
+    hasKYCClaim,
+    "onchainIDLoading:",
+    onchainIDLoading,
+    "kycLoading:",
+    kycLoading,
+    "pathname:",
+    pathname,
+  );
 
   return null;
 }

@@ -73,7 +73,7 @@ export function HowItWorksSection() {
     {
       icon: Shield,
       title: "Regulated Assets",
-      description: "Backed by real U.S. public equities",
+      description: "Backed by real corporate debt obligations",
       color: "text-blue-600",
     },
     {
@@ -91,7 +91,7 @@ export function HowItWorksSection() {
   ];
 
   return (
-    <section className="py-24 bg-linear-to-b from-white to-slate-50">
+    <section className="py-24 bg-gradient-to-b from-white to-slate-50">
       <div className="max-w-6xl mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-16">
@@ -107,8 +107,8 @@ export function HowItWorksSection() {
           </h2>
           <p className="text-lg text-slate-600 max-w-3xl mx-auto">
             Spout bridges the gap between traditional finance and DeFi by
-            tokenizing U.S. public equities, and enabling anyone, anywhere to
-            borrow against them at a 0% rate
+            tokenizing investment-grade corporate bonds, providing stable yields
+            while maintaining the benefits of blockchain technology.
           </p>
         </div>
 
@@ -167,7 +167,7 @@ export function HowItWorksSection() {
 
         {/* CTA Section */}
         <div className="text-center">
-          <div className="bg-linear-to-r from-emerald-600 to-blue-600 rounded-2xl p-8 text-white">
+          <div className="bg-gradient-to-r from-emerald-600 to-blue-600 rounded-2xl p-8 text-white">
             <h3 className="text-2xl font-bold mb-4">
               Ready to Start Earning Stable Yields?
             </h3>
@@ -175,7 +175,7 @@ export function HowItWorksSection() {
               Join thousands of users who are already earning consistent returns
               from investment-grade corporate bonds on the blockchain.
             </p>
-            <Link href="https://app.spout.finance">
+            <Link href="/app">
               <Button
                 size="lg"
                 variant="white"

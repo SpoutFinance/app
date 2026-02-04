@@ -1,6 +1,5 @@
 "use client";
 import Link from "next/link";
-import { getAppRoute } from "@/lib/utils";
 import {
   Card,
   CardContent,
@@ -153,7 +152,7 @@ function DashboardPage() {
   return (
     <div className="space-y-8">
       {/* Welcome Header */}
-      <div className="bg-linear-to-r from-[#004040] via-[#035a5a] to-[#004040] rounded-none p-8 text-white relative overflow-hidden">
+      <div className="bg-gradient-to-r from-[#004040] via-[#035a5a] to-[#004040] rounded-none p-8 text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.1),transparent_50%)]"></div>
         <div className="relative z-10">
           <div className="flex items-center gap-3 mb-4">
@@ -171,7 +170,7 @@ function DashboardPage() {
             execute trades, and stay ahead of the market.
           </p>
           <div className="flex gap-4">
-            <Link href={getAppRoute("/app/trade")}>
+            <Link href="/app/trade">
               <Button
                 variant="white"
                 className="text-[#004040] font-semibold border border-[#004040] hover:bg-[#004040] hover:text-white"
@@ -251,10 +250,7 @@ function DashboardPage() {
                     <IconComponent className={`h-6 w-6 text-[#004040]`} />
                   </div>
                   <div className="text-right flex items-center gap-2">
-                    <Badge
-                      variant="secondary"
-                      className="text-xs border border-[#004040]/20"
-                    >
+                    <Badge variant="secondary" className="text-xs border border-[#004040]/20">
                       {feature.stats}
                     </Badge>
                     {feature.soon && (
@@ -289,7 +285,7 @@ function DashboardPage() {
           ) : (
             <Link
               key={feature.title}
-              href={getAppRoute(feature.href)}
+              href={feature.href}
               tabIndex={0}
               aria-disabled={false}
             >

@@ -102,9 +102,7 @@ const PortfolioPerformance: React.FC<PortfolioPerformanceProps> = ({
                     formatter={(value: React.ReactNode) => {
                       const valueStr = String(value);
                       const item = chartData.find((d) => d.symbol === valueStr);
-                      return item
-                        ? `${valueStr} ${item.allocation}%`
-                        : valueStr;
+                      return item ? `${valueStr} ${item.allocation}%` : valueStr;
                     }}
                   />
                 </Pie>

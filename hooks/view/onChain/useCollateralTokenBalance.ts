@@ -8,3 +8,4 @@ export function useCollateralTokenBalance() {
   const { address } = useAccount();
   return useTokenBalance(slqdToken, (address ?? null) as any);
 }
+

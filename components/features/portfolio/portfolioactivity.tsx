@@ -39,7 +39,7 @@ const PortfolioActivity: React.FC<PortfolioActivityProps> = ({
         <div className="flex items-center justify-between py-4">
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-3">
-              <div className="w-2 h-8 bg-linear-to-b from-slate-900 to-slate-700 rounded-full"></div>
+              <div className="w-2 h-8 bg-gradient-to-b from-slate-900 to-slate-700 rounded-full"></div>
               <div>
                 <CardTitle className="text-lg font-medium text-slate-900 tracking-tight">
                   Transaction history{" "}
@@ -106,7 +106,7 @@ const PortfolioActivity: React.FC<PortfolioActivityProps> = ({
               {activities.map((activity) => (
                 <div
                   key={activity.id}
-                  className="grid grid-cols-12 gap-4 px-6 py-4 hover:bg-slate-100 transition-colors duration-150 group"
+                  className="grid grid-cols-12 gap-4 px-6 py-4 hover:bg-slate-50/30 transition-colors duration-150 group"
                 >
                   {/* Type Indicator */}
                   <div className="col-span-1 flex items-center">
@@ -184,7 +184,7 @@ const PortfolioActivity: React.FC<PortfolioActivityProps> = ({
                 <Button
                   variant="ghost"
                   onClick={loadMore}
-                  className="w-full h-12 text-xs uppercase tracking-wider text-slate-600 hover:text-slate-900 hover:bg-slate-200 transition-all duration-200"
+                  className="w-full h-12 text-xs uppercase tracking-wider text-slate-600 hover:text-slate-900 hover:bg-slate-100/50 transition-all duration-200"
                 >
                   LOAD MORE TRANSACTIONS
                 </Button>
