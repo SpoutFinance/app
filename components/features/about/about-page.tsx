@@ -1,7 +1,6 @@
 "use client";
 import Image from "next/image";
 
-import { Linkedin, Mail, Twitter, Fingerprint, Users } from "lucide-react";
 import { CTASection } from "../root";
 
 const teamMembers = [
@@ -107,9 +106,8 @@ export default function AboutPage() {
       <div className="relative">
         <main className="relative flex flex-col gap-12 sm:gap-16 lg:gap-[100px] z-10">
           {/* Hero Section */}
-          <section className="relative w-full overflow-hidden bg-white px-4 sm:px-6 lg:px-0">
-            <div className="hidden lg:block absolute top-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
-            <div className="hidden lg:block absolute bottom-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
+          <section className="relative w-full bg-white px-4 sm:px-6 lg:px-0">
+            <div className="hidden lg:block absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
 
             {/* Left gradient chevrons — absolutely positioned, vw-based widths */}
             <div className="hidden lg:flex flex-col absolute left-0 top-0 bottom-0 pointer-events-none">
@@ -197,7 +195,7 @@ export default function AboutPage() {
 
             <div className="relative z-10 mx-auto text-center flex flex-col justify-center items-center py-16 sm:py-20 lg:py-24">
               <div className="w-fit self-center items-center justify-center px-2.5 py-1 rounded-[3px] bg-spout-accent/35 mb-4">
-                <span className="text-sm sm:text-base font-medium text-spout-text-secondary">
+                <span className="text-sm sm:text-base font-medium text-slate-600 font-dm-sans">
                   About Us
                 </span>
               </div>
@@ -320,7 +318,7 @@ export default function AboutPage() {
             {/* ── Meet the Team Section ── */}
             <div className="relative pt-8 sm:pt-12 lg:pt-15 mb-12 sm:mb-16 lg:mb-[100px]">
               {/* Full-width horizontal line at top of team section */}
-              <div className="hidden lg:block absolute top-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
+              <div className="hidden lg:block absolute top-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none z-10" />
 
               <h2 className="text-3xl sm:text-4xl lg:text-[56px] font-pt-serif text-spout-primary text-center mb-8 sm:mb-12 lg:mb-15">
                 Meet the Team
@@ -328,8 +326,8 @@ export default function AboutPage() {
 
               {/* Row 1 — top + bottom full-width lines */}
               <div className="relative mb-6 sm:mb-8 lg:mb-15 font-dm-sans">
-                <div className="hidden lg:block absolute top-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
-                <div className="hidden lg:block absolute bottom-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
+                <div className="hidden lg:block absolute top-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none z-10" />
+                <div className="hidden lg:block absolute bottom-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none z-10" />
                 <TeamRow
                   members={teamMembers.slice(0, 3)}
                   dividerColors={rowDividerColors[0]}
@@ -338,8 +336,8 @@ export default function AboutPage() {
 
               {/* Row 2 — top + bottom full-width lines */}
               <div className="relative font-dm-sans">
-                <div className="hidden lg:block absolute top-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
-                <div className="hidden lg:block absolute bottom-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
+                <div className="hidden lg:block absolute top-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none z-10" />
+                <div className="hidden lg:block absolute bottom-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none z-10" />
                 <TeamRow
                   members={teamMembers.slice(3, 6)}
                   dividerColors={rowDividerColors[1]}
@@ -351,7 +349,9 @@ export default function AboutPage() {
             <div className="relative">
               <div className="hidden lg:block absolute top-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
               <div className="hidden lg:block absolute bottom-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
-              <CTASection />
+              <div className="overflow-hidden">
+                <CTASection />
+              </div>
             </div>
 
             {/* Gap before footer — vertical lines continue through here */}
@@ -376,9 +376,9 @@ function TeamRow({
   return (
     <>
       {/* Desktop: cards with gradient dividers */}
-      <div className="hidden lg:flex">
+      <div className="hidden lg:flex overflow-hidden">
         {members.map((member, i) => (
-          <div key={member.name} className="flex">
+          <div key={member.name} className="flex overflow-hidden">
             <TeamCard {...member} />
             <div
               className="w-[22px] self-stretch flex-shrink-0"
@@ -426,9 +426,9 @@ function TeamCard({
   };
 }) {
   return (
-    <div className="w-full lg:w-[370px] bg-white flex flex-col">
+    <div className="w-full lg:w-[370px] bg-white flex flex-col overflow-hidden">
       {/* Image Section */}
-      <div className="relative w-full h-48 sm:h-56 overflow-hidden border-b border-spout-border">
+      <div className="relative w-full h-48 sm:h-56">
         <Image
           src={image}
           alt={name}
@@ -445,7 +445,7 @@ function TeamCard({
       <div className="p-5 flex-1 flex flex-col">
         {/* Title Badge */}
         <div className="inline-flex items-center px-2.5 py-1 border border-spout-accent bg-spout-accent/35 rounded-[3px] mb-4 w-fit">
-          <span className="text-sm sm:text-base font-medium text-spout-text-secondary font-dm-sans">
+          <span className="text-sm sm:text-base font-medium text-slate-600 font-dm-sans">
             {title}
           </span>
         </div>

@@ -27,10 +27,12 @@ const config = {
       },
       fontFamily: {
         sans: ["var(--font-sans)", ...defaultTheme.fontFamily.sans],
+        mono: ["var(--font-mono)", ...defaultTheme.fontFamily.mono],
         lora: ["var(--font-lora)", ...defaultTheme.fontFamily.serif],
         "noto-sans": ["var(--font-noto-sans)", ...defaultTheme.fontFamily.sans],
         "pt-serif": ["var(--font-pt-serif)", ...defaultTheme.fontFamily.serif],
         "dm-sans": ["var(--font-dm-sans)", ...defaultTheme.fontFamily.sans],
+        "dm-mono": ["var(--font-dm-mono)", ...defaultTheme.fontFamily.mono],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -94,6 +96,9 @@ const config = {
           "gradient-cyan": "rgba(78, 210, 255, 0.68)",
           "gradient-blue": "rgba(0, 87, 216, 0.68)",
           "gradient-blue-mid": "rgba(39, 148, 236, 0.68)",
+        },
+        slate: {
+          600: "#3D5678",
         },
       },
       borderRadius: {

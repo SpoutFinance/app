@@ -91,7 +91,7 @@ export function PressCard({
           href={url}
           target="_blank"
           rel="noopener noreferrer"
-          className="border-[1px] border-solid h-[32px] border-[#A7C6ED] bg-[rgba(167,198,237,0.35)] flex items-center gap-1 sm:gap-2 p-[10px] tracking-[-0.064px] leading-[28px] text-[#004040] font-dm-sans text-[16px] font-[500] flex-shrink-0"
+          className="border-[1px] border-solid h-[32px] border-[#A7C6ED] bg-[rgba(167,198,237,0.35)] flex items-center gap-1 sm:gap-2 p-[10px] tracking-[-0.064px] leading-[28px] text-slate-600 font-dm-sans text-[16px] font-[500] flex-shrink-0"
         >
           <Image
             src="/svg-assets/landingpage/spout-book.svg"

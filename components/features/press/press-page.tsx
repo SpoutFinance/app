@@ -78,10 +78,9 @@ export default function PressPage() {
       <div className="relative">
         <main className="relative flex flex-col gap-12 sm:gap-16 lg:gap-[100px]">
           {/* ── Hero Section ── */}
-          <section className="relative w-full overflow-hidden bg-white px-4 sm:px-6 lg:px-0">
-            {/* Full-width horizontal lines at top and bottom */}
-            <div className="hidden lg:block absolute top-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
-            <div className="hidden lg:block absolute bottom-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
+          <section className="relative w-full bg-white px-4 sm:px-6 lg:px-0">
+            {/* Full-width horizontal line at the bottom */}
+            <div className="hidden lg:block absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
 
             {/* Left gradient chevrons — absolutely positioned, vw-based widths */}
             <div className="hidden lg:flex flex-col absolute left-0 top-0 bottom-0 pointer-events-none">
@@ -164,13 +163,12 @@ export default function PressPage() {
             </div>
 
             {/* Mobile gradient accents */}
-            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-spout-gradient-blue via-spout-gradient-blue-mid to-spout-gradient-cyan lg:hidden" />
             <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-spout-gradient-blue via-spout-gradient-blue-mid to-spout-gradient-cyan lg:hidden" />
 
             {/* Center content */}
             <div className="relative z-10 mx-auto text-center flex flex-col justify-center items-center py-16 sm:py-20 lg:py-24">
               <div className="w-fit px-2.5 py-1 rounded-[3px] bg-spout-accent/35 mb-4">
-                <span className="text-sm sm:text-base font-medium text-spout-text-secondary">
+                <span className="text-sm sm:text-base font-medium text-slate-600">
                   Press &amp; Media
                 </span>
               </div>
@@ -194,20 +192,24 @@ export default function PressPage() {
               <div className="relative mb-6 sm:mb-8 lg:mb-[60px]">
                 <div className="hidden lg:block absolute top-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none z-10" />
                 <div className="hidden lg:block absolute bottom-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none z-10" />
-                <PressRow
-                  outlets={mediaOutlets.slice(0, 3)}
-                  dividerColors={rowDividerColors[0]}
-                />
+                <div className="overflow-hidden">
+                  <PressRow
+                    outlets={mediaOutlets.slice(0, 3)}
+                    dividerColors={rowDividerColors[0]}
+                  />
+                </div>
               </div>
 
               {/* Row 2 — top + bottom full-width lines */}
               <div className="relative">
                 <div className="hidden lg:block absolute top-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none z-10" />
                 <div className="hidden lg:block absolute bottom-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none z-10" />
-                <PressRow
-                  outlets={mediaOutlets.slice(3, 6)}
-                  dividerColors={rowDividerColors[1]}
-                />
+                <div className="overflow-hidden">
+                  <PressRow
+                    outlets={mediaOutlets.slice(3, 6)}
+                    dividerColors={rowDividerColors[1]}
+                  />
+                </div>
               </div>
 
               {/* Gap + bottom line before gradient bar */}
@@ -236,7 +238,9 @@ export default function PressPage() {
               <div className="relative">
                 <div className="hidden lg:block absolute top-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
                 <div className="hidden lg:block absolute bottom-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
-                <CTASection />
+                <div className="overflow-hidden">
+                  <CTASection />
+                </div>
               </div>
 
               {/* Gap before footer */}

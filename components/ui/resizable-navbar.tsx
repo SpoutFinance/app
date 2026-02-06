@@ -128,7 +128,7 @@ export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
         <div key={item.name} className="flex items-center">
           {item.soon ? (
             <>
-              <span className="text-gray-700 flex items-center gap-2">
+              <span className="text-gray-700 flex items-center gap-2 font-dm-mono font-medium">
                 {item.icon}
                 {item.name}
               </span>
@@ -143,7 +143,7 @@ export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
               className="relative px-4 py-2 text-gray-700 hover:text-gray-900 dark:text-neutral-300"
               href={item.link}
             >
-              <span className="relative z-20">{item.name}</span>
+              <span className="relative z-20 font-dm-mono font-medium">{item.name}</span>
             </Link>
           )}
         </div>
