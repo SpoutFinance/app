@@ -204,7 +204,7 @@ export default function FaqPage() {
             {/* Center content */}
             <div className="relative z-10 mx-auto text-center flex flex-col justify-center items-center py-16 sm:py-20 lg:py-24">
               <div className="w-fit px-2.5 py-1 rounded-[3px] bg-spout-accent/35 mb-4">
-                <span className="text-sm sm:text-base font-medium text-spout-text-secondary">
+                <span className="text-sm sm:text-base font-medium text-slate-600 font-dm-sans">
                   FAQs
                 </span>
               </div>

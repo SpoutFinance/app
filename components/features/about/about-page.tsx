@@ -1,7 +1,8 @@
 "use client";
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 
 import { CTASection } from "../root";
+import JustMe from "@/assets/images/justme.png";
 
 const teamMembers = [
   {
@@ -46,8 +47,7 @@ const teamMembers = [
   {
     name: "Onuorah Gabriel (Justme)",
     title: "Chief Marketing Officer",
-    image:
-      "https://cdn.builder.io/api/v1/image/assets%2F124fa7d8b30741e3b582951ae96e0e12%2F2e3ffc42f7c94567a1967833a8d3ebf5",
+    image: JustMe,
     description:
       "Growth operator with hands-on go-to-market experience. Led community systems and partnerships at Santa Browser and supported GTM strategy, education initiatives, and growth campaigns at GemXBT to drive users and revenue.",
     links: {
@@ -104,7 +104,7 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen bg-white relative overflow-x-clip">
       <div className="relative">
-        <main className="relative flex flex-col gap-12 sm:gap-16 lg:gap-[100px] z-10">
+        <main className="relative flex flex-col gap-12 sm:gap-16 lg:gap-25 z-10">
           {/* Hero Section */}
           <section className="relative w-full bg-white px-4 sm:px-6 lg:px-0">
             <div className="hidden lg:block absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
@@ -218,7 +218,7 @@ export default function AboutPage() {
             <div className="relative">
               {/* Full-width horizontal lines */}
               <div className="hidden lg:block absolute top-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
-              <div className="hidden lg:block absolute bottom-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
+              <div className="hidden lg:block absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
               {/* Blue Banner */}
               <div className="bg-[#0168ff] py-3.5 sm:py-4 text-center">
                 <span className="font-mono text-white text-base sm:text-xl tracking-tight leading-7">
@@ -285,7 +285,7 @@ export default function AboutPage() {
                 </div>
 
                 {/* Right Column - Decorative Image */}
-                <div className="relative w-full lg:w-[421px] h-[300px] sm:h-[350px] lg:h-auto overflow-hidden border-t lg:border-t-0 lg:border-l-[6px] border-gray-100 flex-shrink-0">
+                <div className="relative w-full lg:w-105.25 h-75 sm:h-87.5 lg:h-auto overflow-hidden border-t lg:border-t-0 lg:border-l-[6px] border-gray-100 shrink-0">
                   {/* Decorative gradient chevrons */}
 
                   <div className="relative w-full h-full ">
@@ -313,10 +313,10 @@ export default function AboutPage() {
             </div>
 
             {/* Gap between manifesto bottom line and team top line */}
-            <div className="h-12 sm:h-16 lg:h-[100px]" />
+            <div className="h-12 sm:h-16 lg:h-25" />
 
             {/* ── Meet the Team Section ── */}
-            <div className="relative pt-8 sm:pt-12 lg:pt-15 mb-12 sm:mb-16 lg:mb-[100px]">
+            <div className="relative pt-8 sm:pt-12 lg:pt-15 mb-12 sm:mb-16 lg:mb-25">
               {/* Full-width horizontal line at top of team section */}
               <div className="hidden lg:block absolute top-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none z-10" />
 
@@ -381,7 +381,7 @@ function TeamRow({
           <div key={member.name} className="flex overflow-hidden">
             <TeamCard {...member} />
             <div
-              className="w-[22px] self-stretch flex-shrink-0"
+              className="w-5.5 self-stretch shrink-0"
               style={{
                 background: `linear-gradient(to bottom, ${dividerColors[i].from}, ${dividerColors[i].to})`,
               }}
@@ -417,7 +417,7 @@ function TeamCard({
 }: {
   name: string;
   title: string;
-  image: string;
+  image: string | StaticImageData;
   description: string;
   links?: {
     email?: string;
@@ -426,7 +426,7 @@ function TeamCard({
   };
 }) {
   return (
-    <div className="w-full lg:w-[370px] bg-white flex flex-col overflow-hidden">
+    <div className="w-full lg:w-92.5 bg-white flex flex-col overflow-hidden">
       {/* Image Section */}
       <div className="relative w-full h-48 sm:h-56">
         <Image
@@ -438,7 +438,7 @@ function TeamCard({
           loading="lazy"
           unoptimized
         />
-        <div className="absolute inset-0 bg-black/5 mix-blend-overlay" />
+        <div className="hidden lg:block absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
       </div>
 
       {/* Content Section */}

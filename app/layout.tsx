@@ -1,5 +1,4 @@
 import { RumInit } from "@/aws/rum-init";
-import { AnnouncementBarWrapper } from "@/components/announcement-bar-wrapper";
 import {
   ConditionalFooter,
   ConditionalNavbar,
@@ -153,7 +152,6 @@ export default async function RootLayout({
       >
         <RumInit />
         <Providers>
-          <AnnouncementBarWrapper />
           <ConditionalNavbar />
           <main className="flex-1">{children}</main>
           <ConditionalFooter />
