@@ -51,9 +51,9 @@ const teamMembers = [
     description:
       "Growth operator with hands-on go-to-market experience. Led community systems and partnerships at Santa Browser and supported GTM strategy, education initiatives, and growth campaigns at GemXBT to drive users and revenue.",
     links: {
-      email: "#",
-      twitter: "#",
-      linkedin: "#",
+      email: "Justme@Spout.finance",
+      twitter: "https://x.com/0xRealjustme",
+      linkedin: "https://www.linkedin.com/in/onuorah-gabriel-c-1aba61241?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app",
     },
   },
   {
@@ -64,7 +64,7 @@ const teamMembers = [
     description:
       "Web3 engineer with expertise in privacy, cross-chain systems, and decentralized finance. Experience at Inco building TEE-powered applications for confidential DeFi and payments, and recognized at major hackathon competitions.",
     links: {
-      email: "#",
+      email: "Mihir@Spout.Finance",
       twitter: "https://x.com/0xmihirsahu",
       linkedin: "https://www.linkedin.com/in/0xmihirsahu/",
     },
