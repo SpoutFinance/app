@@ -1,8 +1,7 @@
 "use client";
 
-import Image from "next/image";
-import BgGrain from "@/components/bg-grain-svg";
-import { DiagonalPattern } from "@/components/slant-dashes-svg";
+import { ChevronDown } from "lucide-react";
+import { useState } from "react";
 
 import {
   Accordion,
@@ -10,14 +9,13 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { ArrowRight, ChevronDown } from "lucide-react";
-import { useState } from "react";
+import { CTASection } from "../root";
 
 const faqData = [
   {
-    question: "Why not just use a traditional off-chain brokerage?",
+    question: "How does Spout bring traditional assets like bonds to DeFi?",
     answer:
-      'Traditional brokerages trap your wealth in a "walled garden" where accessing liquidity requires either selling your assets (triggering taxes) or paying predatory margin rates of 8–12%. Spout eliminates this friction by tokenizing the asset, allowing you to borrow against your portfolio at 0% APR while keeping your long-term position intact. Furthermore, Spout democratizes sophisticated prime brokerage services—like instant liquidity and automated yield—for global users who are typically gatekept from high-quality US credit markets.',
+      "Spout brings traditional assets like bonds to DeFi by tokenizing U.S. investment-grade ETFs into secure, yield-bearing tokens backed 1:1 by real assets.",
   },
   {
     question: "How does Spout handle off-hour market liquidations?",
@@ -31,14 +29,14 @@ const faqData = [
       "In Phase 1 (Launch), you cannot. To guarantee solvency and maintain closed-loop liquidity, the stablecoin is initially non-transferable and locked to the Spout platform; borrowers instantly swap into stablecoins (i.e. USDC) internally rather than taking the Spout stablecoin elsewhere.\n\nIn Phase 2 (Scale), once the peg is battle-tested, we will upgrade it to a standard SPL Token. At that point, integration becomes permissionless: other protocols (like Kamino or Save) can onboard it by simply whitelisting our oracle feed and setting up a liquid DEX pool for liquidations.",
   },
   {
-    question: "Why not just use another tokenized equity provider?",
+    question: "How does Spout tokenize U.S. stocks, ETFs, and bonds?",
     answer:
-      "Existing tokenized equity players issue static wrappers—you buy the token, and it sits idle in your wallet. To access liquidity, you would have to find a third-party lending market (if one even accepts the asset) and pay exorbitant interest rates of 8–12%.\n\nSpout issues productive assets that natively monetize volatility through our internal options engine. This allows us to subsidize your borrowing costs down to 0% APR, effectively combining the issuer, the hedge fund, and the bank into a single platform. With Spout, your asset works for you; with others, it just sits there.",
+      "Spout tokenizes U.S. securities through a regulated Broker-Dealer that holds the underlying assets in segregated, SIPC-insured accounts. When a user deposits stablecoins, the protocol purchases the corresponding shares via the broker and mints an equivalent tokenized representation (e.g., spTSLA) on-chain. Each token is backed 1:1 by real shares, with on-chain proof-of-reserves ensuring transparency and solvency at all times.",
   },
   {
-    question: "Why is DeFi an enormous evolutionary leap for equities?",
+    question: "What is the benefit of using Spout's tokenized assets in DeFi?",
     answer:
-      'DeFi transforms equities from static records into programmable, global money by replacing archaic T+2 settlement cycles with instant, 24/7 liquidity that reacts to information in real-time. It unlocks the latent utility of assets, turning idle stocks into composable "Money Legos" that can be instantly pledged as collateral for loans or automated yield strategies without a bank\'s permission. This evolution democratizes prime brokerage, allowing users anywhere in the world to access high-quality U.S. markets and sophisticated financial services without the friction of traditional banking borders.',
+      "Spout's tokenized assets transform static holdings into productive, composable instruments. Instead of letting equities sit idle, users can pledge them as collateral for 0% APR loans, access instant liquidity without selling, and participate in automated yield strategies — all on-chain, 24/7, without needing a bank or broker's permission.",
   },
   {
     question: "How do I get started with Spout?",
@@ -46,9 +44,9 @@ const faqData = [
       "To get started with Spout, you simply choose your role based on your capital needs. Equity buyers and borrowers first complete a quick on-chain KYC verification to mint tokenized assets (like spTSLA) using stablecoins, which can then be locked in vaults to access 0% APR liquidity via our automated yield strategy. Conversely, lenders can participate permissionlessly by simply connecting their wallet and depositing stablecoins into our liquidity pools to earn 10–15% APY generated from option premiums, with no identity verification required.",
   },
   {
-    question: "What is the Spout option strategy?",
+    question: "Is Spout compliant with U.S. regulations?",
     answer:
-      'Spout utilizes an automated covered call Strategy to generate yield that completely subsidizes your borrowing costs, enabling 0% APR loans. We algorithmically target deep Out-of-the-Money (OTM) strike prices, ensuring you retain the vast majority of your asset\'s upside potential. You simply trade away the extreme, unlikely "tail-end" of a rally in exchange for free liquidity, allowing you to capture significant market gains while your portfolio pays for itself.',
+      "Yes. Spout operates through a regulated U.S. Broker-Dealer that holds all underlying assets in segregated, SIPC-insured accounts. Our tokenized securities are issued as ERC-3643 compliant security tokens with on-chain identity verification, ensuring full regulatory compliance while maintaining the composability benefits of DeFi.",
   },
   {
     question: "What privacy features does Spout offer?",
@@ -98,196 +96,219 @@ export default function FaqPage() {
   const [openItem, setOpenItem] = useState<string>("item-0");
 
   return (
-    <div className="min-h-screen bg-white relative">
-      {/* Background grain for this section */}
-      <BgGrain
-        className="absolute inset-0 w-full h-full"
-        style={{
-          zIndex: 1,
-        }}
-      />
-      <div className="relative z-50">
-        {/* top horizontal line  - hidden on mobile*/}
-        <div className="hidden md:block absolute top-0 left-0 w-full h-[1.5px] bg-[#A7C6ED]"></div>
-        {/* top right diamond */}
-        <div className="hidden lg:block absolute -top-2 right-2 z-20">
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            className="text-blue-300"
-          >
-            <path
-              d="M12 2L22 12L12 22L2 12L12 2Z"
-              stroke="currentColor"
-              strokeWidth="3"
-              fill="white"
-            />
-          </svg>
-        </div>
-        {/* top left diamond */}
-        <div className="hidden lg:block absolute -top-2 left-2 z-20">
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            className="text-blue-300"
-          >
-            <path
-              d="M12 2L22 12L12 22L2 12L12 2Z"
-              stroke="currentColor"
-              strokeWidth="3"
-              fill="white"
-            />
-          </svg>
-        </div>
-        {/* Vertical lines on both sides - hidden on mobile */}
-        <div className="hidden md:block absolute inset-0 pointer-events-none z-0">
-          {/* Left vertical line */}
-          <div className="absolute left-4 top-0 bottom-0 w-[1.5px] bg-[#A7C6ED]"></div>
-          {/* Right vertical line */}
-          <div className="absolute right-4 top-0 bottom-0 w-[1.5px] bg-[#A7C6ED]"></div>
-        </div>
+    <div className="min-h-screen bg-white relative overflow-x-clip">
+      <div className="relative">
+        <main className="relative flex flex-col gap-[100px]">
+          {/* ── Hero Section ── */}
+          <section className="relative w-full bg-white">
+            <div className="hidden lg:block absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
 
-        <main className="relative font-noto-sans">
-          <section className="py-16 px-6 md:px-12 lg:px-24 relative">
-            {/* Background grid pattern - only for hero area */}
-            <div className="absolute inset-0 z-0 bg-[linear-gradient(rgba(0,0,0,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.05)_1px,transparent_1px)] bg-size-[35px_35px]"></div>
+            {/* Left gradient chevrons — absolutely positioned, vw-based widths */}
+            <div className="hidden lg:flex flex-col absolute left-0 top-0 bottom-0 pointer-events-none">
+              <div
+                className="flex-1 bg-gradient-to-r from-spout-gradient-red to-spout-gradient-peach"
+                style={{ width: "22vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-r from-spout-gradient-red to-spout-gradient-peach"
+                style={{ width: "20vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-r from-spout-gradient-red to-spout-gradient-peach"
+                style={{ width: "18vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-r from-spout-gradient-red to-spout-gradient-peach"
+                style={{ width: "16vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-r from-spout-gradient-red to-spout-gradient-peach"
+                style={{ width: "14vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-r from-spout-gradient-red to-spout-gradient-peach"
+                style={{ width: "12vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-r from-spout-gradient-red to-spout-gradient-peach"
+                style={{ width: "14vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-r from-spout-gradient-red to-spout-gradient-peach"
+                style={{ width: "16vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-r from-spout-gradient-red to-spout-gradient-peach"
+                style={{ width: "18vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-r from-spout-gradient-red to-spout-gradient-peach"
+                style={{ width: "20vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-r from-spout-gradient-red to-spout-gradient-peach"
+                style={{ width: "22vw" }}
+              />
+            </div>
 
-            <div className="max-w-7xl mx-auto text-center">
-              <div className="inline-flex items-center justify-center px-2.5 py-1 rounded-[3px] bg-spout-accent/35 mb-8">
-                <span className="text-base font-medium text-spout-text-secondary">
+            {/* Right gradient chevrons — absolutely positioned, vw-based widths */}
+            <div className="hidden lg:flex flex-col items-end absolute right-0 top-0 bottom-0 pointer-events-none">
+              <div
+                className="flex-1 bg-gradient-to-l from-spout-gradient-red to-spout-gradient-peach"
+                style={{ width: "22vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-l from-spout-gradient-red to-spout-gradient-peach"
+                style={{ width: "20vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-l from-spout-gradient-red to-spout-gradient-peach"
+                style={{ width: "18vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-l from-spout-gradient-red to-spout-gradient-peach"
+                style={{ width: "16vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-l from-spout-gradient-red to-spout-gradient-peach"
+                style={{ width: "14vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-l from-spout-gradient-red to-spout-gradient-peach"
+                style={{ width: "12vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-l from-spout-gradient-red to-spout-gradient-peach"
+                style={{ width: "14vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-l from-spout-gradient-red to-spout-gradient-peach"
+                style={{ width: "16vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-l from-spout-gradient-red to-spout-gradient-peach"
+                style={{ width: "18vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-l from-spout-gradient-red to-spout-gradient-peach"
+                style={{ width: "20vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-l from-spout-gradient-red to-spout-gradient-peach"
+                style={{ width: "22vw" }}
+              />
+            </div>
+
+            <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-spout-gradient-peach via-spout-gradient-orange to-spout-gradient-red lg:hidden" />
+
+            {/* Center content */}
+            <div className="relative z-10 mx-auto text-center flex flex-col justify-center items-center py-16 sm:py-20 lg:py-24">
+              <div className="w-fit px-2.5 py-1 rounded-[3px] bg-spout-accent/35 mb-4">
+                <span className="text-sm sm:text-base font-medium text-slate-600 font-dm-sans">
                   FAQs
                 </span>
               </div>
 
-              <h1 className="text-4xl md:text-5xl lg:text-[56px] font-normal text-spout-primary font-lora leading-tight mb-6">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[52px] font-normal text-spout-primary font-pt-serif leading-tight mb-3">
                 Frequently Asked Questions
               </h1>
 
-              <p className="text-lg text-spout-text-muted max-w-2xl mx-auto leading-7">
+              <p className="text-base sm:text-lg text-spout-text-muted max-w-[600px] mx-auto font-dm-sans leading-7 px-2 sm:px-0">
                 Everything you need to know about Spout and how we&apos;re
                 changing decentralized investing
               </p>
             </div>
           </section>
 
-          {/* Diagonal pattern */}
-          <div className="relative z-10 w-full px-4 py-2 overflow-hidden">
-            <DiagonalPattern
-              width="100%"
-              height={34}
-              color="#A7C6ED"
-              strokeWidth={1.5}
-              spacing={14}
-            />
-          </div>
+          {/* Wrapper so gap-[100px] doesn't separate gradient bar from bordered container */}
+          <div>
+            {/* ── Gradient bar separator ── */}
+            <div className="flex w-full overflow-hidden">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="h-[44px] flex-1 bg-gradient-to-r from-blue-600 to-lime-200"
+                />
+              ))}
+            </div>
 
-          <div className="relative py-12">
-            <section className="px-6 md:px-12 lg:px-24 pt-12">
-              <div className="max-w-3xl mx-auto">
-                <Accordion
-                  type="single"
-                  collapsible
-                  value={openItem}
-                  onValueChange={setOpenItem}
-                >
-                  {faqData.map((faq, index) => {
-                    const isOpen = openItem === `item-${index}`;
-                    return (
-                      <AccordionItem
-                        key={index}
-                        value={`item-${index}`}
-                        className={`border border-spout-border mb-px last:mb-0 ${isOpen ? "bg-white" : "bg-[#FFFDFB]"}`}
-                      >
-                        <AccordionTrigger className="px-8 py-5 text-lg font-medium text-black text-left hover:no-underline [&>svg]:hidden">
-                          <div className="flex items-center justify-between w-full">
-                            <span className="pr-4">{faq.question}</span>
-                            <ChevronDown
-                              className={`h-6 w-6 shrink-0 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
-                            />
-                          </div>
-                        </AccordionTrigger>
-                        {faq.answer && (
-                          <AccordionContent className="px-8 pb-5 pt-3 text-base font-medium text-spout-text-muted leading-7">
-                            {faq.answer}
-                          </AccordionContent>
-                        )}
-                      </AccordionItem>
-                    );
-                  })}
-                </Accordion>
+            {/* ── Bordered container: vertical lines kiss the gradient bar ── */}
+            <div className="max-w-[1176px] mx-auto px-4 sm:px-6 lg:px-0 lg:border-x-2 lg:border-gray-100">
+              {/* Space between gradient bar and FAQ accordion */}
+              <div className="h-[72px]" />
+
+              {/* Full-width horizontal line flush on top of FAQ accordion */}
+              <div className="relative">
+                <div className="hidden lg:block absolute top-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
               </div>
-            </section>
-          </div>
 
-          {/* Diagonal pattern */}
-          <div className="relative z-10 w-full px-4 py-2 overflow-hidden">
-            <DiagonalPattern
-              width="100%"
-              height={34}
-              color="#A7C6ED"
-              strokeWidth={1.5}
-              spacing={14}
-            />
-          </div>
-
-          <div className="relative py-20">
-            <section className="px-6 md:px-12 lg:px-24 2xl:px-28">
-              <div className="max-w-6xl lg:max-w-max mx-auto">
-                <div className="relative border-2 border-spout-border bg-white/40 rounded-sm">
-                  <div className="absolute -top-1.5 -left-1.5 w-2.5 h-2.5 rotate-45 border-2 border-spout-accent bg-white z-10"></div>
-                  <div className="absolute -top-1.5 -right-1.5 w-2.5 h-2.5 rotate-45 border-2 border-spout-accent bg-white z-10"></div>
-                  <div className="absolute -bottom-1.5 -left-1.5 w-2.5 h-2.5 rotate-45 border-2 border-spout-accent bg-white z-10"></div>
-                  <div className="absolute -bottom-1.5 -right-1.5 w-2.5 h-2.5 rotate-45 border-2 border-spout-accent bg-white z-10"></div>
-
-                  <div className="grid lg:grid-cols-2 gap-0">
-                    <div className="p-10 lg:p-14 flex flex-col justify-center">
-                      <h2 className="text-3xl font-semibold text-spout-primary mb-5 leading-tight">
-                        Ready to Start Earning Stable Yields?
-                      </h2>
-                      <p className="text-lg text-spout-text-muted leading-7 mb-8">
-                        Join thousands of users who are already earning
-                        consistent returns from investment-grade corporate bonds
-                        on the blockchain
-                      </p>
-                      <button className="inline-flex items-center gap-3 px-5 py-2.5 rounded border border-spout-accent bg-spout-primary text-white text-xl font-medium hover:bg-spout-primary/90 transition-colors w-fit">
-                        Get Started
-                        <ArrowRight className="w-6 h-6" />
-                      </button>
-                    </div>
-
-                    <div className="relative ">
-                      <div className="absolute -top-1.5 -left-1 w-2.5 h-2.5 rotate-45 border-2 border-spout-accent bg-white hidden lg:block"></div>
-                      <div className="absolute -bottom-1.5 -left-1 w-2.5 h-2.5 rotate-45 border-2 border-spout-accent bg-white hidden lg:block"></div>
-                      <Image
-                        src="/bank_image.png"
-                        alt="Financial building"
-                        width={600}
-                        height={400}
-                        className="w-full h-full object-cover border-2 border-spout-border"
-                        loading="lazy"
-                      />
-                    </div>
-                  </div>
+              {/* ── FAQ Accordion Section ── */}
+              <div className="relative">
+                <div className="max-w-[716px] mx-auto pb-18">
+                  <Accordion
+                    type="single"
+                    collapsible
+                    value={openItem}
+                    onValueChange={setOpenItem}
+                  >
+                    {faqData.map((faq, index) => {
+                      const isOpen = openItem === `item-${index}`;
+                      return (
+                        <AccordionItem
+                          key={index}
+                          value={`item-${index}`}
+                          className={`border border-gray-100 -mt-px first:mt-0`}
+                        >
+                          <AccordionTrigger className="px-4 sm:px-6 py-4 text-left hover:no-underline [&>svg]:hidden">
+                            <div className="flex items-start justify-between w-full gap-4">
+                              <span className="text-sm sm:text-base font-medium font-dm-sans text-black leading-7 tracking-[-0.064px]">
+                                {faq.question}
+                              </span>
+                              <ChevronDown
+                                className={`h-4 w-4 shrink-0 mt-1.5 transition-transform duration-200 text-spout-text-muted ${
+                                  isOpen ? "rotate-180" : ""
+                                }`}
+                              />
+                            </div>
+                          </AccordionTrigger>
+                          {faq.answer && (
+                            <AccordionContent className="px-4 sm:px-6 pb-4 pt-0 text-sm sm:text-base text-spout-text-muted font-dm-sans leading-6 sm:leading-7">
+                              {faq.answer}
+                            </AccordionContent>
+                          )}
+                        </AccordionItem>
+                      );
+                    })}
+                  </Accordion>
                 </div>
               </div>
-            </section>
+
+              {/* Full-width horizontal line at bottom of FAQ section */}
+              <div className="relative">
+                <div className="hidden lg:block absolute top-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
+              </div>
+
+              {/* Gap between FAQ and Newsletter */}
+              <div className="h-12 sm:h-16 lg:h-[100px]" />
+
+              {/* ── Newsletter CTA — top + bottom full-width lines ── */}
+              <div className="relative">
+                <div className="hidden lg:block absolute top-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
+                <div className="hidden lg:block absolute bottom-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
+                <div className="overflow-hidden">
+                  <CTASection />
+                </div>
+              </div>
+
+              {/* Gap before footer — vertical lines continue through */}
+              <div className="h-12 sm:h-16 lg:h-[100px]" />
+
+            </div>
           </div>
         </main>
-        {/* Diagonal pattern */}
-        <div className="relative z-40 w-full px-4 py-2 overflow-hidden">
-          <DiagonalPattern
-            width="100%"
-            height={34}
-            color="#A7C6ED"
-            strokeWidth={1.5}
-            spacing={14}
-          />
-        </div>
       </div>
+      {/* Bottom horizontal line above footer */}
+      <div className="w-full border-t-2 border-[#F3F4F6]" />
     </div>
   );
 }

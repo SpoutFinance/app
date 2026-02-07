@@ -62,7 +62,7 @@ export function HeroSection() {
               alt="Spout Water Tokens"
               fill
               quality={100}
-              objectFit="cover"
+              style={{ objectFit: "cover" }}
             />
           </div>
         </div>

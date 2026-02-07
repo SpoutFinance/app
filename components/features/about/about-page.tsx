@@ -1,8 +1,8 @@
 "use client";
-import Image from "next/image";
-import BgGrain from "@/components/bg-grain-svg";
-import { DiagonalPattern } from "@/components/slant-dashes-svg";
-import { Linkedin, Mail, Twitter } from "lucide-react";
+import Image, { StaticImageData } from "next/image";
+
+import { CTASection } from "../root";
+import JustMe from "@/assets/images/justme.png";
 
 const teamMembers = [
   {
@@ -40,8 +40,20 @@ const teamMembers = [
       "Legal counsel with years of experience in software. Architect of the legal framework for various succesful software products, such as payments and factory automation.",
     links: {
       email: "mailto:pauljan@spout.finance",
-      twitter: "",
+      twitter: "#",
       linkedin: "https://www.linkedin.com/in/paul-jan-reijn-70b635227/",
+    },
+  },
+  {
+    name: "Onuorah Gabriel (Justme)",
+    title: "Chief Marketing Officer",
+    image: JustMe,
+    description:
+      "Growth operator with hands-on go-to-market experience. Led community systems and partnerships at Santa Browser and supported GTM strategy, education initiatives, and growth campaigns at GemXBT to drive users and revenue.",
+    links: {
+      email: "Justme@Spout.finance",
+      twitter: "https://x.com/0xRealjustme",
+      linkedin: "https://www.linkedin.com/in/onuorah-gabriel-c-1aba61241?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app",
     },
   },
   {
@@ -50,9 +62,9 @@ const teamMembers = [
     image:
       "https://cdn.builder.io/api/v1/image/assets%2F124fa7d8b30741e3b582951ae96e0e12%2Ffce54c748c2d436da64235d5f4ddaa3e",
     description:
-      "Web3 engineer with expertise in smart contract development, cross-chain systems, privacy solutions and decentralized finance. Experience at Inco building confidential infrastructure, DeFi and payments, and recognized at major hackathon competitions.",
+      "Web3 engineer with expertise in privacy, cross-chain systems, and decentralized finance. Experience at Inco building TEE-powered applications for confidential DeFi and payments, and recognized at major hackathon competitions.",
     links: {
-      email: "",
+      email: "Mihir@Spout.Finance",
       twitter: "https://x.com/0xmihirsahu",
       linkedin: "https://www.linkedin.com/in/0xmihirsahu/",
     },
@@ -72,197 +84,226 @@ const teamMembers = [
   },
 ];
 
+// Gradient divider colors between team cards (per the Figma design)
+const rowDividerColors = [
+  // Row 1
+  [
+    { from: "#abffe1", to: "#dcffe2" }, // mint
+    { from: "#fec8bb", to: "#ffe4c8" }, // peach
+    { from: "#ade1ff", to: "#e8fbf9" }, // light blue
+  ],
+  // Row 2
+  [
+    { from: "#ffefad", to: "#fbf9e8" }, // yellow
+    { from: "#d9adff", to: "#f3e8fb" }, // purple
+    { from: "#ffadad", to: "#fbefe8" }, // pink
+  ],
+];
+
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-white relative ">
-      {/* Background grain for this section */}
-      <BgGrain
-        className="absolute inset-0 w-full h-full"
-        style={{
-          zIndex: 1,
-        }}
-      />
-      <div className="relative z-50">
-        {/* Top horizontal line - hidden on mobile */}
-        <div className="hidden md:block absolute top-0 left-0 w-full h-[1.5px] bg-[#A7C6ED]"></div>
-
-        {/* Top right diamond */}
-        <div className="hidden lg:block absolute -top-2 right-2 z-50">
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            className="text-blue-300"
-          >
-            <path
-              d="M12 2L22 12L12 22L2 12L12 2Z"
-              stroke="currentColor"
-              strokeWidth="3"
-              fill="white"
-            />
-          </svg>
-        </div>
-
-        {/* Top left diamond */}
-        <div className="hidden lg:block absolute -top-2 left-2 z-20">
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            className="text-blue-300"
-          >
-            <path
-              d="M12 2L22 12L12 22L2 12L12 2Z"
-              stroke="currentColor"
-              strokeWidth="3"
-              fill="white"
-            />
-          </svg>
-        </div>
-
-        {/* Vertical lines on both sides - hidden on mobile */}
-        <div className="hidden md:block absolute inset-0 pointer-events-none z-0">
-          <div className="absolute left-4 top-0 bottom-0 w-[1.5px] bg-[#A7C6ED]"></div>
-          <div className="absolute right-4 top-0 bottom-0 w-[1.5px] bg-[#A7C6ED]"></div>
-        </div>
-
-        <main className="relative">
+    <div className="min-h-screen bg-white relative overflow-x-clip">
+      <div className="relative">
+        <main className="relative flex flex-col gap-12 sm:gap-16 lg:gap-25 z-10">
           {/* Hero Section */}
-          <section className="py-16 px-6 md:px-12 lg:px-24 relative">
-            <div className="absolute inset-0 z-0 bg-[linear-gradient(rgba(0,0,0,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.05)_1px,transparent_1px)] bg-size-[35px_35px]"></div>
+          <section className="relative w-full bg-white px-4 sm:px-6 lg:px-0">
+            <div className="hidden lg:block absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
 
-            <div className="max-w-7xl mx-auto text-center relative z-10">
-              <div className="inline-flex items-center justify-center px-2.5 py-1 rounded-[3px] bg-spout-accent/35 mb-8">
-                <span className="text-base font-medium text-spout-text-secondary">
+            {/* Left gradient chevrons — absolutely positioned, vw-based widths */}
+            <div className="hidden lg:flex flex-col absolute left-0 top-0 bottom-0 pointer-events-none">
+              <div
+                className="flex-1 bg-gradient-to-r from-blue-600 to-lime-200"
+                style={{ width: "22vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-r from-blue-600 to-lime-200"
+                style={{ width: "20vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-r from-blue-600 to-lime-200"
+                style={{ width: "18vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-r from-blue-600 to-lime-200"
+                style={{ width: "16vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-r from-blue-600 to-lime-200"
+                style={{ width: "14vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-r from-blue-600 to-lime-200"
+                style={{ width: "16vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-r from-blue-600 to-lime-200"
+                style={{ width: "18vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-r from-blue-600 to-lime-200"
+                style={{ width: "20vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-r from-blue-600 to-lime-200"
+                style={{ width: "22vw" }}
+              />
+            </div>
+
+            {/* Right gradient chevrons — absolutely positioned, vw-based widths */}
+            <div className="hidden lg:flex flex-col items-end absolute right-0 top-0 bottom-0 pointer-events-none">
+              <div
+                className="flex-1 bg-gradient-to-l from-blue-600 to-lime-200"
+                style={{ width: "22vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-l from-blue-600 to-lime-200"
+                style={{ width: "20vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-l from-blue-600 to-lime-200"
+                style={{ width: "18vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-l from-blue-600 to-lime-200"
+                style={{ width: "16vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-l from-blue-600 to-lime-200"
+                style={{ width: "14vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-l from-blue-600 to-lime-200"
+                style={{ width: "16vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-l from-blue-600 to-lime-200"
+                style={{ width: "18vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-l from-blue-600 to-lime-200"
+                style={{ width: "20vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-l from-blue-600 to-lime-200"
+                style={{ width: "22vw" }}
+              />
+            </div>
+
+            {/* Horizontal gradient accent - visible only on small/medium screens */}
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-600 via-lime-200 to-blue-600 lg:hidden" />
+            <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-600 via-lime-200 to-blue-600 lg:hidden" />
+
+            <div className="relative z-10 mx-auto text-center flex flex-col justify-center items-center py-16 sm:py-20 lg:py-24">
+              <div className="w-fit self-center items-center justify-center px-2.5 py-1 rounded-[3px] bg-spout-accent/35 mb-4">
+                <span className="text-sm sm:text-base font-medium text-slate-600 font-dm-sans">
                   About Us
                 </span>
               </div>
 
-              <h1 className="text-4xl md:text-5xl lg:text-[56px] font-normal text-spout-primary font-lora leading-tight mb-6">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[52px] font-normal text-spout-primary font-pt-serif leading-tight mb-3">
                 Our Story
               </h1>
 
-              <p className="text-lg text-spout-text-muted max-w-2xl mx-auto leading-7">
+              <p className="text-base sm:text-lg text-spout-text-muted max-w-[600px] mx-auto font-dm-sans leading-7 px-2 sm:px-0">
                 We are building next-generation investment infrastructure that
                 prioritizes security, transparency, and returns.
               </p>
-
-              <p className="text-base font-medium text-spout-primary uppercase mt-8 tracking-wide">
-                [ Join us as we continue to reshape the future of digital asset
-                investing ]
-              </p>
             </div>
           </section>
 
-          {/* Diagonal pattern */}
-          <div className="relative z-10 w-full px-4 py-2  overflow-hidden">
-            <DiagonalPattern
-              width="100%"
-              height={34}
-              color="#A7C6ED"
-              strokeWidth={1.5}
-              spacing={14}
-            />
-          </div>
+          {/* Bordered container: vertical lines via border-x on centered container,
+              horizontal lines via absolutely-positioned full-width divs */}
+          <div className="max-w-[1176px] mx-auto px-4 sm:px-6 lg:px-0 lg:border-x-2 lg:border-gray-100">
+            {/* ── Manifesto Section ── */}
+            <div className="relative">
+              {/* Full-width horizontal lines */}
+              <div className="hidden lg:block absolute top-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
+              <div className="hidden lg:block absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
+              {/* Blue Banner */}
+              <div className="bg-[#0168ff] py-3.5 sm:py-4 text-center">
+                <span className="font-mono text-white text-base sm:text-xl tracking-tight leading-7">
+                  MANIFESTO
+                </span>
+              </div>
 
-          {/* Meet the Team Section */}
-          <section className="py-16 px-6 md:px-12 lg:px-24">
-            <h2 className="text-4xl font-lora text-spout-primary text-center mb-12">
-              Meet the <span className="font-medium">Team</span>
-            </h2>
-
-            {/* Team Grid - First Row (3 members) */}
-            {/* <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mb-10">
-              {teamMembers.slice(0, 3).map((member, index) => (
-                <TeamCard key={index} {...member} />
-              ))}
-            </div> */}
-
-            {/* Team Grid - Second Row (2 members centered) */}
-            {/* <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
-              {teamMembers.slice(3, 5).map((member, index) => (
-                <TeamCard key={index + 3} {...member} />
-              ))}
-            </div> */}
-            <div className="flex justify-center flex-wrap gap-10 max-w-7xl mx-auto items-stretch">
-              {teamMembers.map((member, index) => (
-                <TeamCard key={index + 3} {...member} />
-              ))}
-            </div>
-          </section>
-
-          {/* Diagonal pattern */}
-          <div className="relative z-10 w-full px-4 py-2  overflow-hidden">
-            <DiagonalPattern
-              width="100%"
-              height={34}
-              color="#A7C6ED"
-              strokeWidth={1.5}
-              spacing={14}
-            />
-          </div>
-
-          {/* CTA Section */}
-          <section className="px-6 md:px-12 lg:px-24 py-20">
-            <div className="max-w-6xl lg:max-w-max mx-auto">
-              <div className="relative border-2 border-spout-border bg-white/40 rounded-sm">
-                <div className="absolute -top-1.5 -left-1.5 w-2.5 h-2.5 rotate-45 border-2 border-spout-accent bg-white z-10"></div>
-                <div className="absolute -top-1.5 -right-1.5 w-2.5 h-2.5 rotate-45 border-2 border-spout-accent bg-white z-10"></div>
-                <div className="absolute -bottom-1.5 -left-1.5 w-2.5 h-2.5 rotate-45 border-2 border-spout-accent bg-white z-10"></div>
-                <div className="absolute -bottom-1.5 -right-1.5 w-2.5 h-2.5 rotate-45 border-2 border-spout-accent bg-white z-10"></div>
-
-                <div className="grid lg:grid-cols-2 gap-0">
-                  <div className="p-10 lg:p-14 flex flex-col justify-center">
-                    <h2 className="text-3xl font-semibold text-spout-primary mb-5 leading-tight">
-                      Ready to Start Earning Stable Yields?
-                    </h2>
-                    <p className="text-lg text-spout-text-muted leading-7 mb-8">
-                      Join thousands of users who are already earning consistent
-                      returns from investment-grade corporate bonds on the
-                      blockchain
-                    </p>
-                    <div className="flex flex-col sm:flex-row gap-4">
-                      <button className="inline-flex items-center justify-center gap-3 px-5 py-2.5 rounded border border-spout-accent bg-spout-primary text-white text-xl font-medium hover:bg-spout-primary/90 transition-colors">
-                        Get Started
-                        <svg
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M14.4302 5.92993L20.5002 11.9999L14.4302 18.0699"
-                            stroke="white"
-                            strokeWidth="1.5"
-                            strokeMiterlimit="10"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                          <path
-                            d="M3.5 12H20.33"
-                            stroke="white"
-                            strokeWidth="1.5"
-                            strokeMiterlimit="10"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                      </button>
+              {/* Manifesto Content */}
+              <div className="bg-white overflow-hidden flex flex-col lg:flex-row">
+                {/* Left Column - Text */}
+                <div className="flex-1 px-5 sm:px-8 py-8 sm:py-10 space-y-10">
+                  {/* Block 1 */}
+                  <div>
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="p-1.5 bg-spout-primary rounded-[3px]">
+                        <Image
+                          src={"/svg-assets/landingpage/fingerprint.png"}
+                          className="w-4 h-4 text-white"
+                          width={16}
+                          height={16}
+                          alt="Fingerprint"
+                        />
+                      </div>
+                      <h3 className="text-xl sm:text-2xl lg:text-[28px] font-medium text-spout-primary leading-7 font-dm-sans">
+                        Access is a right, not a privilege
+                      </h3>
                     </div>
+                    <p className="text-base sm:text-lg text-spout-text-muted leading-7 font-dm-sans">
+                      The global financial system is rigged: institutions borrow
+                      for free, while everyone else pays the price. We refuse to
+                      accept that status quo. Spout is building the first truly
+                      level playing field, taking the &apos;cheat codes&apos; of
+                      the wealthy — asset efficiency and 0% loans — and putting
+                      them on-chain for the world to use. We aren&apos;t just
+                      democratizing finance; we&apos;re open-sourcing it.
+                    </p>
                   </div>
 
-                  <div className="relative">
-                    <div className="absolute -top-1.5 -left-1 w-2.5 h-2.5 rotate-45 border-2 border-spout-accent bg-white hidden lg:block"></div>
-                    <div className="absolute -bottom-1.5 -left-1 w-2.5 h-2.5 rotate-45 border-2 border-spout-accent bg-white hidden lg:block"></div>
+                  {/* Block 2 */}
+                  <div>
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="p-1.5 bg-spout-primary rounded-[3px]">
+                        <Image
+                          src={"/svg-assets/landingpage/users.png"}
+                          className="w-4 h-4 text-white"
+                          width={16}
+                          height={16}
+                          alt="Fingerprint"
+                        />
+                      </div>
+                      <h3 className="text-xl sm:text-2xl lg:text-[28px] font-medium text-spout-primary leading-7 font-dm-sans">
+                        Built by defectors
+                      </h3>
+                    </div>
+                    <p className="text-base sm:text-lg text-spout-text-muted leading-7 font-dm-sans">
+                      We are ex-bankers and engineers who saw the unfair
+                      advantages from the inside — and left to share them with
+                      you. We bridge the gap between institutional structure and
+                      DeFi speed. Our code is permission-less, our team is
+                      global, and our goal is simple: To make sure no one&apos;s
+                      capital ever has to sit &apos;dead&apos; again.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Right Column - Decorative Image */}
+                <div className="relative w-full lg:w-105.25 h-75 sm:h-87.5 lg:h-auto overflow-hidden border-t lg:border-t-0 lg:border-l-[6px] border-gray-100 shrink-0">
+                  {/* Decorative gradient chevrons */}
+
+                  <div className="relative w-full h-full ">
                     <Image
-                      src="https://api.builder.io/api/v1/image/assets/TEMP/ca7c6ff73901d50613be8ccd22c1d83af5b9fed6?width=1074"
-                      alt="Financial building"
-                      width={1074}
-                      height={600}
-                      className="w-full h-full object-cover border-4 border-spout-border min-h-[300px]"
+                      src="/svg-assets/landingpage/globe-bg.png"
+                      alt=""
+                      width={638}
+                      height={425}
+                      className="absolute inset-0 w-full h-full object-cover"
+                      loading="lazy"
+                      unoptimized
+                    />
+                    <Image
+                      src="/svg-assets/landingpage/globe.png"
+                      alt="Manifesto illustration"
+                      width={638}
+                      height={425}
+                      className="absolute inset-0 w-full h-full object-cover z-10"
                       loading="lazy"
                       unoptimized
                     />
@@ -270,24 +311,103 @@ export default function AboutPage() {
                 </div>
               </div>
             </div>
-          </section>
 
-          {/* Diagonal pattern */}
-          <div className="relative z-10 w-full py-2 px-4 mb-2 overflow-hidden">
-            <DiagonalPattern
-              width="100%"
-              height={34}
-              color="#A7C6ED"
-              strokeWidth={1.5}
-              spacing={14}
-            />
+            {/* Gap between manifesto bottom line and team top line */}
+            <div className="h-12 sm:h-16 lg:h-25" />
+
+            {/* ── Meet the Team Section ── */}
+            <div className="relative pt-8 sm:pt-12 lg:pt-15 mb-12 sm:mb-16 lg:mb-25">
+              {/* Full-width horizontal line at top of team section */}
+              <div className="hidden lg:block absolute top-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none z-10" />
+
+              <h2 className="text-3xl sm:text-4xl lg:text-[56px] font-pt-serif text-spout-primary text-center mb-8 sm:mb-12 lg:mb-15">
+                Meet the Team
+              </h2>
+
+              {/* Row 1 — top + bottom full-width lines */}
+              <div className="relative mb-6 sm:mb-8 lg:mb-15 font-dm-sans">
+                <div className="hidden lg:block absolute top-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none z-10" />
+                <div className="hidden lg:block absolute bottom-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none z-10" />
+                <TeamRow
+                  members={teamMembers.slice(0, 3)}
+                  dividerColors={rowDividerColors[0]}
+                />
+              </div>
+
+              {/* Row 2 — top + bottom full-width lines */}
+              <div className="relative font-dm-sans">
+                <div className="hidden lg:block absolute top-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none z-10" />
+                <div className="hidden lg:block absolute bottom-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none z-10" />
+                <TeamRow
+                  members={teamMembers.slice(3, 6)}
+                  dividerColors={rowDividerColors[1]}
+                />
+              </div>
+            </div>
+
+            {/* ── Newsletter CTA Section — top + bottom full-width lines ── */}
+            <div className="relative">
+              <div className="hidden lg:block absolute top-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
+              <div className="hidden lg:block absolute bottom-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
+              <div className="overflow-hidden">
+                <CTASection />
+              </div>
+            </div>
+
+            {/* Gap before footer — vertical lines continue through here */}
+            <div className="h-16 sm:h-20 lg:h-24" />
           </div>
         </main>
       </div>
+      {/* Bottom horizontal line above footer */}
+      <div className="w-full border-t-2 border-[#F3F4F6]" />
     </div>
   );
 }
 
+/* ─── Team Row ─── */
+function TeamRow({
+  members,
+  dividerColors,
+}: {
+  members: typeof teamMembers;
+  dividerColors: { from: string; to: string }[];
+}) {
+  return (
+    <>
+      {/* Desktop: cards with gradient dividers */}
+      <div className="hidden lg:flex overflow-hidden">
+        {members.map((member, i) => (
+          <div key={member.name} className="flex overflow-hidden">
+            <TeamCard {...member} />
+            <div
+              className="w-5.5 self-stretch shrink-0"
+              style={{
+                background: `linear-gradient(to bottom, ${dividerColors[i].from}, ${dividerColors[i].to})`,
+              }}
+            />
+          </div>
+        ))}
+      </div>
+
+      {/* Tablet: 2-column grid */}
+      <div className="hidden sm:grid lg:hidden grid-cols-2 gap-4 sm:gap-6">
+        {members.map((member) => (
+          <TeamCard key={member.name} {...member} />
+        ))}
+      </div>
+
+      {/* Mobile: single column */}
+      <div className="grid sm:hidden grid-cols-1 gap-6">
+        {members.map((member) => (
+          <TeamCard key={member.name} {...member} />
+        ))}
+      </div>
+    </>
+  );
+}
+
+/* ─── Team Card ─── */
 function TeamCard({
   name,
   title,
@@ -297,7 +417,7 @@ function TeamCard({
 }: {
   name: string;
   title: string;
-  image: string;
+  image: string | StaticImageData;
   description: string;
   links?: {
     email?: string;
@@ -306,79 +426,91 @@ function TeamCard({
   };
 }) {
   return (
-    <div className="relative max-w-[390px]">
-      <div className="relative border-2 border-spout-border bg-white h-full w-full flex flex-col">
-        {/* Corner diamonds */}
-        <div className="absolute -top-1.5 -left-1.5 w-2.5 h-2.5 rotate-45 border-2 border-spout-accent bg-white z-10"></div>
-        <div className="absolute -top-1.5 -right-1.5 w-2.5 h-2.5 rotate-45 border-2 border-spout-accent bg-white z-10"></div>
-        <div className="absolute -bottom-1.5 -left-1.5 w-2.5 h-2.5 rotate-45 border-2 border-spout-accent bg-white z-10"></div>
-        <div className="absolute -bottom-1.5 -right-1.5 w-2.5 h-2.5 rotate-45 border-2 border-spout-accent bg-white z-10"></div>
+    <div className="w-full lg:w-92.5 bg-white flex flex-col overflow-hidden">
+      {/* Image Section */}
+      <div className="relative w-full h-48 sm:h-56">
+        <Image
+          src={image}
+          alt={name}
+          width={370}
+          height={224}
+          className="w-full h-full object-cover object-[center_26%]"
+          loading="lazy"
+          unoptimized
+        />
+        <div className="hidden lg:block absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
+      </div>
 
-        {/* Image Section */}
-        <div className="relative w-full h-56 overflow-hidden border-b border-spout-border">
-          <Image
-            src={image}
-            alt={name}
-            width={390}
-            height={224}
-            className="w-full h-full object-cover object-[center_26%]"
-            loading="lazy"
-          />
-          <div className="absolute inset-0 bg-black/5 mix-blend-overlay"></div>
+      {/* Content Section */}
+      <div className="p-5 flex-1 flex flex-col">
+        {/* Title Badge */}
+        <div className="inline-flex items-center px-2.5 py-1 border border-spout-accent bg-spout-accent/35 rounded-[3px] mb-4 w-fit">
+          <span className="text-sm sm:text-base font-medium text-slate-600 font-dm-sans">
+            {title}
+          </span>
         </div>
 
-        {/* Content Section */}
-        <div className="p-5 flex-1">
-          {/* Title Badge */}
-          <div className="inline-flex items-center px-2.5 py-1 border border-spout-accent bg-spout-accent/35 rounded mb-4">
-            <span className="text-base font-medium text-spout-text-secondary">
-              {title}
-            </span>
-          </div>
+        {/* Name */}
+        <h3 className="text-xl sm:text-2xl font-semibold text-spout-primary mb-2 font-dm-sans">
+          {name}
+        </h3>
 
-          {/* Name */}
-          <h3 className="text-2xl font-semibold text-spout-primary mb-2">
-            {name}
-          </h3>
+        {/* Description */}
+        <p className="text-sm sm:text-base text-spout-text-muted leading-7 mb-6 flex-1 font-dm-sans">
+          {description}
+        </p>
 
-          {/* Description */}
-          <p className="text-base text-spout-text-muted leading-7 mb-6 flex-1">
-            {description}
-          </p>
-          {/* Social Icons */}
-          <div className="flex items-center gap-5 mt-auto">
-            {links?.email && (
-              <a
-                href={links.email}
-                className="text-spout-text-secondary hover:text-spout-primary transition-colors"
-                aria-label={`Email ${name}`}
-              >
-                <Mail className="w-6 h-6" />
-              </a>
-            )}
-            {links?.twitter && (
-              <a
-                href={links.twitter}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-spout-text-secondary hover:text-spout-primary transition-colors"
-                aria-label={`${name}'s Twitter`}
-              >
-                <Twitter className="w-6 h-6" />
-              </a>
-            )}
-            {links?.linkedin && (
-              <a
-                href={links.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-spout-text-secondary hover:text-spout-primary transition-colors"
-                aria-label={`${name}'s LinkedIn`}
-              >
-                <Linkedin className="w-6 h-6" />
-              </a>
-            )}
-          </div>
+        {/* Social Icons */}
+        <div className="flex items-center gap-5 mt-auto">
+          {links?.email && (
+            <a
+              href={links.email}
+              className="text-spout-text-secondary hover:text-spout-primary transition-colors"
+              aria-label={`Email ${name}`}
+            >
+              <Image
+                src={"/svg-assets/landingpage/email.png"}
+                width={24}
+                height={24}
+                alt="Mail"
+                className="w-6"
+              />
+            </a>
+          )}
+          {links?.twitter && (
+            <a
+              href={links.twitter}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-spout-text-secondary hover:text-spout-primary transition-colors"
+              aria-label={`${name}'s Twitter`}
+            >
+              <Image
+                src={"/svg-assets/landingpage/x.png"}
+                width={24}
+                height={24}
+                alt="Mail"
+                className="w-6"
+              />
+            </a>
+          )}
+          {links?.linkedin && (
+            <a
+              href={links.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-spout-text-secondary hover:text-spout-primary transition-colors"
+              aria-label={`${name}'s LinkedIn`}
+            >
+              <Image
+                src={"/svg-assets/landingpage/linkedin.png"}
+                width={24}
+                height={24}
+                alt="Mail"
+                className="w-6"
+              />
+            </a>
+          )}
         </div>
       </div>
     </div>

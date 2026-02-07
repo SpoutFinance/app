@@ -104,7 +104,7 @@ export const NavBody = ({ children, className, visible }: NavBodyProps) => {
         minWidth: "800px",
       }}
       className={cn(
-        "relative z-[60] mx-auto hidden w-full max-w-[1800px] flex-row items-center justify-between self-start rounded-2xl bg-white px-16 py-4 lg:flex dark:bg-white",
+        "relative z-60 mx-auto hidden w-full max-w-450 flex-row items-center justify-between self-start rounded-2xl bg-white px-16 py-2.5 lg:flex dark:bg-white",
         className,
       )}
     >
@@ -128,11 +128,11 @@ export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
         <div key={item.name} className="flex items-center">
           {item.soon ? (
             <>
-              <span className="text-gray-700 flex items-center gap-2">
+              <span className="text-gray-700 flex items-center gap-2 font-dm-mono font-medium">
                 {item.icon}
                 {item.name}
               </span>
-              <span className="ml-2 px-2 py-1 text-xs text-blue-600 bg-blue-50 rounded">
+              <span className="flex justify-center ml-1 text-[#3D5678] font-['DM_Mono'] text-[12px] not-italic font-medium leading-normal rounded-[3px] bg-[#A7C6ED]/35 w-[42px] h-[20px] p-[10px]  items-center gap-[10px]">
                 Soon
               </span>
             </>
@@ -143,7 +143,9 @@ export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
               className="relative px-4 py-2 text-gray-700 hover:text-gray-900 dark:text-neutral-300"
               href={item.link}
             >
-              <span className="relative z-20">{item.name}</span>
+              <span className="relative z-20 font-dm-mono font-medium text-[#545D68] hover:text-gray-900 ">
+                {item.name}
+              </span>
             </Link>
           )}
         </div>
@@ -241,7 +243,7 @@ export const NavbarLogo = () => {
   return (
     <Link
       href="/"
-      className="relative z-20 mr-4 flex items-center space-x-2 px-2 py-1 text-sm font-normal text-black"
+      className="relative z-20 mr-4 flex items-center space-x-2 px-2 py-1 pl-5 text-sm font-normal text-black"
     >
       <Image
         src="/spout-full-dark-logo.svg"

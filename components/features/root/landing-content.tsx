@@ -33,7 +33,7 @@ export function LandingContent() {
         </div>
 
         <div className="relative">
-          <div className="hidden md:block absolute inset-0 pointer-events-none z-0 max-w-[1178px] mx-auto">
+          <div className="hidden md:block absolute inset-0 pointer-events-none z-20 max-w-[1178px] mx-auto">
             {/* Left vertical line */}
             <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-[#F3F4F6] optimized"></div>
             {/* Right vertical line */}

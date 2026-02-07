@@ -31,11 +31,11 @@ export default function Navbar() {
   //   : user?.email;
 
   return (
-    <ResizableNavbar className="border-b-2 border-[#F3F4F6] font-dm-sans sticky top-0 bg-white z-50">
-      <NavBody className="flex justify-between h-[68px]">
+    <ResizableNavbar className=" border-b-2 border-[#F3F4F6] font-dm-mono sticky top-0 bg-white z-50">
+      <NavBody className="flex justify-between h-[68px] w-full max-w-[1440px] mx-auto">
         <NavbarLogo />
         <div className="flex items-center gap-[64px]">
-          <NavItems items={navItems} className="" />
+          <NavItems items={navItems} className="font-dm-mono" />
           <Link
             href="/app"
             className="not-italic mr-4 p-[10px] w-[114px] h-[32px] flex items-center justify-center text-sm bg-[#004040] hover:bg-[#003030] text-white font-semibold transition-colors z-50 relative rounded-md text-[14px] leading-5 font-noto-sans"
