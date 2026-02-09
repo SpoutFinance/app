@@ -248,8 +248,9 @@ export const NavbarLogo = () => {
       <Image
         src="/spout-full-dark-logo.svg"
         alt="logo"
-        width={100}
-        height={40}
+        width={124}
+        height={49}
+        className="pl-5"
       />
       {/* <span className="font-bold text-lg text-[#334155] dark:text-white">
         Spout Finance

@@ -14,12 +14,36 @@ import Image from "next/image";
 
 export function ProofOfReserveLanding() {
   const logos = [
-    { id: "tesla", src: teslaSvg, alt: "Tesla" },
+    {
+      id: "tesla",
+      src: teslaSvg,
+      alt: "Tesla",
+      width: 145.275,
+      height: 18.943,
+    },
     { id: "meta", src: metaSvg, alt: "Meta" },
-    { id: "coinbase", src: coinbaseSvg, alt: "Coinbase" },
-    { id: "amazon", src: amazonSvg, alt: "Amazon" },
-    { id: "circle", src: circleSvg, alt: "Circle" },
-    { id: "microsoft", src: microsoftSvg, alt: "Microsoft" },
+    {
+      id: "coinbase",
+      src: coinbaseSvg,
+      alt: "Coinbase",
+      width: 142.048,
+      height: 26.006,
+    },
+    { id: "amazon", src: amazonSvg, alt: "Amazon", width: 100, height: 34 },
+    {
+      id: "circle",
+      src: circleSvg,
+      alt: "Circle",
+      width: 118.534,
+      height: 30.654,
+    },
+    {
+      id: "microsoft",
+      src: microsoftSvg,
+      alt: "Microsoft",
+      width: 125.62,
+      height: 26.586,
+    },
   ];
 
   return (
@@ -66,7 +90,15 @@ export function ProofOfReserveLanding() {
                   className="relative overflow-hidden rounded-[4px] flex justify-center items-center bg-white h-[59.819px] w-[208.511px] border-[2.5px] border-[#DEE9F8] drop-shadow-[filter: drop-shadow(0 4px 13.9px rgba(0, 0, 0, 0.05))]"
                   key={logo.id}
                 >
-                  <Image src={logo.src} alt={logo.alt} className="object-contain" />
+                  <Image
+                    src={logo.src}
+                    alt={logo.alt}
+                    className="object-contain"
+                    {...(logo.width && {
+                      width: logo.width,
+                      height: logo.height,
+                    })}
+                  />
                 </div>
               ))}
             </div>
