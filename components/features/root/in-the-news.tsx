@@ -62,7 +62,7 @@ export function InTheNews() {
         <div className="w-screen bg-transparent border-t border-b border-[#F3F4F6] "></div>
         <div className="mt-4 sm:mt-7 text-end max-w-[1178px] mx-auto pe-[22px]">
           <Link
-            href="/faq"
+            href="/press"
             className="h-[36px] w-[116px] items-center justify-center group border rounded-sm border-[#E8E8E8] bg-white p-[10px] inline-flex text-sm sm:text-base font-noto-sans font-medium text-[#000] transition-colors gap-2"
           >
             View All

@@ -27,11 +27,13 @@ const config = {
       },
       fontFamily: {
         sans: ["var(--font-sans)", ...defaultTheme.fontFamily.sans],
+        mono: ["var(--font-mono)", ...defaultTheme.fontFamily.mono],
         lora: ["var(--font-lora)", ...defaultTheme.fontFamily.serif],
         "noto-sans": ["var(--font-noto-sans)", ...defaultTheme.fontFamily.sans],
         "pt-serif": ["var(--font-pt-serif)", ...defaultTheme.fontFamily.serif],
         "dm-sans": ["var(--font-dm-sans)", ...defaultTheme.fontFamily.sans],
         figtree: ["var(--font-figtree)", ...defaultTheme.fontFamily.sans],
+        "dm-mono": ["var(--font-dm-mono)", ...defaultTheme.fontFamily.mono],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -166,6 +168,8 @@ const config = {
             usdc: "#2775ca",
             disabled: "#cccccc",
           },
+        slate: {
+          600: "#3D5678",
         },
       },
       borderRadius: {

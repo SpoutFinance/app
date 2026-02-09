@@ -36,9 +36,9 @@ export function FAQSection() {
   };
 
   return (
-    <section className="w-full py-4 sm:py-6 lg:py-[72px]">
+    <section className="w-full py-4 sm:py-6 lg:py-18">
       {/* Section content */}
-      <div className="w-full max-w-[1178px] mx-auto px-4 sm:px-6 lg:px-[36px] pb-8 sm:pb-0">
+      <div className="w-full max-w-294.5 mx-auto px-4 sm:px-6 lg:px-9 pb-8 sm:pb-0">
         <div className="flex gap-[36px]">
           {/* Left Column - Header */}
           <div className="basis-[448px]">
@@ -69,9 +69,9 @@ export function FAQSection() {
                 <AccordionItem
                   key={index}
                   value={`item-${index}`}
-                  className="mt-[-10px] border-[1.249px] border-solid border-[#E5E5E5] bg-[#FFF] text-[#000] text-[16px] not-italic font-medium leading-[28px] tracking-[-0.064px] px-5 p-2 sm:px-8 sm:py-5 rounded-sm hover:no-underline font-dm-sans text-xl"
+                  className="mt-[-10px] border-[1.249px] border-solid border-[#E5E5E5] bg-[#FFF] text-[#000] text-[16px] not-italic font-medium leading-[28px] tracking-[-0.064px] px-5 p-2 sm:px-8 sm:py-5 rounded-sm font-dm-sans text-xl"
                 >
-                  <AccordionTrigger className="text-start py-0 px-0 gap-8 items-start  font-['DM_Sans'] text-[16px] not-italic font-medium leading-[28px] tracking-[-0.064px]">
+                  <AccordionTrigger className="cursor-pointer text-start py-0 px-0 gap-8 items-start font-['DM_Sans'] text-[16px] not-italic font-medium leading-[28px] tracking-[-0.064px]">
                     {item.question}
                   </AccordionTrigger>
                   <AccordionContent className="mt-5 text-[#525252]">

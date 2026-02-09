@@ -100,49 +100,111 @@ export default function FaqPage() {
       <div className="relative">
         <main className="relative flex flex-col gap-[100px]">
           {/* ── Hero Section ── */}
-          <section className="relative w-full overflow-hidden bg-white">
-            {/* Full-width horizontal lines at top and bottom */}
-            <div className="hidden lg:block absolute top-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
-            <div className="hidden lg:block absolute bottom-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
+          <section className="relative w-full bg-white">
+            <div className="hidden lg:block absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
 
             {/* Left gradient chevrons — absolutely positioned, vw-based widths */}
             <div className="hidden lg:flex flex-col absolute left-0 top-0 bottom-0 pointer-events-none">
-              <div className="flex-1 bg-gradient-to-r from-spout-gradient-red to-spout-gradient-peach" style={{ width: '22vw' }} />
-              <div className="flex-1 bg-gradient-to-r from-spout-gradient-red to-spout-gradient-peach" style={{ width: '20vw' }} />
-              <div className="flex-1 bg-gradient-to-r from-spout-gradient-red to-spout-gradient-peach" style={{ width: '18vw' }} />
-              <div className="flex-1 bg-gradient-to-r from-spout-gradient-red to-spout-gradient-peach" style={{ width: '16vw' }} />
-              <div className="flex-1 bg-gradient-to-r from-spout-gradient-red to-spout-gradient-peach" style={{ width: '14vw' }} />
-              <div className="flex-1 bg-gradient-to-r from-spout-gradient-red to-spout-gradient-peach" style={{ width: '12vw' }} />
-              <div className="flex-1 bg-gradient-to-r from-spout-gradient-red to-spout-gradient-peach" style={{ width: '14vw' }} />
-              <div className="flex-1 bg-gradient-to-r from-spout-gradient-red to-spout-gradient-peach" style={{ width: '16vw' }} />
-              <div className="flex-1 bg-gradient-to-r from-spout-gradient-red to-spout-gradient-peach" style={{ width: '18vw' }} />
-              <div className="flex-1 bg-gradient-to-r from-spout-gradient-red to-spout-gradient-peach" style={{ width: '20vw' }} />
-              <div className="flex-1 bg-gradient-to-r from-spout-gradient-red to-spout-gradient-peach" style={{ width: '22vw' }} />
+              <div
+                className="flex-1 bg-gradient-to-r from-spout-gradient-red to-spout-gradient-peach"
+                style={{ width: "22vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-r from-spout-gradient-red to-spout-gradient-peach"
+                style={{ width: "20vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-r from-spout-gradient-red to-spout-gradient-peach"
+                style={{ width: "18vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-r from-spout-gradient-red to-spout-gradient-peach"
+                style={{ width: "16vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-r from-spout-gradient-red to-spout-gradient-peach"
+                style={{ width: "14vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-r from-spout-gradient-red to-spout-gradient-peach"
+                style={{ width: "12vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-r from-spout-gradient-red to-spout-gradient-peach"
+                style={{ width: "14vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-r from-spout-gradient-red to-spout-gradient-peach"
+                style={{ width: "16vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-r from-spout-gradient-red to-spout-gradient-peach"
+                style={{ width: "18vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-r from-spout-gradient-red to-spout-gradient-peach"
+                style={{ width: "20vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-r from-spout-gradient-red to-spout-gradient-peach"
+                style={{ width: "22vw" }}
+              />
             </div>
 
             {/* Right gradient chevrons — absolutely positioned, vw-based widths */}
             <div className="hidden lg:flex flex-col items-end absolute right-0 top-0 bottom-0 pointer-events-none">
-              <div className="flex-1 bg-gradient-to-l from-spout-gradient-red to-spout-gradient-peach" style={{ width: '22vw' }} />
-              <div className="flex-1 bg-gradient-to-l from-spout-gradient-red to-spout-gradient-peach" style={{ width: '20vw' }} />
-              <div className="flex-1 bg-gradient-to-l from-spout-gradient-red to-spout-gradient-peach" style={{ width: '18vw' }} />
-              <div className="flex-1 bg-gradient-to-l from-spout-gradient-red to-spout-gradient-peach" style={{ width: '16vw' }} />
-              <div className="flex-1 bg-gradient-to-l from-spout-gradient-red to-spout-gradient-peach" style={{ width: '14vw' }} />
-              <div className="flex-1 bg-gradient-to-l from-spout-gradient-red to-spout-gradient-peach" style={{ width: '12vw' }} />
-              <div className="flex-1 bg-gradient-to-l from-spout-gradient-red to-spout-gradient-peach" style={{ width: '14vw' }} />
-              <div className="flex-1 bg-gradient-to-l from-spout-gradient-red to-spout-gradient-peach" style={{ width: '16vw' }} />
-              <div className="flex-1 bg-gradient-to-l from-spout-gradient-red to-spout-gradient-peach" style={{ width: '18vw' }} />
-              <div className="flex-1 bg-gradient-to-l from-spout-gradient-red to-spout-gradient-peach" style={{ width: '20vw' }} />
-              <div className="flex-1 bg-gradient-to-l from-spout-gradient-red to-spout-gradient-peach" style={{ width: '22vw' }} />
+              <div
+                className="flex-1 bg-gradient-to-l from-spout-gradient-red to-spout-gradient-peach"
+                style={{ width: "22vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-l from-spout-gradient-red to-spout-gradient-peach"
+                style={{ width: "20vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-l from-spout-gradient-red to-spout-gradient-peach"
+                style={{ width: "18vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-l from-spout-gradient-red to-spout-gradient-peach"
+                style={{ width: "16vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-l from-spout-gradient-red to-spout-gradient-peach"
+                style={{ width: "14vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-l from-spout-gradient-red to-spout-gradient-peach"
+                style={{ width: "12vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-l from-spout-gradient-red to-spout-gradient-peach"
+                style={{ width: "14vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-l from-spout-gradient-red to-spout-gradient-peach"
+                style={{ width: "16vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-l from-spout-gradient-red to-spout-gradient-peach"
+                style={{ width: "18vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-l from-spout-gradient-red to-spout-gradient-peach"
+                style={{ width: "20vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-l from-spout-gradient-red to-spout-gradient-peach"
+                style={{ width: "22vw" }}
+              />
             </div>
 
-            {/* Mobile gradient accents */}
-            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-spout-gradient-peach via-spout-gradient-orange to-spout-gradient-red lg:hidden" />
             <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-spout-gradient-peach via-spout-gradient-orange to-spout-gradient-red lg:hidden" />
 
             {/* Center content */}
             <div className="relative z-10 mx-auto text-center flex flex-col justify-center items-center py-16 sm:py-20 lg:py-24">
               <div className="w-fit px-2.5 py-1 rounded-[3px] bg-spout-accent/35 mb-4">
-                <span className="text-sm sm:text-base font-medium text-spout-text-secondary">
+                <span className="text-sm sm:text-base font-medium text-slate-600 font-dm-sans">
                   FAQs
                 </span>
               </div>
@@ -172,81 +234,81 @@ export default function FaqPage() {
 
             {/* ── Bordered container: vertical lines kiss the gradient bar ── */}
             <div className="max-w-[1176px] mx-auto px-4 sm:px-6 lg:px-0 lg:border-x-2 lg:border-gray-100">
-            {/* Space between gradient bar and FAQ accordion */}
-            <div className="h-[72px]" />
+              {/* Space between gradient bar and FAQ accordion */}
+              <div className="h-[72px]" />
 
-            {/* Full-width horizontal line flush on top of FAQ accordion */}
-            <div className="relative">
-              <div className="hidden lg:block absolute top-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
-            </div>
-
-            {/* ── FAQ Accordion Section ── */}
-            <div className="relative">
-              <div className="max-w-[716px] mx-auto pb-18">
-                <Accordion
-                  type="single"
-                  collapsible
-                  value={openItem}
-                  onValueChange={setOpenItem}
-                >
-                  {faqData.map((faq, index) => {
-                    const isOpen = openItem === `item-${index}`;
-                    return (
-                      <AccordionItem
-                        key={index}
-                        value={`item-${index}`}
-                        className={`border border-gray-100 -mt-px first:mt-0`}
-                      >
-                        <AccordionTrigger className="px-4 sm:px-6 py-4 text-left hover:no-underline [&>svg]:hidden">
-                          <div className="flex items-start justify-between w-full gap-4">
-                            <span className="text-sm sm:text-base font-medium font-dm-sans text-black leading-7 tracking-[-0.064px]">
-                              {faq.question}
-                            </span>
-                            <ChevronDown
-                              className={`h-4 w-4 shrink-0 mt-1.5 transition-transform duration-200 text-spout-text-muted ${
-                                isOpen ? "rotate-180" : ""
-                              }`}
-                            />
-                          </div>
-                        </AccordionTrigger>
-                        {faq.answer && (
-                          <AccordionContent className="px-4 sm:px-6 pb-4 pt-0 text-sm sm:text-base text-spout-text-muted font-dm-sans leading-6 sm:leading-7">
-                            {faq.answer}
-                          </AccordionContent>
-                        )}
-                      </AccordionItem>
-                    );
-                  })}
-                </Accordion>
+              {/* Full-width horizontal line flush on top of FAQ accordion */}
+              <div className="relative">
+                <div className="hidden lg:block absolute top-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
               </div>
-            </div>
 
-            {/* Full-width horizontal line at bottom of FAQ section */}
-            <div className="relative">
-              <div className="hidden lg:block absolute top-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
-            </div>
+              {/* ── FAQ Accordion Section ── */}
+              <div className="relative">
+                <div className="max-w-[716px] mx-auto pb-18">
+                  <Accordion
+                    type="single"
+                    collapsible
+                    value={openItem}
+                    onValueChange={setOpenItem}
+                  >
+                    {faqData.map((faq, index) => {
+                      const isOpen = openItem === `item-${index}`;
+                      return (
+                        <AccordionItem
+                          key={index}
+                          value={`item-${index}`}
+                          className={`border border-gray-100 -mt-px first:mt-0`}
+                        >
+                          <AccordionTrigger className="px-4 sm:px-6 py-4 text-left hover:no-underline [&>svg]:hidden">
+                            <div className="flex items-start justify-between w-full gap-4">
+                              <span className="text-sm sm:text-base font-medium font-dm-sans text-black leading-7 tracking-[-0.064px]">
+                                {faq.question}
+                              </span>
+                              <ChevronDown
+                                className={`h-4 w-4 shrink-0 mt-1.5 transition-transform duration-200 text-spout-text-muted ${
+                                  isOpen ? "rotate-180" : ""
+                                }`}
+                              />
+                            </div>
+                          </AccordionTrigger>
+                          {faq.answer && (
+                            <AccordionContent className="px-4 sm:px-6 pb-4 pt-0 text-sm sm:text-base text-spout-text-muted font-dm-sans leading-6 sm:leading-7">
+                              {faq.answer}
+                            </AccordionContent>
+                          )}
+                        </AccordionItem>
+                      );
+                    })}
+                  </Accordion>
+                </div>
+              </div>
 
-            {/* Gap between FAQ and Newsletter */}
-            <div className="h-12 sm:h-16 lg:h-[100px]" />
+              {/* Full-width horizontal line at bottom of FAQ section */}
+              <div className="relative">
+                <div className="hidden lg:block absolute top-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
+              </div>
 
-            {/* ── Newsletter CTA — top + bottom full-width lines ── */}
-            <div className="relative">
-              <div className="hidden lg:block absolute top-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
-              <div className="hidden lg:block absolute bottom-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
-              <CTASection />
-            </div>
+              {/* Gap between FAQ and Newsletter */}
+              <div className="h-12 sm:h-16 lg:h-[100px]" />
 
-            {/* Gap before footer — vertical lines continue through */}
-            <div className="h-12 sm:h-16 lg:h-[100px]" />
+              {/* ── Newsletter CTA — top + bottom full-width lines ── */}
+              <div className="relative">
+                <div className="hidden lg:block absolute top-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
+                <div className="hidden lg:block absolute bottom-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
+                <div className="overflow-hidden">
+                  <CTASection />
+                </div>
+              </div>
 
-            {/* Full-width horizontal line at bottom */}
-            <div className="relative">
-              <div className="hidden lg:block absolute top-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
-            </div>
+              {/* Gap before footer — vertical lines continue through */}
+              <div className="h-12 sm:h-16 lg:h-[100px]" />
+
             </div>
           </div>
         </main>
       </div>
+      {/* Bottom horizontal line above footer */}
+      <div className="w-full border-t-2 border-[#F3F4F6]" />
     </div>
   );
 }
