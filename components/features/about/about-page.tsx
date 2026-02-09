@@ -1,8 +1,8 @@
 "use client";
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 
-import { Linkedin, Mail, Twitter, Fingerprint, Users } from "lucide-react";
 import { CTASection } from "../root";
+import JustMe from "@/assets/images/justme.png";
 
 const teamMembers = [
   {
@@ -47,14 +47,13 @@ const teamMembers = [
   {
     name: "Onuorah Gabriel (Justme)",
     title: "Chief Marketing Officer",
-    image:
-      "https://cdn.builder.io/api/v1/image/assets%2F124fa7d8b30741e3b582951ae96e0e12%2F2e3ffc42f7c94567a1967833a8d3ebf5",
+    image: JustMe,
     description:
       "Growth operator with hands-on go-to-market experience. Led community systems and partnerships at Santa Browser and supported GTM strategy, education initiatives, and growth campaigns at GemXBT to drive users and revenue.",
     links: {
-      email: "#",
-      twitter: "#",
-      linkedin: "#",
+      email: "Justme@Spout.finance",
+      twitter: "https://x.com/0xRealjustme",
+      linkedin: "https://www.linkedin.com/in/onuorah-gabriel-c-1aba61241?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app",
     },
   },
   {
@@ -65,24 +64,24 @@ const teamMembers = [
     description:
       "Web3 engineer with expertise in privacy, cross-chain systems, and decentralized finance. Experience at Inco building TEE-powered applications for confidential DeFi and payments, and recognized at major hackathon competitions.",
     links: {
-      email: "#",
+      email: "Mihir@Spout.Finance",
       twitter: "https://x.com/0xmihirsahu",
       linkedin: "https://www.linkedin.com/in/0xmihirsahu/",
     },
   },
-  {
-    name: "Lovish Badlani",
-    title: "Head of Engineering",
-    image:
-      "https://cdn.builder.io/api/v1/image/assets%2F124fa7d8b30741e3b582951ae96e0e12%2F08c9e404faeb40cc825c7e6c317c05d0",
-    description:
-      "Former BlackRock engineer, experienced in scaling institutional fintech apps. Led engineering at DEX token launchpad with 150K+ users, $150M+ TVL. Skilled in EVM chains and Solana deployment, recognized at global hackathons.",
-    links: {
-      email: "mailto:lovish@spout.finance",
-      twitter: "https://x.com/BadlaniLovish",
-      linkedin: "https://www.linkedin.com/in/lovish-badlani-250a05151/",
-    },
-  },
+  // {
+  //   name: "Lovish Badlani",
+  //   title: "Head of Engineering",
+  //   image:
+  //     "https://cdn.builder.io/api/v1/image/assets%2F124fa7d8b30741e3b582951ae96e0e12%2F08c9e404faeb40cc825c7e6c317c05d0",
+  //   description:
+  //     "Former BlackRock engineer, experienced in scaling institutional fintech apps. Led engineering at DEX token launchpad with 150K+ users, $150M+ TVL. Skilled in EVM chains and Solana deployment, recognized at global hackathons.",
+  //   links: {
+  //     email: "mailto:lovish@spout.finance",
+  //     twitter: "https://x.com/BadlaniLovish",
+  //     linkedin: "https://www.linkedin.com/in/lovish-badlani-250a05151/",
+  //   },
+  // },
 ];
 
 // Gradient divider colors between team cards (per the Figma design)
@@ -104,57 +103,111 @@ const rowDividerColors = [
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-white relative overflow-x-clip">
-      <div className="relative z-50">
-        <main className="relative flex flex-col gap-12 sm:gap-16 lg:gap-[100px]">
+      <div className="relative">
+        <main className="relative flex flex-col gap-12 sm:gap-16 lg:gap-25 z-10">
           {/* Hero Section */}
-          <section className="flex justify-center items-center w-full relative px-4 sm:px-6 lg:px-0">
-            <div className="hidden lg:block absolute top-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
-            <div className="hidden lg:block absolute bottom-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
-            {/* Left Hero Group - hidden below lg */}
-            <div className="z-10 hidden lg:block">
-              <div className="w-96 h-5 relative bg-gradient-to-r from-blue-600 to-lime-200" />
-              <div className="w-88 h-10 relative bg-gradient-to-r from-blue-600 to-lime-200" />
-              <div className="w-80 h-10 relative bg-gradient-to-r from-blue-600 to-lime-200" />
-              <div className="w-72 h-10 relative bg-gradient-to-r from-blue-600 to-lime-200" />
-              <div className="w-60 h-10 relative bg-gradient-to-r from-blue-600 to-lime-200" />
-              <div className="w-72 h-10 relative bg-gradient-to-r from-blue-600 to-lime-200" />
-              <div className="w-80 h-10 relative bg-gradient-to-r from-blue-600 to-lime-200" />
-              <div className="w-88 h-10 relative bg-gradient-to-r from-blue-600 to-lime-200" />
-              <div className="w-96 h-5 relative bg-gradient-to-r from-blue-600 to-lime-200" />
+          <section className="relative w-full bg-white px-4 sm:px-6 lg:px-0">
+            <div className="hidden lg:block absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
+
+            {/* Left gradient chevrons — absolutely positioned, vw-based widths */}
+            <div className="hidden lg:flex flex-col absolute left-0 top-0 bottom-0 pointer-events-none">
+              <div
+                className="flex-1 bg-gradient-to-r from-blue-600 to-lime-200"
+                style={{ width: "22vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-r from-blue-600 to-lime-200"
+                style={{ width: "20vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-r from-blue-600 to-lime-200"
+                style={{ width: "18vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-r from-blue-600 to-lime-200"
+                style={{ width: "16vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-r from-blue-600 to-lime-200"
+                style={{ width: "14vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-r from-blue-600 to-lime-200"
+                style={{ width: "16vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-r from-blue-600 to-lime-200"
+                style={{ width: "18vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-r from-blue-600 to-lime-200"
+                style={{ width: "20vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-r from-blue-600 to-lime-200"
+                style={{ width: "22vw" }}
+              />
+            </div>
+
+            {/* Right gradient chevrons — absolutely positioned, vw-based widths */}
+            <div className="hidden lg:flex flex-col items-end absolute right-0 top-0 bottom-0 pointer-events-none">
+              <div
+                className="flex-1 bg-gradient-to-l from-blue-600 to-lime-200"
+                style={{ width: "22vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-l from-blue-600 to-lime-200"
+                style={{ width: "20vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-l from-blue-600 to-lime-200"
+                style={{ width: "18vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-l from-blue-600 to-lime-200"
+                style={{ width: "16vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-l from-blue-600 to-lime-200"
+                style={{ width: "14vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-l from-blue-600 to-lime-200"
+                style={{ width: "16vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-l from-blue-600 to-lime-200"
+                style={{ width: "18vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-l from-blue-600 to-lime-200"
+                style={{ width: "20vw" }}
+              />
+              <div
+                className="flex-1 bg-gradient-to-l from-blue-600 to-lime-200"
+                style={{ width: "22vw" }}
+              />
             </div>
 
             {/* Horizontal gradient accent - visible only on small/medium screens */}
             <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-600 via-lime-200 to-blue-600 lg:hidden" />
             <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-600 via-lime-200 to-blue-600 lg:hidden" />
 
-            <div className="mx-auto text-center relative z-10 flex flex-col justify-center items-center">
+            <div className="relative z-10 mx-auto text-center flex flex-col justify-center items-center py-16 sm:py-20 lg:py-24">
               <div className="w-fit self-center items-center justify-center px-2.5 py-1 rounded-[3px] bg-spout-accent/35 mb-4">
-                <span className="text-sm sm:text-base font-medium text-spout-text-secondary">
+                <span className="text-sm sm:text-base font-medium text-slate-600 font-dm-sans">
                   About Us
                 </span>
               </div>
 
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[52px] font-normal text-spout-primary font-lora leading-tight mb-3">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[52px] font-normal text-spout-primary font-pt-serif leading-tight mb-3">
                 Our Story
               </h1>
 
-              <p className="text-base sm:text-lg text-spout-text-muted max-w-[646px] mx-auto leading-7 px-2 sm:px-0">
+              <p className="text-base sm:text-lg text-spout-text-muted max-w-[600px] mx-auto font-dm-sans leading-7 px-2 sm:px-0">
                 We are building next-generation investment infrastructure that
                 prioritizes security, transparency, and returns.
               </p>
-            </div>
-
-            {/* Right Hero Group - hidden below lg */}
-            <div className="z-10 hidden lg:flex flex-col items-end">
-              <div className="w-96 h-5 relative bg-gradient-to-r from-lime-200 to-blue-600" />
-              <div className="w-88 h-10 relative bg-gradient-to-r from-lime-200 to-blue-600" />
-              <div className="w-80 h-10 relative bg-gradient-to-r from-lime-200 to-blue-600" />
-              <div className="w-72 h-10 relative bg-gradient-to-r from-lime-200 to-blue-600" />
-              <div className="w-60 h-10 relative bg-gradient-to-r from-lime-200 to-blue-600" />
-              <div className="w-72 h-10 relative bg-gradient-to-r from-lime-200 to-blue-600" />
-              <div className="w-80 h-10 relative bg-gradient-to-r from-lime-200 to-blue-600" />
-              <div className="w-88 h-10 relative bg-gradient-to-r from-lime-200 to-blue-600" />
-              <div className="w-96 h-5 relative bg-gradient-to-r from-lime-200 to-blue-600" />
             </div>
           </section>
 
@@ -165,7 +218,7 @@ export default function AboutPage() {
             <div className="relative">
               {/* Full-width horizontal lines */}
               <div className="hidden lg:block absolute top-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
-              <div className="hidden lg:block absolute bottom-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
+              <div className="hidden lg:block absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
               {/* Blue Banner */}
               <div className="bg-[#0168ff] py-3.5 sm:py-4 text-center">
                 <span className="font-mono text-white text-base sm:text-xl tracking-tight leading-7">
@@ -181,13 +234,19 @@ export default function AboutPage() {
                   <div>
                     <div className="flex items-center gap-3 mb-4">
                       <div className="p-1.5 bg-spout-primary rounded-[3px]">
-                        <Fingerprint className="w-4 h-4 text-white" />
+                        <Image
+                          src={"/svg-assets/landingpage/fingerprint.png"}
+                          className="w-4 h-4 text-white"
+                          width={16}
+                          height={16}
+                          alt="Fingerprint"
+                        />
                       </div>
-                      <h3 className="text-xl sm:text-2xl lg:text-[28px] font-medium text-spout-primary leading-7 font-noto-sans">
+                      <h3 className="text-xl sm:text-2xl lg:text-[28px] font-medium text-spout-primary leading-7 font-dm-sans">
                         Access is a right, not a privilege
                       </h3>
                     </div>
-                    <p className="text-base sm:text-lg text-spout-text-muted leading-7">
+                    <p className="text-base sm:text-lg text-spout-text-muted leading-7 font-dm-sans">
                       The global financial system is rigged: institutions borrow
                       for free, while everyone else pays the price. We refuse to
                       accept that status quo. Spout is building the first truly
@@ -202,13 +261,19 @@ export default function AboutPage() {
                   <div>
                     <div className="flex items-center gap-3 mb-4">
                       <div className="p-1.5 bg-spout-primary rounded-[3px]">
-                        <Users className="w-4 h-4 text-white" />
+                        <Image
+                          src={"/svg-assets/landingpage/users.png"}
+                          className="w-4 h-4 text-white"
+                          width={16}
+                          height={16}
+                          alt="Fingerprint"
+                        />
                       </div>
-                      <h3 className="text-xl sm:text-2xl lg:text-[28px] font-medium text-spout-primary leading-7 font-noto-sans">
+                      <h3 className="text-xl sm:text-2xl lg:text-[28px] font-medium text-spout-primary leading-7 font-dm-sans">
                         Built by defectors
                       </h3>
                     </div>
-                    <p className="text-base sm:text-lg text-spout-text-muted leading-7">
+                    <p className="text-base sm:text-lg text-spout-text-muted leading-7 font-dm-sans">
                       We are ex-bankers and engineers who saw the unfair
                       advantages from the inside — and left to share them with
                       you. We bridge the gap between institutional structure and
@@ -220,10 +285,10 @@ export default function AboutPage() {
                 </div>
 
                 {/* Right Column - Decorative Image */}
-                <div className="relative w-full lg:w-[421px] h-[300px] sm:h-[350px] lg:h-auto overflow-hidden border-t lg:border-t-0 lg:border-l-[6px] border-gray-100 flex-shrink-0">
+                <div className="relative w-full lg:w-105.25 h-75 sm:h-87.5 lg:h-auto overflow-hidden border-t lg:border-t-0 lg:border-l-[6px] border-gray-100 shrink-0">
                   {/* Decorative gradient chevrons */}
 
-                  <div className="relative w-full h-full border border-[#0168ff]">
+                  <div className="relative w-full h-full ">
                     <Image
                       src="/svg-assets/landingpage/globe-bg.png"
                       alt=""
@@ -248,21 +313,21 @@ export default function AboutPage() {
             </div>
 
             {/* Gap between manifesto bottom line and team top line */}
-            <div className="h-12 sm:h-16 lg:h-[100px]" />
+            <div className="h-12 sm:h-16 lg:h-25" />
 
             {/* ── Meet the Team Section ── */}
-            <div className="relative pt-8 sm:pt-12 lg:pt-15 mb-12 sm:mb-16 lg:mb-[100px]">
+            <div className="relative pt-8 sm:pt-12 lg:pt-15 mb-12 sm:mb-16 lg:mb-25">
               {/* Full-width horizontal line at top of team section */}
-              <div className="hidden lg:block absolute top-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
+              <div className="hidden lg:block absolute top-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none z-10" />
 
-              <h2 className="text-3xl sm:text-4xl lg:text-[56px] font-lora text-spout-primary text-center mb-8 sm:mb-12 lg:mb-15">
+              <h2 className="text-3xl sm:text-4xl lg:text-[56px] font-pt-serif text-spout-primary text-center mb-8 sm:mb-12 lg:mb-15">
                 Meet the Team
               </h2>
 
               {/* Row 1 — top + bottom full-width lines */}
-              <div className="relative mb-6 sm:mb-8 lg:mb-15">
-                <div className="hidden lg:block absolute top-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
-                <div className="hidden lg:block absolute bottom-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
+              <div className="relative mb-6 sm:mb-8 lg:mb-15 font-dm-sans">
+                <div className="hidden lg:block absolute top-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none z-10" />
+                <div className="hidden lg:block absolute bottom-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none z-10" />
                 <TeamRow
                   members={teamMembers.slice(0, 3)}
                   dividerColors={rowDividerColors[0]}
@@ -270,9 +335,9 @@ export default function AboutPage() {
               </div>
 
               {/* Row 2 — top + bottom full-width lines */}
-              <div className="relative">
-                <div className="hidden lg:block absolute top-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
-                <div className="hidden lg:block absolute bottom-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
+              <div className="relative font-dm-sans">
+                <div className="hidden lg:block absolute top-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none z-10" />
+                <div className="hidden lg:block absolute bottom-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none z-10" />
                 <TeamRow
                   members={teamMembers.slice(3, 6)}
                   dividerColors={rowDividerColors[1]}
@@ -284,7 +349,9 @@ export default function AboutPage() {
             <div className="relative">
               <div className="hidden lg:block absolute top-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
               <div className="hidden lg:block absolute bottom-0 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
-              <CTASection />
+              <div className="overflow-hidden">
+                <CTASection />
+              </div>
             </div>
 
             {/* Gap before footer — vertical lines continue through here */}
@@ -292,6 +359,8 @@ export default function AboutPage() {
           </div>
         </main>
       </div>
+      {/* Bottom horizontal line above footer */}
+      <div className="w-full border-t-2 border-[#F3F4F6]" />
     </div>
   );
 }
@@ -306,13 +375,15 @@ function TeamRow({
 }) {
   return (
     <>
-      {/* Desktop: cards with gradient dividers */}
-      <div className="hidden lg:flex">
+      {/* Desktop: cards with gradient dividers; center row when fewer than 3 */}
+      <div
+        className={`hidden lg:flex overflow-hidden ${members.length < 3 ? "justify-center" : ""}`}
+      >
         {members.map((member, i) => (
-          <div key={member.name} className="flex">
+          <div key={member.name} className="flex overflow-hidden">
             <TeamCard {...member} />
             <div
-              className="w-[22px] self-stretch flex-shrink-0"
+              className="w-5.5 self-stretch shrink-0"
               style={{
                 background: `linear-gradient(to bottom, ${dividerColors[i].from}, ${dividerColors[i].to})`,
               }}
@@ -348,7 +419,7 @@ function TeamCard({
 }: {
   name: string;
   title: string;
-  image: string;
+  image: string | StaticImageData;
   description: string;
   links?: {
     email?: string;
@@ -357,9 +428,9 @@ function TeamCard({
   };
 }) {
   return (
-    <div className="w-full lg:w-[370px] bg-white flex flex-col">
+    <div className="w-full lg:w-92.5 bg-white flex flex-col overflow-hidden">
       {/* Image Section */}
-      <div className="relative w-full h-48 sm:h-56 overflow-hidden border-b border-spout-border">
+      <div className="relative w-full h-48 sm:h-56">
         <Image
           src={image}
           alt={name}
@@ -369,25 +440,25 @@ function TeamCard({
           loading="lazy"
           unoptimized
         />
-        <div className="absolute inset-0 bg-black/5 mix-blend-overlay" />
+        <div className="hidden lg:block absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-screen border-t-2 border-gray-100 pointer-events-none" />
       </div>
 
       {/* Content Section */}
       <div className="p-5 flex-1 flex flex-col">
         {/* Title Badge */}
         <div className="inline-flex items-center px-2.5 py-1 border border-spout-accent bg-spout-accent/35 rounded-[3px] mb-4 w-fit">
-          <span className="text-sm sm:text-base font-medium text-spout-text-secondary font-noto-sans">
+          <span className="text-sm sm:text-base font-medium text-slate-600 font-dm-sans">
             {title}
           </span>
         </div>
 
         {/* Name */}
-        <h3 className="text-xl sm:text-2xl font-semibold text-spout-primary mb-2 font-noto-sans">
+        <h3 className="text-xl sm:text-2xl font-semibold text-spout-primary mb-2 font-dm-sans">
           {name}
         </h3>
 
         {/* Description */}
-        <p className="text-sm sm:text-base text-spout-text-muted leading-7 mb-6 flex-1 font-noto-sans">
+        <p className="text-sm sm:text-base text-spout-text-muted leading-7 mb-6 flex-1 font-dm-sans">
           {description}
         </p>
 
@@ -399,7 +470,13 @@ function TeamCard({
               className="text-spout-text-secondary hover:text-spout-primary transition-colors"
               aria-label={`Email ${name}`}
             >
-              <Mail className="w-6 h-6" />
+              <Image
+                src={"/svg-assets/landingpage/email.png"}
+                width={24}
+                height={24}
+                alt="Mail"
+                className="w-6"
+              />
             </a>
           )}
           {links?.twitter && (
@@ -410,7 +487,13 @@ function TeamCard({
               className="text-spout-text-secondary hover:text-spout-primary transition-colors"
               aria-label={`${name}'s Twitter`}
             >
-              <Twitter className="w-6 h-6" />
+              <Image
+                src={"/svg-assets/landingpage/x.png"}
+                width={24}
+                height={24}
+                alt="Mail"
+                className="w-6"
+              />
             </a>
           )}
           {links?.linkedin && (
@@ -421,7 +504,13 @@ function TeamCard({
               className="text-spout-text-secondary hover:text-spout-primary transition-colors"
               aria-label={`${name}'s LinkedIn`}
             >
-              <Linkedin className="w-6 h-6" />
+              <Image
+                src={"/svg-assets/landingpage/linkedin.png"}
+                width={24}
+                height={24}
+                alt="Mail"
+                className="w-6"
+              />
             </a>
           )}
         </div>
