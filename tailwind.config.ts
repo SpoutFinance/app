@@ -147,7 +147,7 @@ const config = {
             blue: "#3d5678",
             "blue-dark": "#1e3a5f",
             "blue-light": "#a7c6ed",
-            "blue-bg": "#d5e2f1",
+            "blue-bg": "#e8f3ff",
             "blue-highlight": "#f7fbff",
             "blue-hover": "#f0f7ff",
             success: "#078842",

@@ -2,7 +2,6 @@
 
 import { useState, useMemo, useRef, useEffect } from "react";
 import { ChevronLeft, ChevronRight, ChevronUp, Check } from "lucide-react";
-import Image from "next/image";
 
 type Holding = {
   symbol: string;
@@ -185,7 +184,7 @@ function Pagination({
   };
 
   return (
-    <div className="flex items-center justify-center gap-[214px]">
+    <div className="flex items-center justify-between">
       {/* Items count */}
       <span className="text-[16px] font-medium text-[#171717] font-figtree leading-[20px]">
         Showing <span className="text-[#004a4a]">{startItem}-{endItem}</span> of {totalItems}
