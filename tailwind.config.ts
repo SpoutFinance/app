@@ -47,6 +47,7 @@ const config = {
         "noto-sans": ["var(--font-noto-sans)", ...defaultTheme.fontFamily.sans],
         "pt-serif": ["var(--font-pt-serif)", ...defaultTheme.fontFamily.serif],
         "dm-sans": ["var(--font-dm-sans)", ...defaultTheme.fontFamily.sans],
+        figtree: ["var(--font-figtree)", ...defaultTheme.fontFamily.sans],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -105,6 +106,54 @@ const config = {
           "deep-teal": "#004040",
           "text-muted-dark": "#525252",
         },
+        // Dashboard color scheme
+        dashboard: {
+          // Primary teal colors
+          teal: {
+            DEFAULT: "#004a4a",
+            hover: "#003838",
+            dark: "#002828",
+          },
+          // Text colors
+          text: {
+            primary: "#171717",
+            heading: "#131313",
+            secondary: "#666666",
+            muted: "#929292",
+            hint: "#888888",
+          },
+          // Background colors
+          bg: {
+            DEFAULT: "#fafafa",
+            active: "#f1f1f1",
+            hover: "#f5f5f5",
+            "row-hover": "#f9f9f9",
+            light: "#efefef",
+            subtle: "#f8f8f8",
+            "light-subtle": "#F0F0F0",
+            "light-blue": "#f5f8fc",
+            disabled: "#fbfbfb",
+          },
+          // Border colors
+          border: {
+            DEFAULT: "#e6e6e6",
+            light: "#e0e0e0",
+            input: "#e2e2e2",
+            subtle: "#e1e1e1",
+            muted: "#e3e3e3",
+            modal: "#f0f0f0",
+          },
+          // Notification/accent colors
+          accent: {
+            blue: "#3d5678",
+            "blue-dark": "#1e3a5f",
+            "blue-light": "#a7c6ed",
+            "blue-bg": "#d5e2f1",
+            "blue-highlight": "#f7fbff",
+            success: "#078842",
+            error: "#e23434",
+          },
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -148,10 +197,28 @@ const config = {
             height: "0",
           },
         },
+        "slide-in-right": {
+          from: {
+            transform: "translateX(100%)",
+          },
+          to: {
+            transform: "translateX(0)",
+          },
+        },
+        "slide-out-right": {
+          from: {
+            transform: "translateX(0)",
+          },
+          to: {
+            transform: "translateX(100%)",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "slide-in-right": "slide-in-right 0.3s ease-out",
+        "slide-out-right": "slide-out-right 0.3s ease-out",
       },
     },
   },
