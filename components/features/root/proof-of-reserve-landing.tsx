@@ -29,7 +29,7 @@ export function ProofOfReserveLanding() {
       width: 142.048,
       height: 26.006,
     },
-    { id: "amazon", src: amazonSvg, alt: "Amazon", width: 100, height: 34 },
+    { id: "amazon", src: amazonSvg, alt: "Amazon", width: 100, height: 38 },
     {
       id: "circle",
       src: circleSvg,
