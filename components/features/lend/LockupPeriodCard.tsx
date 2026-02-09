@@ -4,7 +4,8 @@ import { useState } from "react";
 import { Lock, ChevronDown, Info } from "lucide-react";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { SvgIcon } from "@/components/ui/svg-icon";
-import UsdcIcon from "@/assets/images/circle.svg";
+
+const UsdcIcon = "/svg-assets/circle.svg";
 import LockIcon from "@/assets/images/lock_2.svg";
 
 interface LockupPeriodCardProps {

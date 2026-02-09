@@ -4,7 +4,8 @@ import { useState } from "react";
 import { ChevronUp, ChevronDown, Settings, Lock, Info } from "lucide-react";
 import { LoadingSpinner } from "@/components/loadingSpinner";
 import { SvgIcon } from "@/components/ui/svg-icon";
-import UsdcIcon from "@/assets/images/circle.svg";
+
+const UsdcIcon = "/svg-assets/circle.svg";
 import {
   TransactionalSettingsModal,
   type PriorityFee,
