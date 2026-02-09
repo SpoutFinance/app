@@ -9,13 +9,11 @@ import {
   SidebarFooter,
   SidebarTrigger,
   SidebarGroup,
-  SidebarGroupLabel,
   SidebarSeparator,
 } from "@/components/ui/sidebar";
 import { ChevronDown } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useSidebar } from "@/components/ui/sidebar";
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -23,6 +21,7 @@ import { useAccount, useBalance, useDisconnect } from "wagmi";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { isAppSubdomain, normalizePathname, cn } from "@/lib/utils";
 import { NotificationsDropdown } from "@/components/notifications-dropdown";
+import { SvgIcon } from "@/components/ui/svg-icon";
 
 import BorrowIcon from "@/assets/images/borrow.svg";
 import DollarCaseIcon from "@/assets/images/dollar_case.svg";
@@ -39,32 +38,37 @@ const homeNavItems = [
   {
     href: "/app/portfolio",
     label: "Portfolio",
-    Icon: DollarCaseIcon,
-    iconClassName: "h-4 w-5",
+    icon: DollarCaseIcon,
+    width: 20,
+    height: 16,
   },
   {
     href: "/app/trade",
     label: "Trade",
-    Icon: GraphIcon,
-    iconClassName: "h-[18px] w-4",
+    icon: GraphIcon,
+    width: 16,
+    height: 18,
   },
   {
     href: "/app/borrow",
     label: "Borrow",
-    Icon: BorrowIcon,
-    iconClassName: "h-3.5 w-5",
+    icon: BorrowIcon,
+    width: 20,
+    height: 14,
   },
   {
     href: "/app/lend",
     label: "Lend",
-    Icon: LendIcon,
-    iconClassName: "h-4 w-[18px]",
+    icon: LendIcon,
+    width: 18,
+    height: 16,
   },
   {
     href: "/app/kyc",
     label: "KYC",
-    Icon: KYCIcon,
-    iconClassName: "h-3.5 w-[22px]",
+    icon: KYCIcon,
+    width: 22,
+    height: 14,
   },
 ];
 
@@ -72,8 +76,9 @@ const accountNavItems = [
   {
     href: "/app/settings",
     label: "Settings",
-    Icon: SettingsIcon,
-    iconClassName: "h-5 w-5",
+    icon: SettingsIcon,
+    width: 20,
+    height: 20,
   },
 ];
 
@@ -83,7 +88,6 @@ function useAppHome() {
 }
 
 export function DashboardSidebarNavClient() {
-  const { toggleSidebar } = useSidebar();
   const goHome = useAppHome();
   const pathname = usePathname();
   const { address, isConnected } = useAccount();
@@ -92,6 +96,10 @@ export function DashboardSidebarNavClient() {
   const [balanceSol, setBalanceSol] = useState<string | null>(null);
   const [isBalanceLoading, setIsBalanceLoading] = useState(false);
   const [activeMode, setActiveMode] = useState<"borrow" | "lend">("borrow");
+
+  // Section visibility state
+  const [isHomeExpanded, setIsHomeExpanded] = useState(true);
+  const [isAccountExpanded, setIsAccountExpanded] = useState(true);
 
   const shortAddress = useMemo(() => {
     return address ? `${address.slice(0, 6)}...${address.slice(-4)}` : null;
@@ -132,15 +140,13 @@ export function DashboardSidebarNavClient() {
             width={124}
             height={48}
           />
-          {/* Sidebar Toggle Icon */}
-          <button
-            type="button"
-            onClick={toggleSidebar}
-            className="p-1.5 rounded hover:bg-gray-100 transition-colors cursor-pointer"
-            aria-label="Toggle sidebar"
+          {/* Sidebar Toggle Icon - Disabled */}
+          <div
+            className="p-1.5 rounded opacity-30 cursor-not-allowed"
+            aria-label="Toggle sidebar (disabled)"
           >
-            <SideBarToggle className="w-7 h-7" />
-          </button>
+            <SvgIcon src={SideBarToggle} width={28} height={28} />
+          </div>
         </div>
       </SidebarHeader>
 
@@ -181,66 +187,88 @@ export function DashboardSidebarNavClient() {
       <SidebarContent className="px-2 py-2">
         {/* HOME Section */}
         <SidebarGroup>
-          <SidebarGroupLabel className="flex items-center gap-2 text-dashboard-text-secondary text-base font-medium font-figtree">
+          <button
+            type="button"
+            onClick={() => setIsHomeExpanded(!isHomeExpanded)}
+            className="flex items-center gap-2 text-dashboard-text-secondary text-base font-medium font-figtree px-2 py-1 hover:bg-dashboard-bg-hover rounded transition-colors w-full text-left"
+          >
             HOME
-            <ChevronDown className="h-3 w-3" />
-          </SidebarGroupLabel>
-          <SidebarMenu className="mt-1 gap-0.5">
-            {homeNavItems.map((item) => (
-              <SidebarMenuItem key={item.href}>
-                <SidebarMenuButton
-                  asChild
-                  isActive={isActive(item.href)}
-                  className={cn(
-                    "h-10 pl-3 pr-5 rounded-[6px] transition-colors",
-                    isActive(item.href)
-                      ? "bg-dashboard-bg-active text-dashboard-teal"
-                      : "text-dashboard-text-secondary hover:bg-dashboard-bg-hover active:bg-dashboard-bg-active",
-                  )}
-                >
-                  <Link href={item.href} className="flex items-center gap-2">
-                    <item.Icon className={item.iconClassName} />
-                    <span className="font-medium font-figtree">
-                      {item.label}
-                    </span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            ))}
-          </SidebarMenu>
+            <ChevronDown
+              className={cn(
+                "h-3 w-3 transition-transform duration-200",
+                !isHomeExpanded && "-rotate-90",
+              )}
+            />
+          </button>
+          {isHomeExpanded && (
+            <SidebarMenu className="mt-1 gap-0.5">
+              {homeNavItems.map((item) => (
+                <SidebarMenuItem key={item.href}>
+                  <SidebarMenuButton
+                    asChild
+                    isActive={isActive(item.href)}
+                    className={cn(
+                      "h-10 pl-3 pr-5 rounded-[6px] transition-colors",
+                      isActive(item.href)
+                        ? "bg-dashboard-bg-active text-dashboard-teal"
+                        : "text-dashboard-text-secondary hover:bg-dashboard-bg-hover active:bg-dashboard-bg-active",
+                    )}
+                  >
+                    <Link href={item.href} className="flex items-center gap-2">
+                      <SvgIcon src={item.icon} width={item.width} height={item.height} />
+                      <span className="font-medium font-figtree">
+                        {item.label}
+                      </span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          )}
         </SidebarGroup>
 
         <SidebarSeparator className="-mx-2 my-2 w-[calc(100%+1rem)]" />
 
         {/* ACCOUNT Section */}
         <SidebarGroup>
-          <SidebarGroupLabel className="flex items-center gap-2 text-dashboard-text-secondary text-base font-medium font-figtree">
+          <button
+            type="button"
+            onClick={() => setIsAccountExpanded(!isAccountExpanded)}
+            className="flex items-center gap-2 text-dashboard-text-secondary text-base font-medium font-figtree px-2 py-1 hover:bg-dashboard-bg-hover rounded transition-colors w-full text-left"
+          >
             ACCOUNT
-            <ChevronDown className="h-3 w-3" />
-          </SidebarGroupLabel>
-          <SidebarMenu className="mt-1 gap-0.5">
-            {accountNavItems.map((item) => (
-              <SidebarMenuItem key={item.href}>
-                <SidebarMenuButton
-                  asChild
-                  isActive={isActive(item.href)}
-                  className={cn(
-                    "h-10 pl-3 pr-5 rounded-[6px] transition-colors",
-                    isActive(item.href)
-                      ? "bg-dashboard-bg-active text-dashboard-teal"
-                      : "text-dashboard-text-secondary hover:bg-dashboard-bg-hover active:bg-dashboard-bg-active",
-                  )}
-                >
-                  <Link href={item.href} className="flex items-center gap-2">
-                    <item.Icon className={item.iconClassName} />
-                    <span className="font-medium font-figtree">
-                      {item.label}
-                    </span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            ))}
-          </SidebarMenu>
+            <ChevronDown
+              className={cn(
+                "h-3 w-3 transition-transform duration-200",
+                !isAccountExpanded && "-rotate-90",
+              )}
+            />
+          </button>
+          {isAccountExpanded && (
+            <SidebarMenu className="mt-1 gap-0.5">
+              {accountNavItems.map((item) => (
+                <SidebarMenuItem key={item.href}>
+                  <SidebarMenuButton
+                    asChild
+                    isActive={isActive(item.href)}
+                    className={cn(
+                      "h-10 pl-3 pr-5 rounded-[6px] transition-colors",
+                      isActive(item.href)
+                        ? "bg-dashboard-bg-active text-dashboard-teal"
+                        : "text-dashboard-text-secondary hover:bg-dashboard-bg-hover active:bg-dashboard-bg-active",
+                    )}
+                  >
+                    <Link href={item.href} className="flex items-center gap-2">
+                      <SvgIcon src={item.icon} width={item.width} height={item.height} />
+                      <span className="font-medium font-figtree">
+                        {item.label}
+                      </span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          )}
         </SidebarGroup>
 
         <SidebarSeparator className="-mx-2 my-2 w-[calc(100%+1rem)]" />
@@ -331,7 +359,7 @@ export function DashboardNavbarHeaderClient() {
 
         {/* Search Bar */}
         <div className="flex items-center gap-2.5 bg-white border border-dashboard-border-input rounded-lg px-4 h-9.5 w-87.5 text-dashboard-text-secondary">
-          <SearchIcon className="w-4 h-4 shrink-0" />
+          <SvgIcon src={SearchIcon} size="sm" />
           <input
             type="text"
             placeholder="Search..."
@@ -359,7 +387,7 @@ export function DashboardNavbarHeaderClient() {
           aria-label="User profile"
           className="flex items-center justify-center w-10 h-10 bg-white border-2 border-dashboard-border rounded-lg hover:bg-gray-50 transition-colors text-dashboard-text-secondary"
         >
-          <UserIcon className="w-6 h-6" />
+          <SvgIcon src={UserIcon} size="lg" />
         </button>
       </div>
     </header>
