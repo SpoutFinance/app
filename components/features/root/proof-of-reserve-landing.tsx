@@ -20,7 +20,7 @@ export function ProofOfReserveLanding() {
       width: 142.048,
       height: 26.006,
     },
-    { id: "amazon", src: "/svg-assets/amazon.svg", alt: "Amazon", width: 100, height: 34 },
+    { id: "amazon", src: "/svg-assets/amazon.svg", alt: "Amazon", width: 100, height: 38 },
     {
       id: "circle",
       src: "/svg-assets/circle.svg",
