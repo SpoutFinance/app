@@ -32,6 +32,7 @@ const config = {
         "noto-sans": ["var(--font-noto-sans)", ...defaultTheme.fontFamily.sans],
         "pt-serif": ["var(--font-pt-serif)", ...defaultTheme.fontFamily.serif],
         "dm-sans": ["var(--font-dm-sans)", ...defaultTheme.fontFamily.sans],
+        figtree: ["var(--font-figtree)", ...defaultTheme.fontFamily.sans],
         "dm-mono": ["var(--font-dm-mono)", ...defaultTheme.fontFamily.mono],
       },
       colors: {
@@ -97,6 +98,83 @@ const config = {
           "gradient-blue": "rgba(0, 87, 216, 0.68)",
           "gradient-blue-mid": "rgba(39, 148, 236, 0.68)",
         },
+        // Dashboard color scheme
+        dashboard: {
+          // Primary teal colors
+          teal: {
+            DEFAULT: "#004a4a",
+            hover: "#003838",
+            dark: "#002828",
+          },
+          // Text colors
+          text: {
+            primary: "#171717",
+            heading: "#131313",
+            secondary: "#666666",
+            label: "#4a4a4a",
+            muted: "#929292",
+            hint: "#888888",
+            placeholder: "#898989",
+            subtle: "#828282",
+            dark: "#444444",
+          },
+          // Background colors
+          bg: {
+            DEFAULT: "#fafafa",
+            active: "#f1f1f1",
+            hover: "#f5f5f5",
+            "row-hover": "#f9f9f9",
+            light: "#efefef",
+            subtle: "#f8f8f8",
+            "light-subtle": "#F0F0F0",
+            "light-blue": "#f5f8fc",
+            disabled: "#fbfbfb",
+            selected: "#fafcff",
+            card: "#fdfdfd",
+            summary: "#f6f6f6",
+            toggle: "#e8e8e8",
+          },
+          // Border colors
+          border: {
+            DEFAULT: "#e6e6e6",
+            light: "#e0e0e0",
+            input: "#e2e2e2",
+            subtle: "#e1e1e1",
+            muted: "#e3e3e3",
+            modal: "#f0f0f0",
+            checkbox: "#d1d5db",
+          },
+          // Notification/accent colors
+          accent: {
+            blue: "#3d5678",
+            "blue-dark": "#1e3a5f",
+            "blue-light": "#a7c6ed",
+            "blue-bg": "#e8f3ff",
+            "blue-highlight": "#f7fbff",
+            "blue-hover": "#f0f7ff",
+            success: "#078842",
+            "success-light": "#22c55e",
+            "success-bg": "#deffee",
+            error: "#e23434",
+            "error-dark": "#D60404",
+            "error-bg": "#FFE5E5",
+            warning: "#f59e0b",
+            "warning-dark": "#9F6B00",
+            "warning-bg": "#fffaed",
+            "warning-border": "#ffe9a9",
+            "warning-light": "#fef3c7",
+            caution: "#baac4d",
+            "at-risk-bg": "#fee2e2",
+            usdc: "#2775ca",
+            disabled: "#cccccc",
+          },
+        },
+        blue: {
+          600: "#0057FF",
+        },
+        lime: {
+          200: "#DDFF87",
+        },
         slate: {
           600: "#3D5678",
         },
@@ -143,14 +221,32 @@ const config = {
             height: "0",
           },
         },
+        "slide-in-right": {
+          from: {
+            transform: "translateX(100%)",
+          },
+          to: {
+            transform: "translateX(0)",
+          },
+        },
+        "slide-out-right": {
+          from: {
+            transform: "translateX(0)",
+          },
+          to: {
+            transform: "translateX(100%)",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "slide-in-right": "slide-in-right 0.3s ease-out",
+        "slide-out-right": "slide-out-right 0.3s ease-out",
       },
     },
   },
   plugins: [require("tailwindcss-animate")],
-} satisfies Config;
+} satisfies Config
 
 export default config;

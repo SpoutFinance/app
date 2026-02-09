@@ -18,7 +18,7 @@ export default function DashboardLayout({
     <>
       <Toaster position="top-right" />
       <SidebarProvider defaultOpen={true}>
-        <Sidebar className="border-r bg-white border-[#004040]/20">
+        <Sidebar className="border-r-2 border-[#e6e6e6] bg-[#fafafa]">
           <DashboardSidebarNavClient />
         </Sidebar>
 
