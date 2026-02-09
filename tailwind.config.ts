@@ -168,6 +168,13 @@ const config = {
             usdc: "#2775ca",
             disabled: "#cccccc",
           },
+        },
+        blue: {
+          600: "#0057FF",
+        },
+        lime: {
+          200: "#DDFF87",
+        },
         slate: {
           600: "#3D5678",
         },
@@ -240,6 +247,6 @@ const config = {
     },
   },
   plugins: [require("tailwindcss-animate")],
-} satisfies Config;
+} satisfies Config
 
 export default config;
