@@ -40,7 +40,7 @@ const teamMembers = [
       "Legal counsel with years of experience in software. Architect of the legal framework for various succesful software products, such as payments and factory automation.",
     links: {
       email: "mailto:pauljan@spout.finance",
-      twitter: "#",
+      twitter: "",
       linkedin: "https://www.linkedin.com/in/paul-jan-reijn-70b635227/",
     },
   },
@@ -53,7 +53,8 @@ const teamMembers = [
     links: {
       email: "Justme@Spout.finance",
       twitter: "https://x.com/0xRealjustme",
-      linkedin: "https://www.linkedin.com/in/onuorah-gabriel-c-1aba61241?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app",
+      linkedin:
+        "https://www.linkedin.com/in/onuorah-gabriel-c-1aba61241?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app",
     },
   },
   {

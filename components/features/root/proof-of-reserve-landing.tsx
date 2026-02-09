@@ -5,12 +5,36 @@ import Image from "next/image";
 
 export function ProofOfReserveLanding() {
   const logos = [
-    { id: "tesla", src: "/svg-assets/tesla.svg", alt: "Tesla" },
+    {
+      id: "tesla",
+      src: "/svg-assets/tesla.svg",
+      alt: "Tesla",
+      width: 145.275,
+      height: 18.943,
+    },
     { id: "meta", src: "/svg-assets/meta.svg", alt: "Meta" },
-    { id: "coinbase", src: "/svg-assets/coinbase.svg", alt: "Coinbase" },
-    { id: "amazon", src: "/svg-assets/amazon.svg", alt: "Amazon" },
-    { id: "circle", src: "/svg-assets/circle.svg", alt: "Circle" },
-    { id: "microsoft", src: "/svg-assets/microsoft.svg", alt: "Microsoft" },
+    {
+      id: "coinbase",
+      src: "/svg-assets/coinbase.svg",
+      alt: "Coinbase",
+      width: 142.048,
+      height: 26.006,
+    },
+    { id: "amazon", src: "/svg-assets/amazon.svg", alt: "Amazon", width: 100, height: 34 },
+    {
+      id: "circle",
+      src: "/svg-assets/circle.svg",
+      alt: "Circle",
+      width: 118.534,
+      height: 30.654,
+    },
+    {
+      id: "microsoft",
+      src: "/svg-assets/microsoft.svg",
+      alt: "Microsoft",
+      width: 125.62,
+      height: 26.586,
+    },
   ];
 
   return (
@@ -57,7 +81,15 @@ export function ProofOfReserveLanding() {
                   className="relative overflow-hidden rounded-[4px] flex justify-center items-center bg-white h-[59.819px] w-[208.511px] border-[2.5px] border-[#DEE9F8] drop-shadow-[filter: drop-shadow(0 4px 13.9px rgba(0, 0, 0, 0.05))]"
                   key={logo.id}
                 >
-                  <Image src={logo.src} alt={logo.alt} width={150} height={40} className="object-contain" />
+                  <Image
+                    src={logo.src}
+                    alt={logo.alt}
+                    className="object-contain"
+                    {...(logo.width && {
+                      width: logo.width,
+                      height: logo.height,
+                    })}
+                  />
                 </div>
               ))}
             </div>
