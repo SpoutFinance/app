@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import * as React from "react";
+import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 import { Info } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -12,91 +13,46 @@ export interface InfoTooltipProps {
   /** Optional additional className for the button */
   className?: string;
   /** Position of the tooltip */
-  position?: "top" | "bottom" | "left" | "right";
+  side?: "top" | "bottom" | "left" | "right";
 }
 
 /**
  * InfoTooltip - A reusable info icon with tooltip
- * Shows tooltip on hover and click with customizable content
+ * Uses Radix UI tooltip with Portal to work inside modals
  */
 export function InfoTooltip({
   info,
   size = 18,
   className,
-  position = "top",
+  side = "top",
 }: InfoTooltipProps) {
-  const [isVisible, setIsVisible] = useState(false);
-  const tooltipRef = useRef<HTMLDivElement>(null);
-  const buttonRef = useRef<HTMLButtonElement>(null);
-
-  const displayText = info || "Add info";
-
-  // Close tooltip when clicking outside
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (
-        tooltipRef.current &&
-        buttonRef.current &&
-        !tooltipRef.current.contains(event.target as Node) &&
-        !buttonRef.current.contains(event.target as Node)
-      ) {
-        setIsVisible(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  const positionClasses = {
-    top: "bottom-full left-1/2 -translate-x-1/2 mb-2",
-    bottom: "top-full left-1/2 -translate-x-1/2 mt-2",
-    left: "right-full top-1/2 -translate-y-1/2 mr-2",
-    right: "left-full top-1/2 -translate-y-1/2 ml-2",
-  };
-
-  const arrowClasses = {
-    top: "top-full left-1/2 -translate-x-1/2 border-l-transparent border-r-transparent border-b-transparent border-t-[#333]",
-    bottom: "bottom-full left-1/2 -translate-x-1/2 border-l-transparent border-r-transparent border-t-transparent border-b-[#333]",
-    left: "left-full top-1/2 -translate-y-1/2 border-t-transparent border-b-transparent border-r-transparent border-l-[#333]",
-    right: "right-full top-1/2 -translate-y-1/2 border-t-transparent border-b-transparent border-l-transparent border-r-[#333]",
-  };
-
   return (
-    <div className="relative inline-flex">
-      <button
-        ref={buttonRef}
-        type="button"
-        onClick={() => setIsVisible(!isVisible)}
-        onMouseEnter={() => setIsVisible(true)}
-        onMouseLeave={() => setIsVisible(false)}
-        className={cn(
-          "text-dashboard-text-secondary hover:text-dashboard-text-primary transition-colors cursor-pointer",
-          className
-        )}
-        aria-label="More info"
-      >
-        <Info style={{ width: size, height: size }} />
-      </button>
-
-      {isVisible && (
-        <div
-          ref={tooltipRef}
-          className={cn(
-            "absolute z-50 px-3 py-2 text-xs font-medium text-white bg-[#333] rounded-md shadow-lg whitespace-nowrap animate-in fade-in-0 zoom-in-95",
-            positionClasses[position]
-          )}
-        >
-          {displayText}
-          {/* Arrow */}
-          <div
+    <TooltipPrimitive.Provider delayDuration={100}>
+      <TooltipPrimitive.Root>
+        <TooltipPrimitive.Trigger asChild>
+          <button
+            type="button"
             className={cn(
-              "absolute w-0 h-0 border-[5px]",
-              arrowClasses[position]
+              "text-dashboard-text-secondary hover:text-dashboard-text-primary transition-colors",
+              className
             )}
-          />
-        </div>
-      )}
-    </div>
+            aria-label="More info"
+          >
+            <Info style={{ width: size, height: size }} />
+          </button>
+        </TooltipPrimitive.Trigger>
+        <TooltipPrimitive.Portal>
+          <TooltipPrimitive.Content
+            side={side}
+            sideOffset={4}
+            className="z-[100] max-w-xs overflow-hidden rounded-md bg-[#333] px-3 py-2 text-xs text-white shadow-lg animate-in fade-in-0 zoom-in-95"
+          >
+            {info || "Add info"}
+            <TooltipPrimitive.Arrow className="fill-[#333]" />
+          </TooltipPrimitive.Content>
+        </TooltipPrimitive.Portal>
+      </TooltipPrimitive.Root>
+    </TooltipPrimitive.Provider>
   );
 }
 
