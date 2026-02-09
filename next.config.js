@@ -50,7 +50,23 @@ const nextConfig = {
   },
 
   // Turbopack configuration (Next.js 16 default bundler)
-  turbopack: {},
+  turbopack: {
+    rules: {
+      "*.svg": {
+        loaders: ["@svgr/webpack"],
+        as: "*.js",
+      },
+    },
+  },
+
+  // Webpack configuration for non-Turbopack builds
+  webpack(config) {
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ["@svgr/webpack"],
+    });
+    return config;
+  },
 
   // Caching Headers - configure nginx/cloudfront for production caching
   async headers() {

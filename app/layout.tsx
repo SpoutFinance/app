@@ -10,6 +10,7 @@ import type { Metadata } from "next";
 import {
   DM_Mono,
   DM_Sans,
+  Figtree,
   IBM_Plex_Mono,
   Lora,
   Noto_Sans,
@@ -58,6 +59,14 @@ const dmMono = DM_Mono({
   weight: ["400", "500", "300"],
   variable: "--font-dm-mono",
 });
+
+const figtree = Figtree({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-figtree",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://spout.finance"),
   title: {
@@ -148,6 +157,7 @@ export default async function RootLayout({
           ptSerif.variable,
           dmSans.variable,
           dmMono.variable,
+          figtree.variable,
         )}
       >
         <RumInit />

@@ -83,6 +83,7 @@ export function FAQSection() {
               <div className="mt-4 sm:mt-6 text-end">
                 <Link
                   href="/faq"
+                  scroll={true}
                   className="h-[36px] w-[116px] items-center justify-center group border rounded-sm border-[#E8E8E8] bg-white p-[10px] inline-flex text-sm sm:text-base font-noto-sans font-medium text-[#000] transition-colors gap-2"
                 >
                   View All

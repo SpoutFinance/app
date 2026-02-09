@@ -1,19 +1,16 @@
-import block from "@/assets/images/block.svg";
-import kucoin from "@/assets/images/logo_general_green.svg";
-import mexc from "@/assets/images/mexc-global-seeklogo.svg";
 import Link from "next/link";
 import { PressRow, type MediaOutlet } from "../shared/press-card";
 
 const newsItems: MediaOutlet[] = [
   {
-    image: block,
+    image: "/svg-assets/block.svg",
     name: "The Block",
     date: "JAN 20, 2026",
     imageType: "logo",
     url: "https://apnews.com/press-release/globenewswire-mobile/onepiece-labs-solana-accelerator-officially-launches-f2e8e0a2478df30533933fdfe8f07a5e",
   },
   {
-    image: mexc,
+    image: "/svg-assets/mexc-global-seeklogo.svg",
     name: "MEXC",
     date: "JAN 21, 2026",
     bgColor: "#000000",
@@ -21,7 +18,7 @@ const newsItems: MediaOutlet[] = [
     url: "https://markets.businessinsider.com/news/stocks/onepiece-labs-solana-accelerator-officially-launches-1035128439",
   },
   {
-    image: kucoin,
+    image: "/svg-assets/logo_general_green.svg",
     name: "Kucoin",
     date: "JAN 21, 2026",
     imageType: "logo",
@@ -32,7 +29,7 @@ const newsItems: MediaOutlet[] = [
 const dividerColors = [
   { from: "#FEC8BB", to: "#FFE4C8" }, // peach
   { from: "#ADE1FF", to: "#E8FBF9" }, // light blue
-  { from: "#4FACFF", to: "#00F5FF" }, // cyan
+  { from: "#ABFFE1", to: "#DCFFE2" }, // cyan
 ];
 
 export function InTheNews() {
@@ -45,7 +42,7 @@ export function InTheNews() {
           <h2 className="text-[#004040] text-center font-['PT_Serif'] text-[48px] not-italic font-normal leading-[56px] tracking-[0.192px]">
             In the <span className="">Press</span>
           </h2>
-          <p className="text-[#757679] pt-3 text-center font-['DM_Sans'] text-[16px] not-italic font-normal leading-[28px] tracking-[-0.064px]">
+          <p className="text-[#757679] pt-3 text-center font-['DM_Sans'] text-[16smriunge@gmail.compx] not-italic font-normal leading-[28px] tracking-[-0.064px]">
             Financial media outlets are highlighting our approach to secure,
             regulated
             <br />
@@ -63,6 +60,7 @@ export function InTheNews() {
         <div className="mt-4 sm:mt-7 text-end max-w-[1178px] mx-auto pe-[22px]">
           <Link
             href="/press"
+            scroll={true}
             className="h-[36px] w-[116px] items-center justify-center group border rounded-sm border-[#E8E8E8] bg-white p-[10px] inline-flex text-sm sm:text-base font-noto-sans font-medium text-[#000] transition-colors gap-2"
           >
             View All
