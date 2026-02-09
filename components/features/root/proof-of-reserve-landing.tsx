@@ -1,25 +1,16 @@
 "use client";
 
-import amazonSvg from "@/assets/images/amazon.svg";
-import circleSvg from "@/assets/images/circle.svg";
-import coinbaseSvg from "@/assets/images/coinbase.svg";
-import frame1Svg from "@/assets/images/frame 1.svg";
-import frame2Svg from "@/assets/images/frame 2.svg";
-import frame3Svg from "@/assets/images/frame 3.svg";
 import lockImage from "@/assets/images/lock.png";
-import metaSvg from "@/assets/images/meta.svg";
-import microsoftSvg from "@/assets/images/microsoft.svg";
-import teslaSvg from "@/assets/images/tesla.svg";
 import Image from "next/image";
 
 export function ProofOfReserveLanding() {
   const logos = [
-    { id: "tesla", src: teslaSvg, alt: "Tesla" },
-    { id: "meta", src: metaSvg, alt: "Meta" },
-    { id: "coinbase", src: coinbaseSvg, alt: "Coinbase" },
-    { id: "amazon", src: amazonSvg, alt: "Amazon" },
-    { id: "circle", src: circleSvg, alt: "Circle" },
-    { id: "microsoft", src: microsoftSvg, alt: "Microsoft" },
+    { id: "tesla", src: "/svg-assets/tesla.svg", alt: "Tesla" },
+    { id: "meta", src: "/svg-assets/meta.svg", alt: "Meta" },
+    { id: "coinbase", src: "/svg-assets/coinbase.svg", alt: "Coinbase" },
+    { id: "amazon", src: "/svg-assets/amazon.svg", alt: "Amazon" },
+    { id: "circle", src: "/svg-assets/circle.svg", alt: "Circle" },
+    { id: "microsoft", src: "/svg-assets/microsoft.svg", alt: "Microsoft" },
   ];
 
   return (
@@ -66,7 +57,7 @@ export function ProofOfReserveLanding() {
                   className="relative overflow-hidden rounded-[4px] flex justify-center items-center bg-white h-[59.819px] w-[208.511px] border-[2.5px] border-[#DEE9F8] drop-shadow-[filter: drop-shadow(0 4px 13.9px rgba(0, 0, 0, 0.05))]"
                   key={logo.id}
                 >
-                  <Image src={logo.src} alt={logo.alt} className="object-contain" />
+                  <Image src={logo.src} alt={logo.alt} width={150} height={40} className="object-contain" />
                 </div>
               ))}
             </div>
@@ -83,8 +74,10 @@ export function ProofOfReserveLanding() {
             <div className="flex-1 flex justify-between h-[156px]">
               <div className="flex flex-col items-start gap-[24px]  w-[360px] h-[156px] pt-[24px] pl-[32.91px]">
                 <Image
-                  src={frame3Svg}
+                  src="/svg-assets/frame-3.svg"
                   alt="Bank"
+                  width={36}
+                  height={39}
                   className="w-[35.843px] h-[38.893px]"
                 />
 
@@ -105,8 +98,10 @@ export function ProofOfReserveLanding() {
             <div className="flex-1 flex justify-between">
               <div className="flex flex-col items-start gap-[24px] w-[360px] h-[156px] pt-[24px] pl-[25.91px]">
                 <Image
-                  src={frame1Svg}
+                  src="/svg-assets/frame-1.svg"
                   alt="Category"
+                  width={36}
+                  height={39}
                   className="w-[35.843px] h-[38.893px]"
                 />
 
@@ -127,8 +122,10 @@ export function ProofOfReserveLanding() {
             <div className="flex-1 flex justify-between">
               <div className="flex flex-col items-start gap-[24px] w-[360px] h-[156px] pt-[24px] pl-[25.91px]">
                 <Image
-                  src={frame2Svg}
+                  src="/svg-assets/frame-2.svg"
                   alt="Shield"
+                  width={36}
+                  height={39}
                   className="w-[35.843px] h-[38.893px]"
                 />
 

@@ -2,25 +2,21 @@
 
 import { CTASection } from "../root";
 import { PressRow, type MediaOutlet } from "../shared/press-card";
-import block from "@/assets/images/block.svg";
-import kucoin from "@/assets/images/logo_general_green.svg";
-import mexc from "@/assets/images/mexc-global-seeklogo.svg";
 import morning_star from "@/assets/images/morningstar.png";
-import insider from "@/assets/images/insider.svg";
 import bz from "@/assets/images/bz.png";
 
 const mediaOutlets: MediaOutlet[] = [
   {
     name: "The Block",
     date: "JAN 20, 2026",
-    image: block,
+    image: "/svg-assets/block.svg",
     imageType: "logo",
     url: "#",
   },
   {
     name: "MEXC",
     date: "JAN 21, 2026",
-    image: mexc,
+    image: "/svg-assets/mexc-global-seeklogo.svg",
     bgColor: "#000000",
     imageType: "logo",
     url: "#",
@@ -28,7 +24,7 @@ const mediaOutlets: MediaOutlet[] = [
   {
     name: "Kucoin",
     date: "JAN 21, 2026",
-    image: kucoin,
+    image: "/svg-assets/logo_general_green.svg",
     imageType: "logo",
     url: "#",
   },
@@ -43,7 +39,7 @@ const mediaOutlets: MediaOutlet[] = [
   {
     name: "Business Insider",
     date: "JAN 16, 2026",
-    image: insider,
+    image: "/svg-assets/insider.svg",
     imageType: "logo",
     url: "#",
   },

@@ -69,19 +69,19 @@ const teamMembers = [
       linkedin: "https://www.linkedin.com/in/0xmihirsahu/",
     },
   },
-  // {
-  //   name: "Lovish Badlani",
-  //   title: "Head of Engineering",
-  //   image:
-  //     "https://cdn.builder.io/api/v1/image/assets%2F124fa7d8b30741e3b582951ae96e0e12%2F08c9e404faeb40cc825c7e6c317c05d0",
-  //   description:
-  //     "Former BlackRock engineer, experienced in scaling institutional fintech apps. Led engineering at DEX token launchpad with 150K+ users, $150M+ TVL. Skilled in EVM chains and Solana deployment, recognized at global hackathons.",
-  //   links: {
-  //     email: "mailto:lovish@spout.finance",
-  //     twitter: "https://x.com/BadlaniLovish",
-  //     linkedin: "https://www.linkedin.com/in/lovish-badlani-250a05151/",
-  //   },
-  // },
+  {
+    name: "Lovish Badlani",
+    title: "Head of Engineering",
+    image:
+      "https://cdn.builder.io/api/v1/image/assets%2F124fa7d8b30741e3b582951ae96e0e12%2F08c9e404faeb40cc825c7e6c317c05d0",
+    description:
+      "Former BlackRock engineer, experienced in scaling institutional fintech apps. Led engineering at DEX token launchpad with 150K+ users, $150M+ TVL. Skilled in EVM chains and Solana deployment, recognized at global hackathons.",
+    links: {
+      email: "mailto:lovish@spout.finance",
+      twitter: "https://x.com/BadlaniLovish",
+      linkedin: "https://www.linkedin.com/in/lovish-badlani-250a05151/",
+    },
+  },
 ];
 
 // Gradient divider colors between team cards (per the Figma design)

@@ -1,12 +1,6 @@
 "use client";
 
-import step1 from "@/assets/images/step-1.svg";
-import step2 from "@/assets/images/step-2.svg";
-import step3 from "@/assets/images/step-3.svg";
-import step4 from "@/assets/images/step-4.svg";
-import step5 from "@/assets/images/step-5.svg";
 import Image from "next/image";
-
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLayoutEffect, useRef } from "react";
@@ -19,35 +13,35 @@ const steps = [
     title: "Complete KYC",
     description:
       "Connect your wallet and complete KYC verification to access investment-grade equities. KYC ensures that we are completely compliant with every jurisdiction",
-    image: step1,
+    image: "/svg-assets/step-1.svg",
   },
   {
     label: "Step 02",
     title: "Access Public Equities",
     description:
       "Access over 1,000 U.S. public equities, including Tesla, Microsoft, Coinbase, and more",
-    image: step2,
+    image: "/svg-assets/step-2.svg",
   },
   {
     label: "Step 03",
     title: "Lever Up",
     description:
       "Trade like the top 1% of equities traders, and borrow against your equities at 0% APR",
-    image: step3,
+    image: "/svg-assets/step-3.svg",
   },
   {
     label: "Step 04",
     title: "Lend for Stable Returns",
     description:
       "If you are looking for a safer and steadier return then come to lend stable circumstances.",
-    image: step4,
+    image: "/svg-assets/step-4.svg",
   },
   {
     label: "Step 05",
     title: "Track Performance",
     description:
       "Monitor your portfolio with real-time analytics and prefer steping toosl to maximize your profit",
-    image: step5,
+    image: "/svg-assets/step-5.svg",
   },
 ];
 
@@ -150,7 +144,9 @@ export function HowSpoutWorks() {
                       <Image
                         src={step.image}
                         alt={step.title}
-                        className="object-cover "
+                        width={392}
+                        height={274}
+                        className="object-cover"
                       />
                     </div>
 

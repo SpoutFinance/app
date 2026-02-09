@@ -1,6 +1,5 @@
 "use client";
 
-import background from "@/assets/images/frame.svg";
 import { CheckCircle } from "lucide-react";
 import Image from "next/image";
 
@@ -132,9 +131,10 @@ export function CTASection() {
 
           <div className="w-[522px] h-[330px]">
             <Image
-              src={background}
+              src="/svg-assets/frame.svg"
               alt="Stock Exchange Building"
-              height={313}
+              width={523}
+              height={312}
               className="w-full h-full rounded-none object-cover"
             />
           </div>

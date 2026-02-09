@@ -1,19 +1,16 @@
-import block from "@/assets/images/block.svg";
-import kucoin from "@/assets/images/logo_general_green.svg";
-import mexc from "@/assets/images/mexc-global-seeklogo.svg";
 import Link from "next/link";
 import { PressRow, type MediaOutlet } from "../shared/press-card";
 
 const newsItems: MediaOutlet[] = [
   {
-    image: block,
+    image: "/svg-assets/block.svg",
     name: "The Block",
     date: "JAN 20, 2026",
     imageType: "logo",
     url: "https://apnews.com/press-release/globenewswire-mobile/onepiece-labs-solana-accelerator-officially-launches-f2e8e0a2478df30533933fdfe8f07a5e",
   },
   {
-    image: mexc,
+    image: "/svg-assets/mexc-global-seeklogo.svg",
     name: "MEXC",
     date: "JAN 21, 2026",
     bgColor: "#000000",
@@ -21,7 +18,7 @@ const newsItems: MediaOutlet[] = [
     url: "https://markets.businessinsider.com/news/stocks/onepiece-labs-solana-accelerator-officially-launches-1035128439",
   },
   {
-    image: kucoin,
+    image: "/svg-assets/logo_general_green.svg",
     name: "Kucoin",
     date: "JAN 21, 2026",
     imageType: "logo",
